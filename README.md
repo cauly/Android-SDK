@@ -1,120 +1,136 @@
-## <img src="http://cauly044.fsnsys.com:10010/images/logo_cauly_main.png"/>   Android SDK 설치가이드
-==================================================
+ 
+
+
+CAULY
+Android SDK 설치가이드
+
+
+
+
+
+
+
+
 
 목차 
---------------------------------------
 1. cauly SDK v3.3
 2. SDK 설치 방법
 3. Class Reference
+	CAULY SDK v3.3
+1.	Release note
+A.	이번 버전에서 향상된 점
+-	네이티브 광고 추가
+-	광고 기능 개선 및 버그 수정
+-	개발자 선택사항이었던 CALL_PHONE/ACCESS_FINE_LOCATION permission 삭제
+2.	주의 사항
+A.	P/E광고 설정 관련
+-	앱 마다 P/E광고 허용 여부를 설정 할 수 있으며, P/E광고 노출을 원하는 경우 ‘cauly홈페이지>> APP관리’에서 ‘ON’ 으로 설정하면 됩니다.
+1.	cauly 홈페이지 >> app 관리 >> 수익구분 : 배너CPM >> ON
+-	아래 API를 활용하시면 ‘FALSE’로 설정된 ‘View’에서만 P/E광고가 호출 되지 않습니다.
+1.	setShowPreExpandableAd(boolean)
+B.	전면광고 플로팅형_Close Ad Type 설정 관련
+-	onKeyDown() API에서 KEYCODE_BACK 키 입력시, Close Ad show() API를 호출합니다.  
+이 때 광고 구동을 위해 필요한 리소스를 다운받았는지 isModuleLoaded() API를 통해 확인 하고, 필요한 리소스를 다운받는데 실패했을 경우를 대비해 기본 종료팝업을 구현하는 것을 추천합니다. .
+-	Activity ‘onResume()’ 에서 ‘resume(this)’ 을 호출해야 한다.
+C.	전면광고 호출방식이 변경되어 XML 방식에서는 전면광고를 부착할 수 없으며, Java방식으로 코딩을 해야 전면광고를 노출할 수 있습니다.
+전면광고를 보여주기 위해서는 CaulyInterstitialAd 클래스로 광고를 받아와서, Listener 에서 명시적으로 show()를 호출해야 광고가 보여지게 됩니다.
+D.	<supports-screens> 사용 시
+-	android:anyDensity=["true”] 를 권장 합니다
+-	false로 설정할 경우 bannerHeight를 ‘Fixed’로 설정한 높이 고정형 배너가 정상적인 크기로 표시되지 않을 수 있으니 주의바랍니다.
+E.	proguard 설정 하는 경우 cauly SDK 포함된 Class 는 난독화 시키시면 안됩니다.
+-keep public class com.fsn.cauly.** {
+ 	   public protected *;
+}
+-keep public class com.trid.tridad.** {
+  	  public protected *;
+}
 
-CAULY SDK v3.3
---------------------------------------
-#####	Release note
-  	-	이번 버전에서 향상된 점
-    	-	네이티브 광고 추가
-    	-	광고 기능 개선 및 버그 수정
-    	-	개발자 선택사항이었던 CALL_PHONE/ACCESS_FINE_LOCATION permission 삭제
-    
-##### 주의 사항
-  	-	P/E광고 설정 관련
-    	-	앱 마다 P/E광고 허용 여부를 설정 할 수 있으며, 
-    	P/E광고 노출을 원하는 경우 ‘cauly홈페이지>> APP관리’에서 ‘ON’ 으로 설정하면 됩니다.
-      	-	cauly 홈페이지 >> app 관리 >> 수익구분 : 배너CPM >> ON
-      
-	-	아래 API를 활용하시면 ‘FALSE’로 설정된 ‘View’에서만 P/E광고가 호출 되지 않습니다.
-      	-	setShowPreExpandableAd(boolean)
-  	-	전면광고 플로팅형_Close Ad Type 설정 관련
-	    	-	onKeyDown() API에서 KEYCODE_BACK 키 입력시, Close Ad show() API를 호출합니다.  
-	    	이 때 광고 구동을 위해 필요한 리소스를 다운받았는지 isModuleLoaded() API를 통해 확인 하고, 
-	    	필요한 리소스를 다운받는데 실패했을 경우를 대비해 기본 종료팝업을 구현하는 것을 추천합니다.
-    		-	Activity ‘onResume()’ 에서 ‘resume(this)’ 을 호출해야 한다.
-  	-	전면광고 호출방식이 변경되어 XML 방식에서는 전면광고를 부착할 수 없으며, 
-  	Java방식으로 코딩을 해야 전면광고를 노출할 수 있습니다
-  	전면광고를 보여주기 위해서는 CaulyInterstitialAd 클래스로 광고를 받아와서, 
-  	Listener 에서 명시적으로 show()를 호출해야 광고가 보여지게 됩니다
-  	-	<supports-screens> 사용 시
-    		-	android:anyDensity=["true"] 를 권장 합니다
-		-	false로 설정할 경우 bannerHeight를 ‘Fixed’로 설정한 높이 고정형 배너가 정상적인 크기로 
-  		표시되지 않을 수 있으니 주의바랍니다
-	- proguard 설정 하는 경우 cauly SDK 포함된 Class 는 난독화 시키시면 안됩니다
-  
-	```java
-	 -keep public class com.fsn.cauly.** {
-		   public protected *;
-	 }
-	 -keep public class com.trid.tridad.** {
-	   	  public protected *;
-	 }
-	 - dontwarn android.webkit.**
-	```
+- dontwarn android.webkit.**
 
-##### 권장 환경
-	- Android 2.1 버전 이상 (API level 7 이상)
+3.	권장 환경
+A.	Android 2.1 버전 이상 (API level 7 이상)
+4.	SDK 구성
+A.	caulySDK-3.3.xx.jar
+B.	CaulyExample project
 
-##### SDK 구성
-	- caulySDK-3.3.xx.jar
-	- CaulyExample project
 
-SDK 설치 방법
---------------------------------------
-	+	CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.3.xx.jar’ 파일 복사 한다
 
-	+	‘caulySDK-3.3.xx.jar’ 파일을 라이브러리에 import 한다
-		: ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.3.xx.jar’
 
-	+	‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
-		-	광고가 삽입되는 activity에 configChanges="keyboard|keyboardHidden|orientation" 설정
-			-	만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
-				-	target Api Level 15 이상인 경우 
-				: configChanges="keyboard|keyboardHidden|orientation|screenSize"
-				-	target Api Level 15 이하인 경우
-				: configChanges="keyboard|keyboardHidden|orientation"
 
-		-	필수 퍼미션 추가
-		```xml
-		<!-- 예시 : keyboard|keyboardHidden|orientation 추가  -->
-		<activity android:name=".Sample"
-		           android:label="@string/title_activity_java_sample"
-		       android:configChanges="keyboard|keyboardHidden|orientation" >
-		<!-- 퍼미션 -->
-		→ 필수 퍼미션
-		<uses-permission android:name="android.permission.INTERNET" />
-		<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-		```
-	+	‘ project  res  values ‘에 ‘attrs.xml’ 파일 생성 후 아래 코드 추가
-	```xml
-	<declare-styleable name="com.cauly.android.ad.AdView">
-		<attr name="appcode" format="string" />
-	<attr name="effect" format="string" />
-	        <attr name="dynamicReloadInterval" format="boolean" />
-	        <attr name="reloadInterval" format="integer" />
-	        <attr name="threadPriority" format="integer" />
-	      <attr name="bannerHeight" format="string" />
-	      <attr name=" enableDefaultBannerAd " format=" boolean " /> 
-	</declare-styleable>
-	```
-	+	광고를 삽입하고 싶은 layout에 광고를 소스를 삽입
-	(두 가지 방식 제공 : XML 방식, JAVA 방식)
-		-	XML 방식 : 설정하지 않은 항목들은 기본값으로 설정됩니다.
-	```
-	<com.fsn.cauly.CaulyAdView
-	        xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
-	        android:id="@+id/xmladview"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentBottom="true"
-	        app:appcode="CAULY"
-	app:effect="RightSlide"
-	        app:dynamicReloadInterval="true"
-	        app:reloadInterval="20"
-	        app:bannerHeight="Fixed"  
-	        />
-	```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	SDK 설치 방법
+1.	CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.3.xx.jar’ 파일 복사 한다
+
+2.	‘caulySDK-3.3.xx.jar’ 파일을 라이브러리에 import 한다
+: ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.3.xx.jar’
+
+3.	‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
+A.	광고가 삽입되는 activity에 configChanges="keyboard|keyboardHidden|orientation” 설정
+-	만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
+1.	target Api Level 15 이상인 경우 
+: configChanges="keyboard|keyboardHidden|orientation|screenSize”
+2.	target Api Level 15 이하인 경우
+: configChanges="keyboard|keyboardHidden|orientation”
+
+B.	필수 퍼미션 추가
+<!-- 예시 : keyboard|keyboardHidden|orientation 추가  -->
+<activity android:name=".Sample"
+           android:label="@string/title_activity_java_sample"
+       android:configChanges="keyboard|keyboardHidden|orientation" >
+<!-- 퍼미션 -->
+→ 필수 퍼미션
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+4.	‘ project  res  values ‘에 ‘attrs.xml’ 파일 생성 후 아래 코드 추가
+<declare-styleable name="com.cauly.android.ad.AdView">
+	<attr name="appcode" format="string" />
+<attr name="effect" format="string" />
+        <attr name="dynamicReloadInterval" format="boolean" />
+        <attr name="reloadInterval" format="integer" />
+        <attr name="threadPriority" format="integer" />
+      <attr name="bannerHeight" format="string" />
+      <attr name=" enableDefaultBannerAd " format=" boolean " /> 
+</declare-styleable>
+
+5.	광고를 삽입하고 싶은 layout에 광고를 소스를 삽입
+(두 가지 방식 제공 : XML 방식, JAVA 방식)
+A.	XML 방식 : 설정하지 않은 항목들은 기본값으로 설정됩니다.
+<com.fsn.cauly.CaulyAdView
+        xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
+        android:id="@+id/xmladview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:appcode="CAULY"
+app:effect="RightSlide"
+        app:dynamicReloadInterval="true"
+        app:reloadInterval="20"
+        app:bannerHeight="Fixed"  
+        />
+
 
 
 [설정방법]
 Attrs	설 명
-Appcode	APP 등록 후 부여 받은 APP CODE[발급ID](테스트 시 “CAULY" 사용)
+Appcode	APP 등록 후 부여 받은 APP CODE[발급ID](테스트 시 “CAULY” 사용)
 아래 코드 사용 시 Rich 광고, 3D 광고, video 광고 확인 가능
 adtype : cpc : CAULY-RICHADTEST, CAULY-MRATEST-AD4, CAULY-3DTEST
 adtype : cpm : CAULY, CAULY-VIDEOTEST 
@@ -634,9 +650,9 @@ CaulyAdInfoBuilder[CaulyAdInfo 생성용 클래스]
 CaulyAdInfoBuilder(Context, AttributeSet)	지정한 Context 및 AttributSet으로 CaulyAdInfoBuilder 생성
 CaulyAdInfoBuilder(String)	지정한 App Code로 CaulyAdInfoBuilder 생성
 appCode(String)	App Code 지정
-gender(String)	성별 지정 : “all", “male", “female"
-age(String)	연령대 지정 : “all", “age10", “age20", “age30", “age40", “age50"
-effect(String)	광고 교체 효과 지정 : “None", “LeftSlide", “RightSlide", “TopSlide", “BottomSlide", “FadeIn", “Circle"
+gender(String)	성별 지정 : “all", “male”, “female”
+age(String)	연령대 지정 : “all”, “age10”, “age20”, “age30”, “age40”, “age50”
+effect(String)	광고 교체 효과 지정 : “None”, “LeftSlide”, “RightSlide”, “TopSlide”, “BottomSlide”, “FadeIn”, “Circle”
 dynamicReloadInterval(boolean)	광고 노출 시간 서버 제어 허용 여부 지정
 reloadInterval(int)	광고 갱신 주기 지정 : min 15, max 120
 threadPriority(int)	스레드 우선 순위 지정
