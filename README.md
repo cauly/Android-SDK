@@ -9,44 +9,44 @@
 
 CAULY SDK v3.3
 --------------------------------------
-#####	Release note
-  -	이번 버전에서 향상된 점
-    -	네이티브 광고 추가
-    -	광고 기능 개선 및 버그 수정
-    -	개발자 선택사항이었던 CALL_PHONE/ACCESS_FINE_LOCATION permission 삭제
+	#####	Release note
+  	-	이번 버전에서 향상된 점
+    	-	네이티브 광고 추가
+    	-	광고 기능 개선 및 버그 수정
+    	-	개발자 선택사항이었던 CALL_PHONE/ACCESS_FINE_LOCATION permission 삭제
     
-##### 주의 사항
-  -	P/E광고 설정 관련
-    -	앱 마다 P/E광고 허용 여부를 설정 할 수 있으며, 
-    P/E광고 노출을 원하는 경우 ‘cauly홈페이지>> APP관리’에서 ‘ON’ 으로 설정하면 됩니다.
-      -	cauly 홈페이지 >> app 관리 >> 수익구분 : 배너CPM >> ON
+	##### 주의 사항
+  	-	P/E광고 설정 관련
+    	-	앱 마다 P/E광고 허용 여부를 설정 할 수 있으며, 
+    	P/E광고 노출을 원하는 경우 ‘cauly홈페이지>> APP관리’에서 ‘ON’ 으로 설정하면 됩니다.
+      	-	cauly 홈페이지 >> app 관리 >> 수익구분 : 배너CPM >> ON
       
-    -	아래 API를 활용하시면 ‘FALSE’로 설정된 ‘View’에서만 P/E광고가 호출 되지 않습니다.
-      -	setShowPreExpandableAd(boolean)
-  -	전면광고 플로팅형_Close Ad Type 설정 관련
-    -	onKeyDown() API에서 KEYCODE_BACK 키 입력시, Close Ad show() API를 호출합니다.  
-    이 때 광고 구동을 위해 필요한 리소스를 다운받았는지 isModuleLoaded() API를 통해 확인 하고, 
-    필요한 리소스를 다운받는데 실패했을 경우를 대비해 기본 종료팝업을 구현하는 것을 추천합니다.
-    -	Activity ‘onResume()’ 에서 ‘resume(this)’ 을 호출해야 한다.
-  -	전면광고 호출방식이 변경되어 XML 방식에서는 전면광고를 부착할 수 없으며, 
-  Java방식으로 코딩을 해야 전면광고를 노출할 수 있습니다
-  전면광고를 보여주기 위해서는 CaulyInterstitialAd 클래스로 광고를 받아와서, 
-  Listener 에서 명시적으로 show()를 호출해야 광고가 보여지게 됩니다
-  -	<supports-screens> 사용 시
-    -	android:anyDensity=["true"] 를 권장 합니다
-    -	false로 설정할 경우 bannerHeight를 ‘Fixed’로 설정한 높이 고정형 배너가 정상적인 크기로 
-    표시되지 않을 수 있으니 주의바랍니다
-  -	proguard 설정 하는 경우 cauly SDK 포함된 Class 는 난독화 시키시면 안됩니다
+	-	아래 API를 활용하시면 ‘FALSE’로 설정된 ‘View’에서만 P/E광고가 호출 되지 않습니다.
+      	-	setShowPreExpandableAd(boolean)
+  	-	전면광고 플로팅형_Close Ad Type 설정 관련
+	    	-	onKeyDown() API에서 KEYCODE_BACK 키 입력시, Close Ad show() API를 호출합니다.  
+	    	이 때 광고 구동을 위해 필요한 리소스를 다운받았는지 isModuleLoaded() API를 통해 확인 하고, 
+	    	필요한 리소스를 다운받는데 실패했을 경우를 대비해 기본 종료팝업을 구현하는 것을 추천합니다.
+    		-	Activity ‘onResume()’ 에서 ‘resume(this)’ 을 호출해야 한다.
+  	-	전면광고 호출방식이 변경되어 XML 방식에서는 전면광고를 부착할 수 없으며, 
+  	Java방식으로 코딩을 해야 전면광고를 노출할 수 있습니다
+  	전면광고를 보여주기 위해서는 CaulyInterstitialAd 클래스로 광고를 받아와서, 
+  	Listener 에서 명시적으로 show()를 호출해야 광고가 보여지게 됩니다
+  	-	<supports-screens> 사용 시
+    		-	android:anyDensity=["true"] 를 권장 합니다
+		-	false로 설정할 경우 bannerHeight를 ‘Fixed’로 설정한 높이 고정형 배너가 정상적인 크기로 
+  		표시되지 않을 수 있으니 주의바랍니다
+	- proguard 설정 하는 경우 cauly SDK 포함된 Class 는 난독화 시키시면 안됩니다
   
-  ```java
-  -keep public class com.fsn.cauly.** {
- 	   public protected *;
-  }
-  -keep public class com.trid.tridad.** {
-    	  public protected *;
-  }
-  - dontwarn android.webkit.**
-  ```
+	```java
+	 -keep public class com.fsn.cauly.** {
+		   public protected *;
+	 }
+	 -keep public class com.trid.tridad.** {
+	   	  public protected *;
+	 }
+	 - dontwarn android.webkit.**
+	```
 
 ##### 권장 환경
 	- Android 2.1 버전 이상 (API level 7 이상)
@@ -81,7 +81,7 @@ SDK 설치 방법
 		<uses-permission android:name="android.permission.INTERNET" />
 		<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 		```
-	4.	‘ project  res  values ‘에 ‘attrs.xml’ 파일 생성 후 아래 코드 추가
+	+	‘ project  res  values ‘에 ‘attrs.xml’ 파일 생성 후 아래 코드 추가
 	```xml
 	<declare-styleable name="com.cauly.android.ad.AdView">
 		<attr name="appcode" format="string" />
@@ -93,9 +93,10 @@ SDK 설치 방법
 	      <attr name=" enableDefaultBannerAd " format=" boolean " /> 
 	</declare-styleable>
 	```
-	5.	광고를 삽입하고 싶은 layout에 광고를 소스를 삽입
+	+	광고를 삽입하고 싶은 layout에 광고를 소스를 삽입
 	(두 가지 방식 제공 : XML 방식, JAVA 방식)
-	A.	XML 방식 : 설정하지 않은 항목들은 기본값으로 설정됩니다.
+		-	XML 방식 : 설정하지 않은 항목들은 기본값으로 설정됩니다.
+	```
 	<com.fsn.cauly.CaulyAdView
 	        xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
 	        android:id="@+id/xmladview"
@@ -108,7 +109,7 @@ SDK 설치 방법
 	        app:reloadInterval="20"
 	        app:bannerHeight="Fixed"  
 	        />
-
+	```
 
 
 [설정방법]
