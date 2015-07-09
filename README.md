@@ -1,13 +1,3 @@
-|             |          Grouping           ||
-First Header  | Second Header | Third Header |
- ------------ | ----------- | ----------- |
-Content       |          *Long Cell*        ||
-Content       |   **Cell**    |         Cell |
-
-New section   |     More      |         Data |
-And more      |            And more         ||
-[Prototype table]
-
 ![Valid XHTML](http://cauly044.fsnsys.com:10010/images/logo_cauly_main.png) Android SDK 설치가이드
 ----
 
