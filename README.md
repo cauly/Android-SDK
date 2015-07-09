@@ -585,11 +585,12 @@
 > cauly SDK 설치 관련하여 문의 사항은 고객센터 1544-8867
 > 또는 cauly@futurestream.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
 
-#### Class Reference
+### Class Reference
 
-CaulyAdInfoBuilder CaulyAdInfo 생성용 클래스
-------------------------------
 CaulyAdInfo[광고 설정 클래스]
+------------------------------
+
+CaulyAdInfoBuilder CaulyAdInfo 생성용 클래스||
 ---|---
 CaulyAdInfoBuilder(Context, AttributeSet)|지정한 Context 및 AttributSet으로 CaulyAdInfoBuilder 생성
 CaulyAdInfoBuilder(String)	|지정한 App Code로 CaulyAdInfoBuilder 생성
