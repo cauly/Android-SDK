@@ -57,17 +57,18 @@
 			2. target Api Level 15 이하인 경우
 				```configChanges="keyboard|keyboardHidden|orientation”```
 	- 필수 퍼미션 추가
-	```xml
-	<!-- 예시 : keyboard|keyboardHidden|orientation 추가  -->
-	<activity android:name=".Sample"
-	          android:label="@string/title_activity_java_sample"
-	       	  android:configChanges="keyboard|keyboardHidden|orientation" >
-	<!-- 퍼미션 -->
-	→ 필수 퍼미션
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-	```
-4. ‘ project  res  values ‘에 ‘attrs.xml’ 파일 생성 후 아래 코드 추가
+		```xml
+		<!-- 예시 : keyboard|keyboardHidden|orientation 추가  -->
+		<activity android:name=".Sample"
+		          android:label="@string/title_activity_java_sample"
+		       	  android:configChanges="keyboard|keyboardHidden|orientation" >
+		<!-- 퍼미션 -->
+		→ 필수 퍼미션
+		<uses-permission android:name="android.permission.INTERNET" />
+		<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+		```
+		
+4. 'project > res > values'에 'attrs.xml' 파일 생성 후 아래 코드 추가
 	```xml
 	<declare-styleable name="com.cauly.android.ad.AdView">
 		<attr name="appcode" format="string" />
@@ -79,6 +80,7 @@
 	      <attr name=" enableDefaultBannerAd " format=" boolean " /> 
 	</declare-styleable>
 	```
+	
 5. 광고를 삽입하고 싶은 layout에 광고를 소스를 삽입
 	(두 가지 방식 제공 : XML 방식, JAVA 방식)
 	- XML 방식 : 설정하지 않은 항목들은 기본값으로 설정됩니다.
@@ -533,7 +535,7 @@
 		3. CaulyCustomAd의 CaulyCustomAdListener등록
 		4. CaulyCustomAd의 JSON 타입의 광고정보 요청
 		5. 수신한 JSON Data Format.
-		```json
+		```
 			{"ads":[
 			      {"id":"광고ID",
 			       "ad_charge_type":"0 : 유료광고, 100: 하우스 광고",
@@ -585,7 +587,8 @@
 > cauly SDK 설치 관련하여 문의 사항은 고객센터 1544-8867
 > 또는 cauly@futurestream.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
 
-### Class Reference
+Class Reference
+=================
 
 CaulyAdInfo[광고 설정 클래스]
 ------------------------------
