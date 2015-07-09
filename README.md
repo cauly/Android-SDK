@@ -60,8 +60,8 @@
 	```xml
 	<!-- 예시 : keyboard|keyboardHidden|orientation 추가  -->
 	<activity android:name=".Sample"
-	           android:label="@string/title_activity_java_sample"
-	       android:configChanges="keyboard|keyboardHidden|orientation" >
+	          android:label="@string/title_activity_java_sample"
+	       	  android:configChanges="keyboard|keyboardHidden|orientation" >
 	<!-- 퍼미션 -->
 	→ 필수 퍼미션
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -84,17 +84,17 @@
 	- XML 방식 : 설정하지 않은 항목들은 기본값으로 설정됩니다.
 	```xml
 		<com.fsn.cauly.CaulyAdView
-		        xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
-		        android:id="@+id/xmladview"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentBottom="true"
-		        app:appcode="CAULY"
-		app:effect="RightSlide"
-		        app:dynamicReloadInterval="true"
-		        app:reloadInterval="20"
-		        app:bannerHeight="Fixed"  
-		        />
+	        xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
+	        android:id="@+id/xmladview"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        app:appcode="CAULY"
+			app:effect="RightSlide"
+	        app:dynamicReloadInterval="true"
+	        app:reloadInterval="20"
+	        app:bannerHeight="Fixed"  
+	        />
 	```
 	[설정방법]
 	
@@ -123,67 +123,66 @@
 		- 위치 : src >> ‘package name’ >> ‘광고를 붙일 Activity’.java
 			``` java
 			private CaulyAdView javaAdView;
-				@Override
+			@Override
 			public void onCreate(Bundle savedInstanceState) {
 			     super.onCreate(savedInstanceState);
 			     setContentView(R.layout.activity_java);
-			// Cauly 로그 수준 지정 : 로그의 상세함 순서는 다음과 같다.
-			    //LogLevel.Verbose > LogLevel.Debug > LogLevel.Info > LogLevel.Warn > LogLevel.Error > LogLevel.None
+				// Cauly 로그 수준 지정 : 로그의 상세함 순서는 다음과 같다.
+			   //LogLevel.Verbose > LogLevel.Debug > LogLevel.Info > LogLevel.Warn > LogLevel.Error > LogLevel.None
 			     Logger.setLogLevel(LogLevel.Debug);
 			
-			// CaulyAdInfo 상세 설정 방법은 하단 표 참조
-			// 설정하지 않은 항목들은 기본값으로 설정됨
-			CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).
-				     effect("RightSlide").
-				     build();
+				// CaulyAdInfo 상세 설정 방법은 하단 표 참조
+				// 설정하지 않은 항목들은 기본값으로 설정됨
+				CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).
+					effect("RightSlide").
+					build();
 			
-			// CaulyAdInfo를 이용, CaulyAdView 생성.
-			javaAdView = new CaulyAdView(this);
-			javaAdView.setAdInfo(adInfo);
-			javaAdView.setAdViewListener(this);
-			
-			RelativeLayout rootView = (RelativeLayout) findViewById(R.id.java_root_view);
-			// 예시 : 화면 하단에 배너 부착
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				     LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-			rootView.addView(javaAdView, params);		
-			    }
-			    // CaulyAdViewListener
-			    //	광고 동작에 대해 별도 처리가 필요 없는 경우,
-			    //	Activity의 "implements CaulyAdViewListener" 부분 제거하고 생략 가능.
+				// CaulyAdInfo를 이용, CaulyAdView 생성.
+				javaAdView = new CaulyAdView(this);
+				javaAdView.setAdInfo(adInfo);
+				javaAdView.setAdViewListener(this);
+				
+				RelativeLayout rootView = (RelativeLayout) findViewById(R.id.java_root_view);
+				// 예시 : 화면 하단에 배너 부착
+				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+					     LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+				rootView.addView(javaAdView, params);		
+			}
+		    // CaulyAdViewListener
+		    //	광고 동작에 대해 별도 처리가 필요 없는 경우,
+		    //	Activity의 "implements CaulyAdViewListener" 부분 제거하고 생략 가능.
 			@Override
 			public void onReceiveAd(CaulyAdView adView, boolean isChargeableAd) {
-			// 광고 수신 성공 & 노출된 경우 호출됨.
-			// 수신된 광고가 무료 광고인 경우 isChargeableAd 값이 false 임.
-			if (isChargeableAd == false) {
-			Log.d("CaulyExample", "free banner AD received.");
-			}
-			else {
-				Log.d("CaulyExample", "normal banner AD received.");
-			}
+				// 광고 수신 성공 & 노출된 경우 호출됨.
+				// 수신된 광고가 무료 광고인 경우 isChargeableAd 값이 false 임.
+				if (isChargeableAd == false) {
+					Log.d("CaulyExample", "free banner AD received.");
+				}else {
+					Log.d("CaulyExample", "normal banner AD received.");
+				}
 			}
 			@Override
 			public void onFailedToReceiveAd(CaulyAdView adView, int errorCode, String errorMsg) {
-			// 배너 광고 수신 실패할 경우 호출됨.
-			Log.d("CaulyExample", "failed to receive banner AD.");
+				// 배너 광고 수신 실패할 경우 호출됨.
+				Log.d("CaulyExample", "failed to receive banner AD.");
 			}
 			
 			@Override
 			public void onShowLandingScreen(CaulyAdView adView) {
-			// 광고 배너를 클릭하여 랜딩 페이지가 열린 경우 호출됨.
-			Log.d("CaulyExample", "banner AD landing screen opened.");
+				// 광고 배너를 클릭하여 랜딩 페이지가 열린 경우 호출됨.
+				Log.d("CaulyExample", "banner AD landing screen opened.");
 			}    
 			
 			@Override
 			public void onCloseLandingScreen(CaulyAdView adView) {
-			// 광고 배너를 클릭하여 열린 랜딩 페이지가 닫힌 경우 호출됨.
-			Log.d("CaulyExample", "banner AD landing screen closed.");
+				// 광고 배너를 클릭하여 열린 랜딩 페이지가 닫힌 경우 호출됨.
+				Log.d("CaulyExample", "banner AD landing screen closed.");
 			}	
 			// Activity 버튼 처리
 			// - Java 배너 광고 갱신 버튼
 			public void onReloadJavaAdView(View button) {
-			javaAdView.reload();
+				javaAdView.reload();
 			}
 			```
 			
@@ -208,59 +207,57 @@
 		// - 전면 광고 요청 버튼
 		public void onRequestInterstitial(View button) {
 		
-		// CaulyAdInfo 생성
-		CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).build();
-		
-		// 전면 광고 생성
-		CaulyInterstitialAd interstial = new CaulyInterstitialAd();
-		interstial.setAdInfo(adInfo);
-		interstial.setInterstialAdListener(this);
-		
-		// 전면광고 노출 후 back 버튼 사용을 막기 원할 경우 disableBackKey();을 추가한다
-		// 단, requestInterstitialAd 위에서 추가되어야 합니다.
-		// interstitialAd.disableBackKey();
-		
-		// 광고 요청. 광고 노출은 CaulyInterstitialAdListener의 onReceiveInterstitialAd에서 처리한다.
-		interstial.showInterstitialAd(this);
-		// 전면 광고 노출 플래그 활성화
-		showInterstitial = true;
+			// CaulyAdInfo 생성
+			CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).build();
+			
+			// 전면 광고 생성
+			CaulyInterstitialAd interstial = new CaulyInterstitialAd();
+			interstial.setAdInfo(adInfo);
+			interstial.setInterstialAdListener(this);
+			
+			// 전면광고 노출 후 back 버튼 사용을 막기 원할 경우 disableBackKey();을 추가한다
+			// 단, requestInterstitialAd 위에서 추가되어야 합니다.
+			// interstitialAd.disableBackKey();
+			
+			// 광고 요청. 광고 노출은 CaulyInterstitialAdListener의 onReceiveInterstitialAd에서 처리한다.
+			interstial.showInterstitialAd(this);
+			// 전면 광고 노출 플래그 활성화
+			showInterstitial = true;
 		}
-		
+			
 		// - 전면 광고 노출 취소 버튼
 		public void onCancelInterstitial(View button) {
-		// 전면 광고 노출 플래그 비활성화
-		showInterstitial = false;
+			// 전면 광고 노출 플래그 비활성화
+			showInterstitial = false;
 		}
 		
-		  // CaulyInterstitialAdListener
-		  //전면 광고의 경우, 광고 수신 후 자동으로 노출되지 않으므로,
+		// CaulyInterstitialAdListener
+		//전면 광고의 경우, 광고 수신 후 자동으로 노출되지 않으므로,
 		//반드시 onReceiveInterstitialAd 메소드에서 노출 처리해 주어야 한다.
 		@Override
 		public void onReceiveInterstitialAd(CaulyInterstitialAd ad, boolean isChargeableAd) {
-		// 광고 수신 성공한 경우 호출됨.
-		// 수신된 광고가 무료 광고인 경우 isChargeableAd 값이 false 임.
-		if (isChargeableAd == false) {
-			Log.d("CaulyExample", "free interstitial AD received.");
-		}
-		else {
-		Log.d("CaulyExample", "normal interstitial AD received.");
-		}		
-		// 노출 활성화 상태이면, 광고 노출
-		if (showInterstitial)
-		ad.show();
-		else
-		ad.cancel();
+			// 광고 수신 성공한 경우 호출됨.
+			// 수신된 광고가 무료 광고인 경우 isChargeableAd 값이 false 임.
+			if (isChargeableAd == false) {
+				Log.d("CaulyExample", "free interstitial AD received.");
+			}else {
+				Log.d("CaulyExample", "normal interstitial AD received.");
+			}		
+			// 노출 활성화 상태이면, 광고 노출
+			if (showInterstitial)
+				ad.show();
+			else
+				ad.cancel();
 		}	
 		@Override
 		public void onFailedToReceiveInterstitialAd(CaulyInterstitialAd ad, int errorCode, String errorMsg) {
-		// 전면 광고 수신 실패할 경우 호출됨.
-		Log.d("CaulyExample", "failed to receive interstitial AD.");
+			// 전면 광고 수신 실패할 경우 호출됨.
+			Log.d("CaulyExample", "failed to receive interstitial AD.");
 		}
 		@Override
 		public void onClosedInterstitialAd(CaulyInterstitialAd ad) {
-		// 전면 광고가 닫힌 경우 호출됨.
-		Log.d("CaulyExample", "interstitial AD closed.");
-		}
+			// 전면 광고가 닫힌 경우 호출됨.
+			Log.d("CaulyExample", "interstitial AD closed.");
 		}
 		```
 		
@@ -280,80 +277,76 @@
 		```java
 		public class JavaActivity extends Activity implements CaulyCloseAdListener {
 				
-		private static final String APP_CODE = "CAULY"; // 광고 요청을 위한 App Code
-		CaulyCloseAd mCloseAd ;                            // CloseAd광고 객체
-			@Override
-		    public void onCreate(Bundle savedInstanceState) {
-		        super.onCreate(savedInstanceState);
-		        setContentView(R.layout.activity_java);
-		        
-		
-		        //CloseAd 초기화 
-			CaulyAdInfo closeAdInfo = new CaulyAdInfoBuilder(APP_CODE).build();
-			mCloseAd = new CaulyCloseAd();
-				
-			/*  Optional
-				//원하는 버튼의 문구를 설정 할 수 있다.  
-				mCloseAd.setButtonText("취소", "종료");
-				//원하는 텍스트의 문구를 설정 할 수 있다.  
-				mCloseAd.setDescriptionText("종료하시겠습니까?");
-			*/
-			mCloseAd.setAdInfo(closeAdInfo);
-			mCloseAd.setCloseAdListener(this); // CaulyCloseAdListener 등록
-			// 종료광고 노출 후 back버튼 사용을 막기 원할 경우 disableBackKey();을 추가한다
-			// mCloseAd.disableBackKey();	
-		    }
-		
-			@Override
-			protected void onResume() {
-				super.onResume(); 
-		               if (mCloseAd != null)
-		mCloseAd.resume(this); // 필수 호출 
-			}
-		
-		        // Back Key가 눌러졌을 때, CloseAd 호출
-			@Override
-			public boolean onKeyDown(int keyCode, KeyEvent event) {
-				if (keyCode == KeyEvent.KEYCODE_BACK) {
-					// 앱을 처음 설치하여 실행할 때, 필요한 리소스를 다운받았는지 여부.
-					if (mCloseAd.isModuleLoaded())
-					{
-						mCloseAd.show(this);
-					} 
-					else
-					{
-					// 광고에 필요한 리소스를 한번만  다운받는데 실패했을 때 앱의 종료팝업 구현
-						showDefaultClosePopup();
-					}
-					return true;
+			private static final String APP_CODE = "CAULY"; // 광고 요청을 위한 App Code
+			CaulyCloseAd mCloseAd ;                         // CloseAd광고 객체
+				@Override
+			    public void onCreate(Bundle savedInstanceState) {
+			        super.onCreate(savedInstanceState);
+			        setContentView(R.layout.activity_java);
+			        //CloseAd 초기화 
+					CaulyAdInfo closeAdInfo = new CaulyAdInfoBuilder(APP_CODE).build();
+					mCloseAd = new CaulyCloseAd();
+					
+					/*  Optional
+					//원하는 버튼의 문구를 설정 할 수 있다.  
+					mCloseAd.setButtonText("취소", "종료");
+					//원하는 텍스트의 문구를 설정 할 수 있다.  
+					mCloseAd.setDescriptionText("종료하시겠습니까?");
+					*/
+					mCloseAd.setAdInfo(closeAdInfo);
+					mCloseAd.setCloseAdListener(this); // CaulyCloseAdListener 등록
+					// 종료광고 노출 후 back버튼 사용을 막기 원할 경우 disableBackKey();을 추가한다
+					// mCloseAd.disableBackKey();	
+			    }
+			
+				@Override
+				protected void onResume() {
+					super.onResume(); 
+			        if (mCloseAd != null)
+					mCloseAd.resume(this); // 필수 호출 
 				}
-				return super.onKeyDown(keyCode, event);
+			
+			    // Back Key가 눌러졌을 때, CloseAd 호출
+				@Override
+				public boolean onKeyDown(int keyCode, KeyEvent event) {
+					if (keyCode == KeyEvent.KEYCODE_BACK) {
+						// 앱을 처음 설치하여 실행할 때, 필요한 리소스를 다운받았는지 여부.
+						if (mCloseAd.isModuleLoaded())
+						{
+							mCloseAd.show(this);
+						} 
+						else
+						{
+						// 광고에 필요한 리소스를 한번만  다운받는데 실패했을 때 앱의 종료팝업 구현
+							showDefaultClosePopup();
+						}
+						return true;
+					}
+					return super.onKeyDown(keyCode, event);
+				}
+			
+				private void showDefaultClosePopup()
+				{
+					new AlertDialog.Builder(this).setTitle("").setMessage("종료 하시겠습니까?")
+					   .setPositiveButton("예", new DialogInterface.OnClickListener() {
+					    @Override
+					    public void onClick(DialogInterface dialog, int which) {
+					     finish();
+					    }
+					   })
+					   .setNegativeButton("아니요",null)
+					   .show();
 			}
-		
-			private void showDefaultClosePopup()
-			{
-				new AlertDialog.Builder(this).setTitle("").setMessage("종료 하시겠습니까?")
-				   .setPositiveButton("예", new DialogInterface.OnClickListener() {
-				    @Override
-				    public void onClick(DialogInterface dialog, int which) {
-				     finish();
-				    }
-				   })
-				   .setNegativeButton("아니요",null)
-				   .show();
-		}
-		
-		
+			
 		    // CaulyCloseAdListener
 			@Override
 			public void onFailedToReceiveCloseAd(CaulyCloseAd ad, int errCode,String errMsg) {
-				
 			}
 			// CloseAd의 광고를 클릭하여 앱을 벗어났을 경우 호출되는 함수이다. 
 			@Override
 			public void onLeaveCloseAd(CaulyCloseAd ad) {
 			}
-		// CloseAd의 request()를 호출했을 때, 광고의 여부를 알려주는 함수이다. 
+			// CloseAd의 request()를 호출했을 때, 광고의 여부를 알려주는 함수이다. 
 			@Override
 			public void onReceiveCloseAd(CaulyCloseAd ad, boolean isChargable) {
 			
@@ -378,24 +371,21 @@
 	- 네이티브광고 : BASE
 		```java
 		public class JavaActivity extends Activity implements CaulyNativeAdListener {
-				
-		private static final String APP_CODE = "CAULY"; // 광고 요청을 위한 App Code
-		ArrayList<Item> mList ;
-		ListView listview; 
-			@Override
-		    public void onCreate(Bundle savedInstanceState) {
-		        super.onCreate(savedInstanceState);
-		        setContentView(R.layout.activity_java);
-		        // 기존의 ListView-Adaper 구현
-				
-		        requestNative()
-		    }
 		
-		// Request Native AD
-		// 네이티브 애드에 보여질 디자인을 정의하고 세팅하는 작업을 수행한다. (icon, image, title, subtitle, description ...)
-		// CaulyNativeAdViewListener 를 등록하여 onReceiveNativeAd or onFailedToReceiveNativeAd 로 네이티브광고의 상태를 전달받는다.
-		  	public void requestNative()
-			{
+			private static final String APP_CODE = "CAULY"; // 광고 요청을 위한 App Code
+			ArrayList<Item> mList ;
+			ListView listview; 
+			@Override
+			public void onCreate(Bundle savedInstanceState) {
+			    super.onCreate(savedInstanceState);
+			    setContentView(R.layout.activity_java);
+			    // 기존의 ListView-Adaper 구현
+			        requestNative()
+			}
+			// Request Native AD
+			// 네이티브 애드에 보여질 디자인을 정의하고 세팅하는 작업을 수행한다. (icon, image, title, subtitle, description ...)
+			// CaulyNativeAdViewListener 를 등록하여 onReceiveNativeAd or onFailedToReceiveNativeAd 로 네이티브광고의 상태를 전달받는다.
+			public void requestNative(){
 				CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
 				.layoutID(R.layout.activity_native_iconlist)// 네이티브애드에 보여질 디자인을 작성하여 등록한다.
 				.iconImageID(R.id.icon)       // 아이콘 등록
@@ -408,74 +398,70 @@
 				nativeAd.setAdInfo(adInfo);
 				nativeAd.setAdViewListener(this);
 				nativeAd.request();
-			}
-		}
-		
-		// 네이티브애드가 없거나, 네트웍상의 이유로 정상적인 수신이 불가능 할 경우 호출이 된다. 
-			public void onFailedToReceiveNativeAd(CaulyNativeAdView adView,	int errorCode, String errorMsg) {
-				
-			}
-		
-		// 네이티브애드가 정상적으로 수신되었을 떄, 호출된다.
-			public void onReceiveNativeAd(CaulyNativeAdView adView, boolean isChargeableAd) {
-			//우선  앱의 리스트에 등록을 하고, 똑같은 위치의 포지션에 수신한 네이티브애드를 등록한다. 
-			mList.add(원하는포지션,null);				CaulyNativeAdHelper.getInstance().add(this,listview,원하는포지션,adView);
-			mAdapter.notifyDataSetChanged();
-		
-			}
-		
-		         // 화면이 종료될 때  Destory()필수 호출 
-		@Override
-			protected void onDestroy() {
-				super.onDestroy();
-				CaulyNativeAdHelper.getInstance().destroy();
-			}
-		
-		
-		
-		class ListAdapter extends BaseAdapter 
-		{
-			private static final int YOUR_ITEM_TYPE = 0;
-			private static final int YOUR_ITEM_COUNT = 1;
-				
-			public int getCount() {
-				return mList.size();
-			}
-		
-			public Item getItem(int position) {
-				return mList.get(position);
-			}
-		
-			
-			// 새로운 네이티브애드 타입이 존재하기 때문에 하나를 등록해준다. 
-			@Override
-			public int getItemViewType(int position) {
-				if(CaulyNativeAdHelper.getInstance().isAdPosition(listview,position))
-					return YOUR_ITEM_TYPE+1;
-				else 
-					return YOUR_ITEM_TYPE;
-			}
-				
-			// 기존의 레이아웃타입 + 1 의 총개수 등록
-			@Override
-			public int getViewTypeCount() {
-				return YOUR_ITEM_COUNT+1;
-			}
-				
-			
-			public View getView(int position, View convertView, ViewGroup parent) {
-					
-		// CaulyNativeAdHelper를 이용하여, 현재 리스트뷰와 등록한 포지션을 이용하여 , 현재 뷰가 NativeAd인지 아닌지를 반환한다.
-				if(CaulyNativeAdHelper.getInstance().isAdPosition(listview, position) )
-				{
-					return CaulyNativeAdHelper.getInstance().getView(listview,position, convertView);
 				}
-				else
-				{
-		// 기존의 getView 코드 구현
-		
-		}
-		}
+			
+			
+				// 네이티브애드가 없거나, 네트웍상의 이유로 정상적인 수신이 불가능 할 경우 호출이 된다. 
+				public void onFailedToReceiveNativeAd(CaulyNativeAdView adView,	int errorCode, String errorMsg) {
+					
+				}
+			
+				// 네이티브애드가 정상적으로 수신되었을 떄, 호출된다.
+				public void onReceiveNativeAd(CaulyNativeAdView adView, boolean isChargeableAd) {
+					//우선  앱의 리스트에 등록을 하고, 똑같은 위치의 포지션에 수신한 네이티브애드를 등록한다. 
+					mList.add(원하는포지션,null);																									CaulyNativeAdHelper.getInstance().add(this,listview,원하는포지션,adView);
+					mAdapter.notifyDataSetChanged();
+				}
+			
+			    // 화면이 종료될 때  Destory()필수 호출 
+				@Override
+				protected void onDestroy() {
+					super.onDestroy();
+					CaulyNativeAdHelper.getInstance().destroy();
+				}
+			}
+			
+			class ListAdapter extends BaseAdapter 
+			{
+				private static final int YOUR_ITEM_TYPE = 0;
+				private static final int YOUR_ITEM_COUNT = 1;
+					
+				public int getCount() {
+					return mList.size();
+				}
+			
+				public Item getItem(int position) {
+					return mList.get(position);
+				}
+			
+				
+				// 새로운 네이티브애드 타입이 존재하기 때문에 하나를 등록해준다. 
+				@Override
+				public int getItemViewType(int position) {
+					if(CaulyNativeAdHelper.getInstance().isAdPosition(listview,position))
+						return YOUR_ITEM_TYPE+1;
+					else 
+						return YOUR_ITEM_TYPE;
+				}
+					
+				// 기존의 레이아웃타입 + 1 의 총개수 등록
+				@Override
+				public int getViewTypeCount() {
+					return YOUR_ITEM_COUNT+1;
+				}
+					
+				
+				public View getView(int position, View convertView, ViewGroup parent) {
+					// CaulyNativeAdHelper를 이용하여, 현재 리스트뷰와 등록한 포지션을 이용하여 , 현재 뷰가 NativeAd인지 아닌지를 반환한다.
+					if(CaulyNativeAdHelper.getInstance().isAdPosition(listview, position) )
+					{
+						return CaulyNativeAdHelper.getInstance().getView(listview,position, convertView);
+					}
+					else
+					{
+						// 기존의 getView 코드 구현
+					}
+				}
 		}
 		
 		Xml – activity_native_iconlist
@@ -496,44 +482,47 @@
 		            android:scaleType="fitXY"
 		           />
 				   <ImageView
-		           android:id="@+id/sponsor"
+		           	android:id="@+id/sponsor"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		             android:layout_marginLeft="114dp"
-		               android:layout_marginTop="13dp"
-		/>
+		            android:layout_marginLeft="114dp"
+		            android:layout_marginTop="13dp"
+		               />
 		        <TextView
 		            android:id="@+id/title"
 		            android:layout_width="fill_parent"
 		            android:layout_height="wrap_content"
-		             android:layout_marginLeft="114dp"
-		              android:layout_marginRight="14dp"
-		               android:layout_marginTop="30dp"
+		            android:layout_marginLeft="114dp"
+		            android:layout_marginRight="14dp"
+		            android:layout_marginTop="30dp"
 		            android:textColor="#000000"
-		             android:lines="1"
-		            android:textSize="13dp" />
+		            android:lines="1"
+		            android:textSize="13dp" 
+		            />
 		         <TextView
 		            android:id="@+id/subtitle"
 		            android:layout_width="fill_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_marginLeft="114dp"
-		              android:layout_marginRight="14dp"
-		               android:layout_marginTop="50dp"
-		               android:lines="2"
+		            android:layout_marginRight="14dp"
+		            android:layout_marginTop="50dp"
+		            android:lines="2"
 		            android:textColor="#8a837e"
-		            android:textSize="10dp" />
+		            android:textSize="10dp" 
+		            />
 		         
 		          <TextView
 		            android:id="@+id/description"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		              android:layout_marginRight="14dp"
-		              android:layout_alignParentRight="true"
-		                 android:layout_alignParentBottom="true"
-		               android:layout_marginBottom="9dp"
-		               android:lines="1"
+		            android:layout_marginRight="14dp"
+		            android:layout_alignParentRight="true"
+		            android:layout_alignParentBottom="true"
+		            android:layout_marginBottom="9dp"
+		            android:lines="1"
 		            android:textColor="#e15052"
-		            android:textSize="15dp" />
+		            android:textSize="15dp" 
+		            />
 		    </RelativeLayout>
 		
 		</RelativeLayout>
@@ -548,8 +537,8 @@
 			{"ads":[
 			      {"id":"광고ID",
 			       "ad_charge_type":"0 : 유료광고, 100: 하우스 광고",
-			  	   "icon":"아이콘 이미지",  1:1 비율
-			       "image":"메인 이미지",  3:2 비율 or 2:3 비율
+			  	   "icon":"아이콘 이미지",  //1 : 1 비율
+			       "image":"메인 이미지",  // 3 : 2 비율 or 2 : 3 비율
 			       "title":"제목",
 			       "subtitle":"부제목",
 			       "description":"설명"
@@ -570,26 +559,26 @@
 				mCaulyAdView = new CaulyCustomAd(this);
 				mCaulyAdView.setAdInfo(adInfo);
 				mCaulyAdView.setCustomAdListener(new CaulyCustomAdListener() {
-							@Override
-							public void onShowedAd() {
-							}
+					@Override
+					public void onShowedAd() {
+					}
 			
-							//광고 호출이 성공할 경우, 호출된다.
-							@Override
-							public void onLoadedAd(boolean isChargeableAd) {
-							}
-			
-							// 광고 호출이 실패할 경우, 호출된다.
-							@Override
-							public void onFailedAd(int errCode, String errMsg) {
-							}
-			
-							// 광고가 클릭된 경우, 호출된다.
-							@Override
-							public void onClikedAd() {
-							}
-			
-						});
+					//광고 호출이 성공할 경우, 호출된다.
+					@Override
+					public void onLoadedAd(boolean isChargeableAd) {
+					}
+	
+					// 광고 호출이 실패할 경우, 호출된다.
+					@Override
+					public void onFailedAd(int errCode, String errMsg) {
+					}
+	
+					// 광고가 클릭된 경우, 호출된다.
+					@Override
+					public void onClikedAd() {
+					}
+	
+				});
 			
 				CaulyCustomAd requestAdData(type,  ad_count);
 			```
@@ -658,6 +647,7 @@ cancel()	|수신한 전면 광고를 폐기
 disableBackKey()	|전면광고 노출 후 back 버튼 막기
 
 CaulyInterstitialAdListener||
+---|---
 onReceiveInterstitialAd(CaulyInterstitialAd, boolean isChargeableAd)	|광고 노출 성공 시 호출됨. 유,무료 광고 여부가 isChargeableAd 변수에 설정됨
 onFailedToReceiveInterstitialAd(CaulyInterstitialAd, int errorCode, String errorMsg)	|광고 노출 실패 시 호출됨. 오류 코드와 내용이 errorCode, errorMsg 변수에 설정됨
 onClosedInterstitialAd(CaulyInterstitialAd)	|전면 광고 페이지가 닫힌 경우 호출됨
@@ -678,6 +668,7 @@ cancel()	|수신한 광고를 폐기
 disableBackKey()	|전면광고 노출 후 back 버튼 막기
 
 CaulyCloseAdListener||
+---|---
 onReceiveCloseAd(CaulyCloseAd, boolean isChargeableAd)	|광고 요청 성공 시 호출됨. 유,무료 광고 여부가 isChargeableAd 변수에 설정됨
 onFailedToReceiveCloseAd(CaulyCloseAd, int errorCode, String errorMsg)	|광고 노출 실패 시 호출됨. 오류 코드와 내용이 errorCode, errorMsg 변수에 설정됨
 onLeaveCloseAd(CaulyInterstitialAd)	|광고가 클릭되어 앱을 벗어났을 경우 호출됨
@@ -697,6 +688,7 @@ isAttachedtoView()	|광고가 ViewGroup에 노출되었는지 여부
 destroy()	|광고 소멸
 
 CaulyNativeAdHelper(ListView 에서 노출하기 위한 Helper)||
+---|---
 getInstance()	|Singleton 객체
 init()|	초기화
 add(Context, ViewGroup, int, CaulyNativeAdView)	|ListView의 지정한 위치에 광고를 등록한다.
