@@ -1,8 +1,8 @@
-![Valid XHTML](http://cauly044.fsnsys.com:10010/images/logo_cauly_main.png) Cauly Video SDK 연동가이드
+![Valid XHTML](http://cauly044.fsnsys.com:10010/images/logo_cauly_main.png) CAULY Video SDK 연동가이드
 ----
 
 ### 목차 
-1. cauly SDK v3.3
+1. CAULY SDK v3.3
 2. SDK 설치 방법
 3. Class Reference
  
@@ -10,7 +10,7 @@
 
 1. Release note
 	- 이번 버전에서 향상된 점
-		-CaulyVideoAd 추가
+		-CAULY Video 추가
 2. 주의 사항
 	- Proguard를 사용하고 있다면, 아래 내용을 추가해야 합니다.
 ```java
@@ -25,13 +25,13 @@
 	- 권장 환경
 		- Android 2.1 버전 이상 (API level 7 이상)
 	- SDK 구성
-		- caulySDK-3.3.xx.jar
+		- caulySDK-x.y.z.jar
 
 #### SDK 설치 방법
 
-1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.3.xx.jar’ 파일 복사 한다
-2. ‘caulySDK-3.3.xx.jar’ 파일을 라이브러리에 import 한다
-	- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.3.xx.jar’
+1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-x.z.z.jar’ 파일 복사 한다
+2. ‘caulySDK-x.y.z.jar’ 파일을 라이브러리에 import 한다
+	- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-x.y.zjar’
 3. ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
 	- 광고가 삽입되는 activity에 configChanges="keyboard|keyboardHidden|orientation” 설정
 		- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
@@ -58,11 +58,11 @@
 	
 4. 광고를 삽입하고 싶은 layout에 광고를 소스를 삽입
 	
-	- 카울리비디오광고 : BASE
+	- CAULY Video  : BASE
 		```java
 		public class MainActivity extends Activity {
 		
-			 static final String APP_CODE = "Cauly";
+			 static final String APP_CODE = "CAULY";
 			CaulyVideoAdView adVideoView;
 			
 			@Override
@@ -89,7 +89,7 @@
 			        super.onConfigurationChanged(newConfig);
 			    }
 		
-			//카울리비디오를 없애고,   본 영상을 재생한다
+			//CAULY Video 없애고,   본 영상을 재생한다
 			public void loadMainVideo()
 			 {
 				 
@@ -101,7 +101,7 @@
 				  * */
 				 
 			 }
-			//CaulyVideoAd를 호출한다. 
+			//CAULY Video를 호출한다. 
 			public void requestVideo()
 			{
 				CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).build();
@@ -123,7 +123,7 @@
 						loadMainVideo();
 						
 					}
-					//카울리비디오 재생 중, 재생완료, 광고클릭, 스킵버튼클릭, 플레이에러 등으로 광고영상이 끝났을 때 호출
+					//CAULY Video 재생 중, 재생완료, 광고클릭, 스킵버튼클릭, 플레이에러 등으로 광고영상이 끝났을 때 호출
 					public void onFinishVideoAd(int code, String msg) {
 						Log.i("CaulyVideo","onFinishVideoAd  "+code+" "+msg);
 						loadMainVideo();
@@ -167,7 +167,7 @@
 		</RelativeLayout>
 		```
 	
-> cauly SDK 연동 관련한 문의는 카울리 홈페이지[고객지원 >> 1대1 문의] 
+> CAULY SDK 연동 관련한 문의는 카울리 홈페이지[고객지원 >> 1대1 문의] 
 > 또는 cauly@fsn.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
 
 Class Reference
@@ -197,7 +197,7 @@ setLogLevel(LogLevel)|로그 수준 지정
 getLogLevel()	|현재 로그 수준
 
 
-카울리비디오광고
+CAULY Video
 --------------
 CaulyVideoAdView||
 ---|---
