@@ -57,119 +57,96 @@
 	
 	- 카울리비디오광고 : BASE
 		```java
-		package com.cauly.videoad;
-
-import com.fsn.cauly.CaulyAdInfo;
-import com.fsn.cauly.CaulyAdInfoBuilder;
-import com.fsn.cauly.CaulyVideoAdView;
-import com.fsn.cauly.CaulyVideoAdViewListener;
-import com.fsn.cauly.Logger;
-import com.fsn.cauly.Logger.LogLevel;
-import com.fsn.cauly.blackdragoncore.utils.BDDisplayUtil;
-
-import android.app.Activity;
-import android.content.res.Configuration;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Spinner;
-import android.widget.VideoView;
-
-public class MainActivity extends Activity {
-
-	 static final String APP_CODE = "Cauly";
-	CaulyVideoAdView adVideoView;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		Logger.setLogLevel(LogLevel.Verbose);
-		requestVideo();
-	}
-	
-	//가로 세로 모드를 전환하는 
-	 @Override
-	 public void onConfigurationChanged(Configuration newConfig) {
-		 Log.i("CaulyVideo","onConfigurationChanged  "+newConfig.orientation);
-	        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
-	        	RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
-	        	rootView.setLayoutParams(new LayoutParams(BDDisplayUtil.getDisplayWidth(this),BDDisplayUtil.getDisplayHeight(this)));
-	        }
-	        else   if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-	        	RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
-	        	rootView.setLayoutParams(new LayoutParams(BDDisplayUtil.getDisplayWidth(this), BDDisplayUtil.PixelFromDP(this, 230)));
-	        }
-	            
-	        super.onConfigurationChanged(newConfig);
-	    }
-
-	//카울리비디오를 없애고,   본 영상을 재생한다
-	public void loadMainVideo()
-	 {
-		 
-		RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
-		 rootView.removeAllViews();
-		 /*
-		  * Do what you want to do.
-		  * 
-		  * */
-		 
-	 }
-	//CaulyVideoAd를 호출한다. 
-	public void requestVideo()
-	{
-		CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).build();
-		adVideoView = new CaulyVideoAdView(this);
-		adVideoView.setAdInfo(adInfo);
-		adVideoView.setKeywords(""); //광고타켓팅하고싶은 키워드 등록.
-		adVideoView.setAdViewListener(new CaulyVideoAdViewListener() {
-			
-			//광고수신에 성공되었을 때 호출된다.
-			public void onReceiveVideoAd(final CaulyVideoAdView adView, boolean isChargeableAd) {
-				//광고컨테이너에 수신받은 CaulyVideoAdView를 attach한다.
-				RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
-				adView.attachToView(rootView);
-			}
-			광고수신에 실패되었을 때 호출된다.
-			public void onFailToReceiveVideoAd(CaulyVideoAdView adView,	int errorCode, String errorMsg) {
-				Log.i("CaulyVideo","onFailedToReceiveVideoAd");
-				//타사의 비디오광고를 연동하거나, 본영상을 재생시키는 작업수행.
-				loadMainVideo();
-				
-			}
-			//카울리비디오 재생 중, 재생완료, 광고클릭, 스킵버튼클릭, 플레이에러 등으로 광고영상이 끝났을 때 호출
-			public void onFinishVideoAd(int code, String msg) {
-				Log.i("CaulyVideo","onFinishVideoAd  "+code+" "+msg);
-				loadMainVideo();
-				
-				switch(code)
-				{
-				case CaulyVideoAdView.MSG_VIDEO_COMPLETED:
-					break;
-				case CaulyVideoAdView.MSG_VIDEO_CLICK:
-					break;
-				case CaulyVideoAdView.MSG_VIDEO_ERROR:
-					break;
-				case CaulyVideoAdView.MSG_VIDEO_SKIPED:
-					break;
-				}
-			}
-			//광고의 재생시작을 알려준다.
-			public void onStartVideoAd() {
-				Log.i("CaulyVideo","onStartedVideoAd");
-			}
-
-		});
-		adVideoView.request();
+		public class MainActivity extends Activity {
 		
-	}
-}
+			 static final String APP_CODE = "Cauly";
+			CaulyVideoAdView adVideoView;
+			
+			@Override
+			public void onCreate(Bundle savedInstanceState) {
+				super.onCreate(savedInstanceState);
+				setContentView(R.layout.activity_main);
+				Logger.setLogLevel(LogLevel.Verbose);
+				requestVideo();
+			}
+			
+			//가로 세로 모드를 전환하는 
+			 @Override
+			 public void onConfigurationChanged(Configuration newConfig) {
+				 Log.i("CaulyVideo","onConfigurationChanged  "+newConfig.orientation);
+			        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+			        	RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
+			        	rootView.setLayoutParams(new LayoutParams(BDDisplayUtil.getDisplayWidth(this),BDDisplayUtil.getDisplayHeight(this)));
+			        }
+			        else   if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+			        	RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
+			        	rootView.setLayoutParams(new LayoutParams(BDDisplayUtil.getDisplayWidth(this), BDDisplayUtil.PixelFromDP(this, 230)));
+			        }
+			            
+			        super.onConfigurationChanged(newConfig);
+			    }
+		
+			//카울리비디오를 없애고,   본 영상을 재생한다
+			public void loadMainVideo()
+			 {
+				 
+				RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
+				 rootView.removeAllViews();
+				 /*
+				  * Do what you want to do.
+				  * 
+				  * */
+				 
+			 }
+			//CaulyVideoAd를 호출한다. 
+			public void requestVideo()
+			{
+				CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).build();
+				adVideoView = new CaulyVideoAdView(this);
+				adVideoView.setAdInfo(adInfo);
+				adVideoView.setKeywords(""); //광고타켓팅하고싶은 키워드 등록.
+				adVideoView.setAdViewListener(new CaulyVideoAdViewListener() {
+					
+					//광고수신에 성공되었을 때 호출된다.
+					public void onReceiveVideoAd(final CaulyVideoAdView adView, boolean isChargeableAd) {
+						//광고컨테이너에 수신받은 CaulyVideoAdView를 attach한다.
+						RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
+						adView.attachToView(rootView);
+					}
+					광고수신에 실패되었을 때 호출된다.
+					public void onFailToReceiveVideoAd(CaulyVideoAdView adView,	int errorCode, String errorMsg) {
+						Log.i("CaulyVideo","onFailedToReceiveVideoAd");
+						//타사의 비디오광고를 연동하거나, 본영상을 재생시키는 작업수행.
+						loadMainVideo();
+						
+					}
+					//카울리비디오 재생 중, 재생완료, 광고클릭, 스킵버튼클릭, 플레이에러 등으로 광고영상이 끝났을 때 호출
+					public void onFinishVideoAd(int code, String msg) {
+						Log.i("CaulyVideo","onFinishVideoAd  "+code+" "+msg);
+						loadMainVideo();
+						
+						switch(code)
+						{
+						case CaulyVideoAdView.MSG_VIDEO_COMPLETED:
+							break;
+						case CaulyVideoAdView.MSG_VIDEO_CLICK:
+							break;
+						case CaulyVideoAdView.MSG_VIDEO_ERROR:
+							break;
+						case CaulyVideoAdView.MSG_VIDEO_SKIPED:
+							break;
+						}
+					}
+					//광고의 재생시작을 알려준다.
+					public void onStartVideoAd() {
+						Log.i("CaulyVideo","onStartedVideoAd");
+					}
+		
+				});
+				adVideoView.request();
+				
+			}
+		}
 
 		
 		Xml – activity_native_iconlist
