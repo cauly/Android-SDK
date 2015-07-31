@@ -12,15 +12,15 @@
 	- 이번 버전에서 향상된 점
 		-CaulyVideoAd 추가
 2. 주의 사항
-	```java
-		-keep public class com.fsn.cauly.** {
-		 	   public protected *;
-		}
-		-keep public class com.trid.tridad.** {
-		  	  public protected *;
-		}
-		-dontwarn android.webkit.**
-	```
+```java
+	-keep public class com.fsn.cauly.** {
+	 	   public protected *;
+	}
+	-keep public class com.trid.tridad.** {
+	  	  public protected *;
+	}
+	-dontwarn android.webkit.**
+```
 	- 권장 환경
 		- Android 2.1 버전 이상 (API level 7 이상)
 	- SDK 구성
@@ -36,21 +36,20 @@
 	- 광고가 삽입되는 activity에 configChanges="keyboard|keyboardHidden|orientation” 설정
 		- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
 			1. target Api Level 15 이상인 경우 
-				```configChanges="keyboard|keyboardHidden|orientation|screenSize”```
+			```configChanges="keyboard|keyboardHidden|orientation|screenSize”```
 			2. target Api Level 15 이하인 경우
-				```configChanges="keyboard|keyboardHidden|orientation”```
+			```configChanges="keyboard|keyboardHidden|orientation”```
 	- 필수 퍼미션 추가
-		```xml
-		<!-- 예시 : keyboard|keyboardHidden|orientation 추가  -->
-		<activity android:name=".Sample"
-		          android:label="@string/title_activity_java_sample"
-		       	  android:configChanges="keyboard|keyboardHidden|orientation" >
-		<!-- 퍼미션 -->
-		→ 필수 퍼미션
-		<uses-permission android:name="android.permission.INTERNET" />
-		<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-		```
-		
+	```xml
+	<!-- 예시 : keyboard|keyboardHidden|orientation 추가  -->
+	<activity android:name=".Sample"
+	          android:label="@string/title_activity_java_sample"
+	       	  android:configChanges="keyboard|keyboardHidden|orientation" >
+	<!-- 퍼미션 -->
+	→ 필수 퍼미션
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	```
 
 	
 4. 광고를 삽입하고 싶은 layout에 광고를 소스를 삽입
