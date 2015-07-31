@@ -202,6 +202,7 @@ setAdInfo(CaulyAdInfo)	|광고 정보 설정
 setAdViewListener(CaulyVideoAdViewListener)	|CaulyVideoAdViewListener 지정
 request ()	|광고 요청 
 setKeywords	|광고 타켓팅에 활용되는 키워드 설정
+setSkipCount	|광고의 건너띄우기 버튼의 노출시간설정
 attachToView(ViewGroup)	|원하는 위치(ViewGroup)에 수신한 광고를 붙인다. 
 isAttachedtoView()	|광고가 ViewGroup에 노출되었는지 여부
 destroy()	|광고 소멸
