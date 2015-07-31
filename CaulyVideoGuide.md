@@ -36,9 +36,13 @@
 	- 광고가 삽입되는 activity에 configChanges="keyboard|keyboardHidden|orientation” 설정
 		- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
 			1. target Api Level 15 이상인 경우 
-			```configChanges="keyboard|keyboardHidden|orientation|screenSize”```
+			```
+				configChanges="keyboard|keyboardHidden|orientation|screenSize”
+			```
 			2. target Api Level 15 이하인 경우
-			```configChanges="keyboard|keyboardHidden|orientation”```
+			```
+				configChanges="keyboard|keyboardHidden|orientation”
+			```
 	- 필수 퍼미션 추가
 	```xml
 	<!-- 예시 : keyboard|keyboardHidden|orientation 추가  -->
