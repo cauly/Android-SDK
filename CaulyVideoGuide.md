@@ -12,6 +12,7 @@
 	- 이번 버전에서 향상된 점
 		-CaulyVideoAd 추가
 2. 주의 사항
+	- Proguard를 사용하고 있다면, 아래 내용을 추가해야 합니다.
 ```java
 	-keep public class com.fsn.cauly.** {
 	 	   public protected *;
@@ -25,7 +26,6 @@
 		- Android 2.1 버전 이상 (API level 7 이상)
 	- SDK 구성
 		- caulySDK-3.3.xx.jar
-		- CaulyExample project
 
 #### SDK 설치 방법
 
@@ -116,7 +116,7 @@
 						RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
 						adView.attachToView(rootView);
 					}
-					광고수신에 실패되었을 때 호출된다.
+					//광고수신에 실패되었을 때 호출된다.
 					public void onFailToReceiveVideoAd(CaulyVideoAdView adView,	int errorCode, String errorMsg) {
 						Log.i("CaulyVideo","onFailedToReceiveVideoAd");
 						//타사의 비디오광고를 연동하거나, 본영상을 재생시키는 작업수행.
@@ -167,8 +167,8 @@
 		</RelativeLayout>
 		```
 	
-> cauly SDK 설치 관련하여 문의 사항은 고객센터 1544-8867
-> 또는 cauly@futurestream.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
+> cauly SDK 연동 관련한 문의는 카울리 홈페이지[고객지원 >> 1대1 문의] 
+> 또는 cauly@fsn.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
 
 Class Reference
 =================
@@ -179,7 +179,7 @@ Code|Message|설명
 ---|---|---
 0|OK|유료 광고
 100|	Non-chargeable ad is supplied|무료 광고(속성 : 공익 광고, Cauly 기본 광고)
-200|	No filled AD	|전면CPM 광고 없음
+200|	No filled AD	|광고 없음
 400|	The app code is invalid. Please check your app code!	|App code 불일치 또는default app code
 500|	Server error	|cauly서버 에러
 -100|	SDK error	|SDK 에러
