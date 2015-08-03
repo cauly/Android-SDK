@@ -107,7 +107,7 @@
 				CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).build();
 				adVideoView = new CaulyVideoAdView(this);
 				adVideoView.setAdInfo(adInfo);
-				adVideoView.setKeywords(""); //광고타켓팅하고싶은 키워드 등록.
+				adVideoView.setKeywords("category1,category2,category3");//카테고리 설정 최대 3개까지 설정가능 
 				adVideoView.setAdViewListener(new CaulyVideoAdViewListener() {
 					
 					//광고수신에 성공되었을 때 호출된다.
@@ -204,7 +204,7 @@ CaulyVideoAdView||
 setAdInfo(CaulyAdInfo)	|광고 정보 설정
 setAdViewListener(CaulyVideoAdViewListener)	|CaulyVideoAdViewListener 지정
 request ()	|광고 요청 
-setKeywords	|광고 타켓팅에 활용되는 키워드 설정
+setKeywords	|광고 타켓팅에 활용되는 키워드 설정(최대 3개까지 설정가능) 
 setSkipCount	|광고의 건너띄우기 버튼의 노출시간설정
 attachToView(ViewGroup)	|원하는 위치(ViewGroup)에 수신한 광고를 붙인다. 
 isAttachedtoView()	|광고가 ViewGroup에 노출되었는지 여부
