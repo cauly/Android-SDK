@@ -73,22 +73,7 @@
 				requestVideo();
 			}
 			
-			//가로 세로 모드를 전환하는 
-			 @Override
-			 public void onConfigurationChanged(Configuration newConfig) {
-				 Log.i("CaulyVideo","onConfigurationChanged  "+newConfig.orientation);
-			        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
-			        	RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
-			        	rootView.setLayoutParams(new LayoutParams(BDDisplayUtil.getDisplayWidth(this),BDDisplayUtil.getDisplayHeight(this)));
-			        }
-			        else   if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-			        	RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
-			        	rootView.setLayoutParams(new LayoutParams(BDDisplayUtil.getDisplayWidth(this), BDDisplayUtil.PixelFromDP(this, 230)));
-			        }
-			            
-			        super.onConfigurationChanged(newConfig);
-			    }
-		
+			
 			//CAULY Video 없애고,   본 영상을 재생한다
 			public void loadMainVideo()
 			 {
