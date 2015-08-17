@@ -2,11 +2,11 @@
 ----
 
 ### 목차 
-1. CAULY SDK v3.3
+1. CAULY SDK v3.4
 2. SDK 설치 방법
 3. Class Reference
  
-#### CAULY SDK v3.3
+#### CAULY SDK v3.4
 
 1. Release note
 	- 이번 버전에서 향상된 점
@@ -189,7 +189,7 @@ CaulyVideoAdView||
 setAdInfo(CaulyAdInfo)	|광고 정보 설정
 setAdViewListener(CaulyVideoAdViewListener)	|CaulyVideoAdViewListener 지정
 request ()	|광고 요청 
-setKeywords	|광고 타켓팅에 활용되는 키워드 설정(최대 3개까지 설정가능) 
+setKeywords	|광고 타켓팅에 활용되는 키워드 설정( 카테고리, 태그 등을 ','(컴마)로 구분하여 최대 3개까지 설정가능)
 setSkipCount	|광고의 건너띄우기 버튼의 노출시간설정
 attachToView(ViewGroup)	|원하는 위치(ViewGroup)에 수신한 광고를 붙인다. 
 isAttachedtoView()	|광고가 ViewGroup에 노출되었는지 여부
