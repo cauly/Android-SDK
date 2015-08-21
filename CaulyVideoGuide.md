@@ -73,7 +73,19 @@
 				requestVideo();
 			}
 			
-			
+			//화면회전시, 광고를 감싼 Container의 사이즈를 변경해준다.
+			@Override
+			public void onConfigurationChanged(Configuration newConfig) {
+				if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+					RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
+					rootView.setLayoutParams(new LayoutParams(BDDisplayUtil.getDisplayWidth(this), 					BDDisplayUtil.getDisplayHeight(this)));
+				} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+					RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
+					rootView.setLayoutParams(new LayoutParams(BDDisplayUtil.getDisplayWidth(this), BDDisplayUtil.PixelFromDP(this,xx-dp )));
+				}
+				super.onConfigurationChanged(newConfig);
+			}
+
 			//CAULY Video 없애고,   본 영상을 재생한다
 			public void loadMainVideo()
 			 {
