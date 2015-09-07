@@ -109,7 +109,8 @@
 					
 					//광고수신에 성공되었을 때 호출된다.
 					public void onReceiveVideoAd(final CaulyVideoAdView adView, boolean isChargeableAd) {
-						//광고컨테이너에 수신받은 CaulyVideoAdView를 attach한다.
+					//광고컨테이너에 수신받은 CaulyVideoAdView를 attach한다.
+					//만약 앱사의 재생되고있는 Video가 있다면, 반드시 INVISIBLE혹은 GONE으로 바꿔줘야한다. 
 						RelativeLayout rootView = (RelativeLayout) findViewById(R.id.container);
 						adView.attachToView(rootView);
 					}
