@@ -27,6 +27,12 @@
 	- SDK 구성
 		- caulySDK-x.y.z.jar
 
+#### SDK Javascript link
++  sdk는 다음 주소를 사용 합니다. (not yet uploaded)
+	-   http://image.cauly.co.kr/sdk/blackdragon/3.1/CaulySDK-3.4.3.jar
++  샘플
+	-   http://image.cauly.co.kr/richad/test/CaulyVideo/CaulyVideoAdSample_3.4.3.zip
+
 #### SDK 설치 방법
 
 1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-x.z.z.jar’ 파일 복사 한다
