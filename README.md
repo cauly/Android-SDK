@@ -715,6 +715,7 @@ CaulyNativeAdInfoBuilder(Context, AttributeSet)	|지정한 Context 및 AttributS
 CaulyAdInfoBuilder(String)	|지정한 App Code로 CaulyAdInfoBuilder 생성
 layoutID(int)	|앱이 NativeAd로 사용할 XML Layout을 연결한다. 
 mainImageID(int)	|Layout 중 메인 이미지가 나타날 영역을 지정한다. 
+adRatio(String)	|Layout 중 메인 이미지 사이즈를 요청한다 ex) adRatio("720x480").
 mainImageOrientation(Orientation)	|메인 이미지가 가로형인지 세로형인지 설정한다.
 iconImageID(int)	|Layout 중 아이콘이미지가 나타날 영역을 지정한다.
 titleID(int)	|Layout 중 제목이 나타날 영역을 지정한다.
