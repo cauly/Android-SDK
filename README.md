@@ -102,7 +102,7 @@
 	
 	Attrs|설 명
 	---|---
-	Appcode	APP|등록 후 부여 받은 APP CODE`[발급ID]`(테스트 시 “CAULY” 사용)<br/>아래 코드 사용 시 Rich 광고, 3D 광고, video 광고 확인 가능<br/>adtype : cpc : CAULY-RICHADTEST, CAULY-MRATEST-AD4, CAULY-3DTEST<br/>adtype : cpm : CAULY,CAULY-VIDEOTEST 
+	Appcode	APP|등록 후 부여 받은 APP CODE`[발급ID]`입력
 	Effect|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>RightSlide : 오른쪽에서 왼쪽으로 슬라이드<br/>TopSlide : 위에서 아래로 슬라이드<br/>BottomSlide : 아래서 위로 슬라이드<br/>FadeIn : 전에 있던 광고가 서서히 사라지는 효과 <br/>Circle : 한 바퀴 롤링<br/>None : 애니메이션 효과 없이 바로 광고 교체
 	reloadInterval|min(기본값) : 20 초 <br/>max : 120 초
 	enableDefaultBannerAd|false : 디폴트배너 미노출<br/>true : 디폴트배너 노출
@@ -137,6 +137,7 @@
 				// 설정하지 않은 항목들은 기본값으로 설정됨
 				CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).
 					effect("RightSlide").
+					bannerHeight("Fixed_50").
 					build();
 			
 				// CaulyAdInfo를 이용, CaulyAdView 생성.
@@ -192,11 +193,11 @@
 			
 			Adinfo|설 명
 			---|---
-			Appcode|APP 등록 후 부여 받은 APP CODE[발급ID] 입력<br/>샘플 appcode<br/>배너광고 : CAULY, CAULY-RICHADTEST, CAULY-MRATEST-AD4, CAULY-3DTEST<br/>전면광고 : CAULY, CAULY-VIDEOTEST 
+			Appcode|APP 등록 후 부여 받은 APP CODE[발급ID] 입력
 			Effect()|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>RightSlide : 오른쪽에서 왼쪽으로 슬라이드<br/>TopSlide : 위에서 아래로 슬라이드<br/>BottomSlide : 아래서 위로 슬라이드<br/>FadeIn : 전에 있던 광고가 서서히 사라지는 효과 <br/>Circle : 한 바퀴 롤링<br/>None : 애니메이션 효과 없이 바로 광고 교체
 			reloadInterval()|min(기본값) : 20초)<br/>max : 120 초
 			dynamicReloadInterval()|true(기본값) : 광고에 따라 노출 주기 조정할 수 있도록 하여 광고 수익 상승 효과 기대<br/>false : reloadInterval 설정 값으로 Rolling
-			bannerHeight()|Proportional(기본값) : 디바이스 긴방향 해상도의 10%<br/>Fixed : 48dp
+			bannerHeight()|Proportional(기본값) : 디바이스 긴방향 해상도의 10%<br/>Fixed : 48dp<br/>Fixed_50 : 50dp
 			enableDefaultBannerAd ()|false : 디폴트배너 미노출 <br/>true : 디폴트배너 노출
 			threadPriority()|스레드 우선 순위 지정 : 1~10(기본값 : 5)
 
@@ -585,7 +586,7 @@
 				CaulyCustomAd requestAdData(type,  ad_count);
 			```
 > cauly SDK 설치 관련하여 문의 사항은 고객센터 1544-8867
-> 또는 cauly@futurestream.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
+> 또는 cauly@fsn.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
 
 Class Reference
 =================
@@ -604,7 +605,7 @@ effect(String)	|광고 교체 효과 지정 : “None”, “LeftSlide”, “Ri
 dynamicReloadInterval(boolean)	|광고 노출 시간 서버 제어 허용 여부 지정
 reloadInterval(int)	|광고 갱신 주기 지정 : min 15, max 120
 threadPriority(int)	|스레드 우선 순위 지정
-bannerHeight(BannerHeight)	|배너 높이 설정 : Fixed, Proportional
+bannerHeight(BannerHeight)	|배너 높이 설정 : Fixed,Fixed_50, Proportional
 enableDefaultBannerAd()	|광고 수신 실패 시 카울리 배너 노출 여부 선택
 build()	|설정한 정보에 따라 CaulyAdInfo 생성
 
