@@ -1,4 +1,4 @@
-![Valid XHTML](http://cauly044.fsnsys.com:10010/images/logo_cauly_main.png) Android SDK 설치가이드
+CAULY Android SDK 연동 가이드
 ----
 
 ### 목차 
