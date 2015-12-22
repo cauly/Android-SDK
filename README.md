@@ -582,7 +582,7 @@ CAULY Android SDK 연동 가이드
 					}
 	
 				});
-			
+			// CaulyCustomAd.INTERSTITIAL_PORTRAIT,CaulyCustomAd.NATIVE_PORTRAIT,CaulyCustomAd.NATIVE_LANDSCAPE
 				CaulyCustomAd requestAdData(type,  ad_count);
 			```
 > cauly SDK 설치 관련하여 문의 사항은 고객센터 1544-8867
