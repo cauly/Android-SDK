@@ -373,7 +373,7 @@ CAULY Android SDK 연동 가이드
 
 	- 네이티브광고 : BASE
 		```java
-		public class JavaActivity extends Activity implements CaulyNativeAdListener {
+		public class JavaActivity extends Activity implements CaulyNativeAdViewListener {
 		
 			private static final String APP_CODE = "CAULY"; // 광고 요청을 위한 App Code
 			ArrayList<Item> mList ;
@@ -686,7 +686,7 @@ onRightClicked(CaulyCloseAd)|	오른쪽 버튼이 클릭되었을 때, 호출됨
 CaulyNativeAdView||
 ---|---
 setAdInfo(CaulyAdInfo)	|광고 정보 설정
-setAdViewListener(CaulyNativeAdListener)	|CaulyNativeAdListener 지정
+setAdViewListener(CaulyNativeAdViewListener)	|CaulyNativeAdViewListener 지정
 request (Activity)	|네이티브 광고 요청 
 attachToView(ViewGroup)	|원하는 위치(ViewGroup)에 수신한 광고를 붙인다. 
 isAttachedtoView()	|광고가 ViewGroup에 노출되었는지 여부
@@ -703,7 +703,7 @@ getView(ViewGroup,int,convertView)	|BaseAdaper 의 getView에서 등록된 Nativ
 getSize(ViewGroup)	|현재 등록된 네이티브애드의 사이즈를 반환한다.
 destroy()	|광고 소멸 (필수호출)
 
-CaulyNativeAdListener||
+CaulyNativeAdViewListener||
 ---|---
 onReceiveNativeAd(CaulyNativeAd, boolean isChargeableAd)	|광고 요청 성공 시 호출됨. 유,무료 광고 여부가 isChargeableAd 변수에 설정됨
 onFailedToReceiveNativeAd(CaulyNativeAd, int errorCode, String errorMsg)	|광고 노출 실패 시 호출됨. 오류 코드와 내용이 errorCode, errorMsg 변수에 설정됨
