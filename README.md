@@ -2,17 +2,17 @@ CAULY Android SDK 연동 가이드
 ----
 
 ### 목차 
-1. cauly SDK v3.3
+1. cauly SDK v3.4
 2. SDK 설치 방법
 3. Class Reference
  
-#### CAULY SDK v3.3
+#### CAULY SDK v3.4
 
 1. Release note
 	- 이번 버전에서 향상된 점
-		- 네이티브 광고 추가
+		- Android 6.0 Apache Http Client 지원 중단 대응
+			- Apache Http Client >> HttpURLConnection Wrapper
 		- 광고 기능 개선 및 버그 수정
-		- 개발자 선택사항이었던 CALL_PHONE/ACCESS_FINE_LOCATION permission 삭제
 2. 주의 사항
 	- P/E광고 설정 관련
 		- 앱 마다 P/E광고 허용 여부를 설정 할 수 있으며, P/E광고 노출을 원하는 경우 ‘cauly홈페이지>> APP관리’에서 ‘ON’ 으로 설정하면 됩니다.
@@ -41,62 +41,60 @@ CAULY Android SDK 연동 가이드
 	- 권장 환경
 		- Android 2.1 버전 이상 (API level 7 이상)
 	- SDK 구성
-		- caulySDK-3.3.xx.jar
+		- caulySDK-3.4.xx.jar
 		- CaulyExample project
 
 #### SDK 설치 방법
 
-1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.3.xx.jar’ 파일 복사 한다
-2. ‘caulySDK-3.3.xx.jar’ 파일을 라이브러리에 import 한다
-	- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.3.xx.jar’
+1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.4.xx.jar’ 파일 복사 한다
+2. ‘caulySDK-3.4.xx.jar’ 파일을 라이브러리에 import 한다
+	- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.4.xx.jar’
 3. ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
 	- 광고가 삽입되는 activity에 configChanges="keyboard|keyboardHidden|orientation” 설정
 		- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
 			1. target Api Level 15 이상인 경우 
-				```configChanges="keyboard|keyboardHidden|orientation|screenSize”```
+			```
+			configChanges="keyboard|keyboardHidden|orientation|screenSize”
+			```
 			2. target Api Level 15 이하인 경우
-				```configChanges="keyboard|keyboardHidden|orientation”```
+			```
+			configChanges="keyboard|keyboardHidden|orientation”
+			```
 	- 필수 퍼미션 추가
-		```xml
-		<!-- 예시 : keyboard|keyboardHidden|orientation 추가  -->
-		<activity android:name=".Sample"
-		          android:label="@string/title_activity_java_sample"
-		       	  android:configChanges="keyboard|keyboardHidden|orientation" >
-		<!-- 퍼미션 -->
-		→ 필수 퍼미션
-		<uses-permission android:name="android.permission.INTERNET" />
-		<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-		```
-		
-4. 'project > res > values'에 'attrs.xml' 파일 생성 후 아래 코드 추가
-	```xml
+	```
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	```
+	
+4. 'project > res > values'에 'attrs.xml' 파일 생성 후 아래 코드 추가	
+ 	```xml
 	<declare-styleable name="com.cauly.android.ad.AdView">
 		<attr name="appcode" format="string" />
-	<attr name="effect" format="string" />
-	        <attr name="dynamicReloadInterval" format="boolean" />
-	        <attr name="reloadInterval" format="integer" />
-	        <attr name="threadPriority" format="integer" />
-	      <attr name="bannerHeight" format="string" />
-	      <attr name=" enableDefaultBannerAd " format=" boolean " /> 
-	</declare-styleable>
+		<attr name="effect" format="string" />
+		<attr name="dynamicReloadInterval" format="boolean" />
+		<attr name="reloadInterval" format="integer" />
+		<attr name="threadPriority" format="integer" />
+		<attr name="bannerHeight" format="string" />
+		<attr name=" enableDefaultBannerAd " format=" boolean " /> 
+		</declare-styleable>
 	```
 	
 5. 광고를 삽입하고 싶은 layout에 광고를 소스를 삽입
 	(두 가지 방식 제공 : XML 방식, JAVA 방식)
 	- XML 방식 : 설정하지 않은 항목들은 기본값으로 설정됩니다.
 	```xml
-		<com.fsn.cauly.CaulyAdView
-	        xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
-	        android:id="@+id/xmladview"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentBottom="true"
-	        app:appcode="CAULY"
-			app:effect="RightSlide"
-	        app:dynamicReloadInterval="true"
-	        app:reloadInterval="20"
-	        app:bannerHeight="Fixed"  
-	        />
+	<com.fsn.cauly.CaulyAdView
+		xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
+		android:id="@+id/xmladview"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		app:appcode="CAULY"
+		app:effect="RightSlide"
+		app:dynamicReloadInterval="true"
+		app:reloadInterval="20"
+		app:bannerHeight="Fixed"  
+	/>
 	```
 	[설정방법]
 	
