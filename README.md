@@ -710,6 +710,7 @@ mainImageID(int)	|Layout 중 메인 이미지가 나타날 영역을 지정한�
 adRatio(String)	|Layout 중 메인 이미지 사이즈를 요청한다 ex) adRatio("720x480").
 mainImageOrientation(Orientation)	|메인 이미지가 가로형인지 세로형인지 설정한다.
 iconImageID(int)	|Layout 중 아이콘이미지가 나타날 영역을 지정한다.
+sponsorVisible(boolean) |스폰서마크가 화면노출여부를 결정한다.
 titleID(int)	|Layout 중 제목이 나타날 영역을 지정한다.
 subtitleID(int)	|Layout 중 부제목이 나타날 영역을 지정한다.
 textID(int)	|Layout 중 설명부분이 나타날 영역을 지정한다.
