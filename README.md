@@ -392,7 +392,6 @@ CAULY Android SDK 연동 가이드
 				.iconImageID(R.id.icon)       // 아이콘 등록
 				.titleID(R.id.title)	        // 제목 등록
 				.subtitleID(R.id.subtitle)	// 부제목 등록
-		                .sponsorPosition(R.id.sponsor, Direction.CENTER) // 스폰서 이미지 등록
 		
 				.build();
 				CaulyNativeAdView nativeAd = new CaulyNativeAdView(this);
@@ -482,13 +481,7 @@ CAULY Android SDK 연동 가이드
 		            android:layout_height="100dp"
 		            android:scaleType="fitXY"
 		           />
-				   <ImageView
-		           	android:id="@+id/sponsor"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_marginLeft="114dp"
-		            android:layout_marginTop="13dp"
-		               />
+				  
 		        <TextView
 		            android:id="@+id/title"
 		            android:layout_width="fill_parent"
@@ -721,7 +714,6 @@ titleID(int)	|Layout 중 제목이 나타날 영역을 지정한다.
 subtitleID(int)	|Layout 중 부제목이 나타날 영역을 지정한다.
 textID(int)	|Layout 중 설명부분이 나타날 영역을 지정한다.
 clickingView(int id)	|Layout 중 클릭영역이 나타날 영역을 지정한다.
-sponsorPosition(int id, Direction)	|Layout 중 스폰서 이미지 영역이 나타날 영역을 지정한다 (LEFT, RIGHT, CENTER 3가지 옵션이미지)
 build()	|설정한 정보에 따라 CaulyAdInfo 생성
 
 
