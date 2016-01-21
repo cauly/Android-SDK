@@ -361,6 +361,212 @@ Cauly Android SDK Installation Guide
 			}
 			```
 
+	- Native Ad : BASE
+		```java
+		public class JavaActivity extends Activity implements CaulyNativeAdViewListener {
+		
+			private static final String APP_CODE = "CAULY"; //App Code for Ad-Request
+			ArrayList<Item> mList ;
+			ListView listview; 
+			@Override
+			public void onCreate(Bundle savedInstanceState) {
+			    super.onCreate(savedInstanceState);
+			    setContentView(R.layout.activity_java);
+			    // 기존의 ListView-Adaper 구현
+			        requestNative()
+			}
+			// Request Native AD
+			// Define your own layout of NativeAd and assign layout id  (icon, image, title, subtitle, description ...)
+			// register CaulyNativeAdViewListener and will know of the state of ad(onReceiveNativeAd or onFailedToReceiveNativeAd)
+			public void requestNative(){
+				CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
+				.layoutID(R.layout.activity_native_iconlist)//assign layout id for NativeAd.
+				.iconImageID(R.id.icon)       // assign id of icon image	
+				.titleID(R.id.title)	      // assign id of title 
+				.subtitleID(R.id.subtitle)    // assign id of subtitle
+				.build();
+				CaulyNativeAdView nativeAd = new CaulyNativeAdView(this);
+				nativeAd.setAdInfo(adInfo);
+				nativeAd.setAdViewListener(this);
+				nativeAd.request();
+				}
+			
+			
+				// Called when NO-AD and Network is not available. 
+				public void onFailedToReceiveNativeAd(CaulyNativeAdView adView,	int errorCode, String errorMsg) {
+					
+				}
+			
+				// Called when CaulyNativeAd is received.
+				public void onReceiveNativeAd(CaulyNativeAdView adView, boolean isChargeableAd) {
+					//Add to your contents list and add the nativead to CaulyNativeAdHelper at the same position as yours. 
+					mList.add(position that you want,null);																									CaulyNativeAdHelper.getInstance().add(this,listview,position that you want,adView);
+					mAdapter.notifyDataSetChanged();
+				}
+			
+			    // call destroy() when activity destroy 
+				@Override
+				protected void onDestroy() {
+					super.onDestroy();
+					CaulyNativeAdHelper.getInstance().destroy();
+				}
+			}
+			
+			class ListAdapter extends BaseAdapter 
+			{
+				private static final int YOUR_ITEM_TYPE = 0;
+				private static final int YOUR_ITEM_COUNT = 1;
+					
+				public int getCount() {
+					return mList.size();
+				}
+			
+				public Item getItem(int position) {
+					return mList.get(position);
+				}
+			
+				
+				// Add one more type of listview  
+				@Override
+				public int getItemViewType(int position) {
+					if(CaulyNativeAdHelper.getInstance().isAdPosition(listview,position))
+						return YOUR_ITEM_TYPE+1;
+					else 
+						return YOUR_ITEM_TYPE;
+				}
+					
+				// return Your LayoutType +1 
+				@Override
+				public int getViewTypeCount() {
+					return YOUR_ITEM_COUNT+1;
+				}
+					
+				
+				public View getView(int position, View convertView, ViewGroup parent) {
+					// Tell if the view is CaulyNativeAd of not.
+					if(CaulyNativeAdHelper.getInstance().isAdPosition(listview, position) )
+					{
+						return CaulyNativeAdHelper.getInstance().getView(listview,position, convertView);
+					}
+					else
+					{
+						//  your original getView 
+					}
+				}
+		}
+		
+		Xml – activity_native_iconlist
+		<?xml version="1.0" encoding="utf-8"?>
+		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    xmlns:tools="http://schemas.android.com/tools"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/listcolor" >
+		
+		    <RelativeLayout
+		        android:layout_width="fill_parent"
+		        android:layout_height="100dp" >
+				 <ImageView
+		            android:id="@+id/icon"
+		            android:layout_width="100dp"
+		            android:layout_height="100dp"
+		            android:scaleType="fitXY"
+		           />
+				  
+		        <TextView
+		            android:id="@+id/title"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="114dp"
+		            android:layout_marginRight="14dp"
+		            android:layout_marginTop="30dp"
+		            android:textColor="#000000"
+		            android:lines="1"
+		            android:textSize="13dp" 
+		            />
+		         <TextView
+		            android:id="@+id/subtitle"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="114dp"
+		            android:layout_marginRight="14dp"
+		            android:layout_marginTop="50dp"
+		            android:lines="2"
+		            android:textColor="#8a837e"
+		            android:textSize="10dp" 
+		            />
+		         
+		          <TextView
+		            android:id="@+id/description"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_marginRight="14dp"
+		            android:layout_alignParentRight="true"
+		            android:layout_alignParentBottom="true"
+		            android:layout_marginBottom="9dp"
+		            android:lines="1"
+		            android:textColor="#e15052"
+		            android:textSize="15dp" 
+		            />
+		    </RelativeLayout>
+		
+		</RelativeLayout>
+		```
+	- Native Ad :Custom.
+		1. Create CaulyAdInfo 
+		2. Create CaulyCustomAd and set CaulyAdInfo 
+		3. register CaulyCustomAdListener to CaulyCustomAd
+		4. Request JsonType of Ad to CaulyCustomAd
+		5. Received JSON Data Format is like below.
+		```
+			{"ads":[
+			      {"id":"AD ID",
+			       "ad_charge_type":"0 : Chargable ad, 100: HouseAd",
+			       "icon":"icon image",  //1 : 1 proportion
+			       "image":"main image",  // 3 : 2  or 2 : 3 
+			       "title":"title",
+			       "subtitle":"subtitle",
+			       "description":"description"
+			       "linkUrl":Landing Page URL
+			      }
+			     ]
+			 } 
+		```
+		6. When CaulyNativeAd is shown to screen, call sendImpressInform
+			- sendImpressInform(AD ID)
+		7. When Clicked, Move linkUrl to Internet Browser
+			- BrowserUtil.openBrowser(Context, linkUrl)
+		8. Parse Json String of Ad
+			- In case of getting list by List<HashMap<KEY,VALUE>> ,mCaulyAdView.getAdsList();
+			- In case of getting Raw JSON String , mCaulyAdView.getJsonString();
+			```java
+			CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE).build();
+				mCaulyAdView = new CaulyCustomAd(this);
+				mCaulyAdView.setAdInfo(adInfo);
+				mCaulyAdView.setCustomAdListener(new CaulyCustomAdListener() {
+					@Override
+					public void onShowedAd() {
+					}
+			
+					// Called when AD Received. 
+					@Override
+					public void onLoadedAd(boolean isChargeableAd) {
+					}
+	
+					// Called when Ad is failed to receive.
+					@Override
+					public void onFailedAd(int errCode, String errMsg) {
+					}
+	
+					// Called when ad is clicked.
+					@Override
+					public void onClikedAd() {
+					}
+	
+				});
+			// CaulyCustomAd.INTERSTITIAL_PORTRAIT,CaulyCustomAd.NATIVE_PORTRAIT,CaulyCustomAd.NATIVE_LANDSCAPE
+				CaulyCustomAd requestAdData(type,  ad_count);
+			```
 
 If you need more informations to install cauly SDK, please give us a call to the customer center +82-1544-8867 or send an e-mail to cauly@futurestream.co.kr.
 
