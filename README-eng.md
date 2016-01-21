@@ -642,6 +642,7 @@ If you need more informations to install cauly SDK, please give us a call to the
 | setDescriptionText(String) | Change the description (optional)
 | cancel() | Discard a received ad |
 
+### CaulyCloseAd	
 | CaulyCloseAdListener ||
 | --------------------------------- | ---------------------------------------- |
 | onReceiveCloseAd(CaulyCloseAd, boolean isChargeableAd) | Called when an interstitial-ad is received. isChargeableAd parameter indicates whether received ad is free or not. |
@@ -650,3 +651,30 @@ If you need more informations to install cauly SDK, please give us a call to the
 | onShowedClosedAd(CaulyCloseAd, boolean isChargable) | Called when CloseAd is successfully shown |
 | onLeftClicked(CaulyCloseAd) | Called when left button is clicked |
 | onRightClicked(CaulyCloseAd) | Called when right button is clicked |
+
+### CaulyNativeAd	
+|CaulyNativeAd||
+| --------------------------------- | ---------------------------------------- |
+setAdInfo(CaulyAdInfo)	|Set ad settings.|
+setAdViewListener(CaulyNativeAdViewListener)	|Set CaulyNativeAdViewListener |
+request (Activity)	|Request CaulyNativeAD |
+attachToView(ViewGroup)	|Attach CaulyNativeAdView to Your ViewGroup. |
+isAttachedtoView()	|Indicate if CaulyNativeAd is attached to ViewGroup|
+destroy()	|Destroy a recieved ad|
+
+|CaulyNativeAdHelper(Helper of showing CaulyNativeAD to ListView)||
+|---|---|
+|getInstance()	|Singleton Object|
+|init()|	Initiation|
+|add(Context, ViewGroup, int, CaulyNativeAdView)	| Add CaulyNativeAd to Helper.|
+|remove(ViewGroup, int)	|Remove CaulyNativeAd of Helper . |
+|isAdPosiont(ViewGroup, int)	| Indicate if The Helper contains the NativeAd ad the position |
+|getView(ViewGroup,int,convertView)	|return the CaulyNativeAdView |
+|getSize(ViewGroup)	| return total size of NativeAds in Helper.|
+|destroy()	|destroy all NativeAd of Helper (necessary)|
+
+|CaulyNativeAdViewListener||
+|---|---|
+|onReceiveNativeAd(CaulyNativeAd, boolean isChargeableAd)	|Called when ad received, isChargeableAd indicate whether the received ad is free or not.|
+|onFailedToReceiveNativeAd(CaulyNativeAd, int errorCode, String errorMsg)	|Called when failed to receive an ad. errorCode, errorMsg shows error details.|
+
