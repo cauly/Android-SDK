@@ -47,8 +47,14 @@ CAULY Android SDK 연동 가이드
 #### SDK 설치 방법
 
 1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.4.xx.jar’ 파일 복사 한다
-2. ‘caulySDK-3.4.xx.jar’ 파일을 라이브러리에 import 한다
-	- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.4.xx.jar’
+2. 
+	- Eclipse :  ‘caulySDK-3.4.xx.jar’ 파일을 라이브러리에 import 한다
+		- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.4.xx.jar’
+	
+	- Studio :
+		-  ‘caulySDK-3.4.xx.jar’를 libs 폴더에 넣는다
+		-  ‘caulySDK-3.4.xx.jar’를 선택하고 오른쪽 마우스 클릭하면, Add Ad Library를 클릭하고 자동으로 빌드되는것을 볼 수 있다. 
+		- Project Structure > Module> 해당 모듈 선택 후 >Dependencues로 라이브러리가 등록되었는지 확인한다
 3. ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
 	- 광고가 삽입되는 activity에 configChanges="keyboard|keyboardHidden|orientation” 설정
 		- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
