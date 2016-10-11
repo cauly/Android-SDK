@@ -531,8 +531,8 @@ CAULY Android SDK 연동 가이드
 			{"ads":[
 			      {"id":"광고ID",
 			       "ad_charge_type":"0 : 유료광고, 100: 하우스 광고",
-			  	   "icon":"아이콘 이미지",  //1 : 1 비율
-			       "image":"메인 이미지",  // 3 : 2 비율 or 2 : 3 비율
+			  	   "icon":"아이콘 이미지",  
+			       "image":"메인 이미지",  
 			       "title":"제목",
 			       "subtitle":"부제목",
 			       "description":"설명"
@@ -549,7 +549,13 @@ CAULY Android SDK 연동 가이드
 			- List<HashMap<KEY,VALUE>> 방식으로 가져오는 경우,<br/>mCaulyAdView.getAdsList();
 			- Raw JSON String을 직접가져 경우<br/>mCaulyAdView.getJsonString();
 			```java
-			CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE).build();
+			CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
+				.iconImageID(-1)       // 아이콘 이미지를 사용할 경우  
+				.mainImageID(-1)       //메인 이미지를 사용할 경우
+				.adRatio("720x720")    //메인이미지 비율설정  안할경우, default: 720x480  or 480x720
+				.build();
+		
+				.build();
 				mCaulyAdView = new CaulyCustomAd(this);
 				mCaulyAdView.setAdInfo(adInfo);
 				mCaulyAdView.setCustomAdListener(new CaulyCustomAdListener() {
