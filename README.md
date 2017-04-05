@@ -56,6 +56,13 @@ CAULY Android SDK 연동 가이드
 		-  ‘caulySDK-3.4.xx.jar’를 선택하고 오른쪽 마우스 클릭하면, Add Ad Library를 클릭하고 자동으로 빌드되는것을 볼 수 있다. 
 		- Project Structure > Module> 해당 모듈 선택 후 >Dependencues로 라이브러리가 등록되었는지 확인한다
 3. ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
+	- Activity 관련 설정
+	```
+	<activity
+ 	    android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
+            android:configChanges="keyboardHidden|orientation|keyboard"> 
+        </activity>
+	```
 	- 광고가 삽입되는 activity에 configChanges="keyboard|keyboardHidden|orientation” 설정
 		- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
 			1. target Api Level 15 이상인 경우 
