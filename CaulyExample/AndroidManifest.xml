@@ -57,6 +57,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+    android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
+        android:configChanges="keyboardHidden|orientation|keyboard"> 
+    </activity>
+        
     </application>
 
 </manifest>
