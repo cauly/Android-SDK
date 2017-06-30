@@ -10,8 +10,9 @@ CAULY Android SDK 연동 가이드
 
 1. Release note
 	- 이번 버전에서 향상된 점
-		- Android 6.0 Apache Http Client 지원 중단 대응
-			- Apache Http Client >> HttpURLConnection Wrapper
+		- OPTOUT 기능
+		   현재 적용되는 배너 광고 내에 이용자가 Do Not Track, 온라인 맞춤형 광고를 거부할 수 있는 설정에 대한 기능(Opt-out)을 제공
+		   
 		- 광고 기능 개선 및 버그 수정
 2. 주의 사항
 	- P/E광고 설정 관련
