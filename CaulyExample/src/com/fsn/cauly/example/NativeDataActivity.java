@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class NativeDataActivity extends Activity {
-	static final String APP_CODE = "ikuoUVYu"; // AppCode 
+	static final String APP_CODE = "CAULY"; // AppCode 
 	List<NativeItem> myList ;
 	CaulyCustomAd mCaulyAdView;
 	

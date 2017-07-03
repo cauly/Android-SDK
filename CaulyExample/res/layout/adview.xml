@@ -46,7 +46,7 @@
               <ImageView
             android:id="@+id/ad_marker" 
             android:src="@drawable/ad_marker"
-            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_width="28dp" 
             android:layout_height="20dp" />
