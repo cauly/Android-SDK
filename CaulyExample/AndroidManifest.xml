@@ -42,6 +42,11 @@
             android:configChanges="keyboard|keyboardHidden|orientation"
             >
         </activity>
+         <activity
+            android:name=".NativeDataActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            >
+        </activity>
           <activity
             android:name=".CloseActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
