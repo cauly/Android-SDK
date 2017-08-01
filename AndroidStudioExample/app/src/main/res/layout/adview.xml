@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+     >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="250dp" >
+       
+        <ImageView
+            android:id="@+id/image" 
+            android:scaleType="centerCrop"
+            android:layout_width="240dp" 
+            android:layout_height="180dp" />
+       
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_alignParentBottom="true" 
+            android:layout_height="72dp" 
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:lines="1"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="39dp"
+                android:lines="2"
+                android:textSize="11dp" />
+            
+        </RelativeLayout>
+              <ImageView
+            android:id="@+id/ad_marker" 
+            android:src="@drawable/ad_marker"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="28dp" 
+            android:layout_height="20dp" />
+         
+    </RelativeLayout>
+
+</RelativeLayout>
