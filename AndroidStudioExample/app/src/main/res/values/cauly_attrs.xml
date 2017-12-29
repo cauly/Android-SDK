@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="com.fsn.cauly.CaulyAdView">
+        <attr name="appcode" format="string" />
+        <attr name="gender" format="string" />
+        <attr name="age" format="string" />
+        <attr name="effect" format="string" />
+        <attr name="dynamicReloadInterval" format="boolean" />
+        <attr name="reloadInterval" format="integer" />
+        <attr name="support3d" format="boolean" />
+        <attr name="threadPriority" format="integer" />
+        <attr name="bannerHeight" format="string" />
+        <attr name="enableDefaultBannerAd" format="boolean" />
+    </declare-styleable>
+
+</resources>

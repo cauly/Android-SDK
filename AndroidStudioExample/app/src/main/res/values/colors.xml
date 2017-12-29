@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ <color  name="common_bar_off">#e4e4e4</color>
+   <color  name="common_bar_on">#7ac8e5</color>
+    <color  name="common_banner_off">#ffffff</color>
+   <color  name="common_banner_on">#efefef</color>
+   <color  name="refresh">#a6a6a6</color>
+   <color  name="white">#ffffff</color>
+   <color  name="red">#cc2a15</color>
+   <color  name="orange">#ff7300</color>
+</resources>

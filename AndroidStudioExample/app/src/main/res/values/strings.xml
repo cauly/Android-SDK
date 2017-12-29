@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">CaulySample</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_java">JavaActivity</string>
+    <string name="reload_banner">Reload Banner AD</string>
+    <string name="title_activity_xml">XMLActivity</string>
+    <string name="switch_to_xml">Next</string>
+    <string name="switch_to_java">Next</string>
+
+</resources>
