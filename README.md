@@ -26,7 +26,7 @@ CAULY Android SDK 연동 가이드
 		전면광고를 보여주기 위해서는 CaulyInterstitialAd 클래스로 광고를 받아와서, Listener 에서 명시적으로 show()를 호출해야 		광고가 보여지게 됩니다.
 	- <supports-screens> 사용 시
 		- android:anyDensity=["true”] 를 권장 합니다
-		- false로 설정할 경우 bannerHeight를 ‘Fixed’로 설정한 높이 고정형 배너가 정상적인 크기로 표시되지 않을 수 있으니 					주의바랍니다.
+		- false로 설정할 경우 bannerHeight를 ‘Fixed_50’로 설정한 높이 고정형 배너가 정상적인 크기로 표시되지 않을 수 있으니 					주의바랍니다.
 	- proguard 설정 하는 경우 cauly SDK 포함된 Class 는 난독화 시키시면 안됩니다.
 	```java
 		-keep public class com.fsn.cauly.** {
@@ -105,7 +105,7 @@ CAULY Android SDK 연동 가이드
 		app:effect="RightSlide"
 		app:dynamicReloadInterval="true"
 		app:reloadInterval="20"
-		app:bannerHeight="Fixed"  
+		app:bannerHeight="Fixed_50"  
 	/>
 	```
 	[설정방법]
@@ -116,7 +116,7 @@ CAULY Android SDK 연동 가이드
 	Effect|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>RightSlide : 오른쪽에서 왼쪽으로 슬라이드<br/>TopSlide : 위에서 아래로 슬라이드<br/>BottomSlide : 아래서 위로 슬라이드<br/>FadeIn : 전에 있던 광고가 서서히 사라지는 효과 <br/>Circle : 한 바퀴 롤링<br/>None : 애니메이션 효과 없이 바로 광고 교체
 	reloadInterval|min(기본값) : 20 초 <br/>max : 120 초
 	enableDefaultBannerAd|false : 디폴트배너 미노출<br/>true : 디폴트배너 노출
-	bannerHeight|Proportional(기본값) : 디바이스 긴 방향 해상도의 10<br/>Fixed : 48dp
+	bannerHeight|Proportional(기본값) : 디바이스 긴 방향 해상도의 10<br/>Fixed_50 : 50dp
 	threadPriority|스레드 우선 순위 지정 : 1~10(기본값 : 5)
 	
 	[XML 방식 끝]
@@ -207,7 +207,7 @@ CAULY Android SDK 연동 가이드
 			Effect()|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>RightSlide : 오른쪽에서 왼쪽으로 슬라이드<br/>TopSlide : 위에서 아래로 슬라이드<br/>BottomSlide : 아래서 위로 슬라이드<br/>FadeIn : 전에 있던 광고가 서서히 사라지는 효과 <br/>Circle : 한 바퀴 롤링<br/>None : 애니메이션 효과 없이 바로 광고 교체
 			reloadInterval()|min(기본값) : 20초)<br/>max : 120 초
 			dynamicReloadInterval()|true(기본값) : 광고에 따라 노출 주기 조정할 수 있도록 하여 광고 수익 상승 효과 기대<br/>false : reloadInterval 설정 값으로 Rolling
-			bannerHeight()|Proportional(기본값) : 디바이스 긴방향 해상도의 10%<br/>Fixed : 48dp<br/>Fixed_50 : 50dp
+			bannerHeight()|Proportional(기본값) : 디바이스 긴방향 해상도의 10%<br/>Fixed_50 : 50dp
 			enableDefaultBannerAd ()|false : 디폴트배너 미노출 <br/>true : 디폴트배너 노출
 			threadPriority()|스레드 우선 순위 지정 : 1~10(기본값 : 5)
 
@@ -614,7 +614,7 @@ effect(String)	|광고 교체 효과 지정 : “None”, “LeftSlide”, “Ri
 dynamicReloadInterval(boolean)	|광고 노출 시간 서버 제어 허용 여부 지정
 reloadInterval(int)	|광고 갱신 주기 지정 : min 15, max 120
 threadPriority(int)	|스레드 우선 순위 지정
-bannerHeight(BannerHeight)	|배너 높이 설정 : Fixed,Fixed_50, Proportional
+bannerHeight(BannerHeight)	|배너 높이 설정 : Fixed_50, Proportional
 enableDefaultBannerAd()	|광고 수신 실패 시 카울리 배너 노출 여부 선택
 build()	|설정한 정보에 따라 CaulyAdInfo 생성
 
