@@ -128,7 +128,7 @@ Cauly Android SDK Installation Guide
 	| reloadInterval | min : 15 sec.(default)<br>max : 120 sec. |
 	| dynamicReloadInterval	| true (default) or false <br> true : Reloading time could be set differently by Ads, thus higher profit would be expected.<br> false : Rolls according to reloadInterval set period. |
 	| enableDefaultBannerAd	| false : default banner invisible <br> true : default banner visible |
-	| bannerHeight | Proportional(10% of device’s longer edge) or Fixed (default. 48dp) |
+	| bannerHeight | Proportional(10% of device’s longer edge) or Fixed_50 (default. 50dp) |
 	| threadPriority | Priority of threads relating CaulyAdview스 : 1~10(default : 5) |
 		
 	- JAVA-based Type [See the ‘CaulyExample’ project for details]
@@ -214,7 +214,7 @@ Cauly Android SDK Installation Guide
 			| reloadInterval() | min : 15 sec.(default)<br>max : 120 sec. |
 			| dynamicReloadInterval() | true (default) or false<br>true : Reloading time could be set differently by Ads, thus higher profit would be expected.<br>false : Rolls according to reloadInterval set period. |
 			| enableDefaultBannerAd | false : default banner invisible<br>true : default banner visible |
-			| bannerHeight() | Proportional(10% of device’s longer edge) or Fixed (default. 48dp) or Fixed_50(50 dp) |
+			| bannerHeight() | Proportional(10% of device’s longer edge) or  Fixed_50(50 dp) |
 			| threadPriority() | Priority of threads relating CaulyAdview: 1~10(default : 5) |
 			| disableDefaultBannerAd() | Disable default banner ad. |
 
@@ -581,7 +581,7 @@ If you need more informations to install cauly SDK, please give us a call to the
 | dynamicReloadInterval(boolean)| Set server controlled reload-time. |
 | reloadInterval(int) | Set reload-interval: min 15, max 120 (sec.) |
 | threadPriority(int) | Set thread priority. |
-| bannerHeight(BannerHeight) | Set banner height: Fixed, Proportional |
+| bannerHeight(BannerHeight) | Set banner height: Fixed_50, Proportional |
 | enableDefaultBannerAd () | Disable default banner Ad. |
 | build() | Create CaulyAdInfo with given parameters |
 
