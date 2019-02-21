@@ -87,7 +87,7 @@ CAULY Android SDK 연동 가이드
 		<attr name="reloadInterval" format="integer" />
 		<attr name="threadPriority" format="integer" />
 		<attr name="bannerHeight" format="string" />
-		<attr name=" enableDefaultBannerAd " format=" boolean " /> 
+		<attr name="enableDefaultBannerAd" format="boolean" /> 
 		</declare-styleable>
 	```
 	
@@ -98,7 +98,7 @@ CAULY Android SDK 연동 가이드
 	<com.fsn.cauly.CaulyAdView
 		xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
 		android:id="@+id/xmladview"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		app:appcode="CAULY"
