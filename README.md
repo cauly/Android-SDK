@@ -52,7 +52,7 @@ CAULY Android SDK 연동 가이드
 	
 	- Studio :
 		-  ‘caulySDK-3.4.xx.jar’를 libs 폴더에 넣는다
-		-  ‘caulySDK-3.4.xx.jar’를 선택하고 오른쪽 마우스 클릭하면, Add Ad Library를 클릭하고 자동으로 빌드되는것을 볼 수 있다. 
+		-  ‘caulySDK-3.4.xx.jar’를 선택하고 오른쪽 마우스 클릭하면, Add as Library를 클릭하고 자동으로 빌드되는것을 볼 수 있다. 
 		- Project Structure > Module> 해당 모듈 선택 후 >Dependencues로 라이브러리가 등록되었는지 확인한다
 3. ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
 	- Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
