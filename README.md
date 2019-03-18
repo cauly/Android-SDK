@@ -116,7 +116,7 @@ CAULY Android SDK 연동 가이드
 	Effect|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>RightSlide : 오른쪽에서 왼쪽으로 슬라이드<br/>TopSlide : 위에서 아래로 슬라이드<br/>BottomSlide : 아래서 위로 슬라이드<br/>FadeIn : 전에 있던 광고가 서서히 사라지는 효과 <br/>Circle : 한 바퀴 롤링<br/>None : 애니메이션 효과 없이 바로 광고 교체
 	reloadInterval|min(기본값) : 20 초 <br/>max : 120 초
 	enableDefaultBannerAd|false : 디폴트배너 미노출<br/>true : 디폴트배너 노출
-	bannerHeight|Proportional(기본값) : 디바이스 긴 방향 해상도의 10<br/>Fixed_50 : 50dp
+	bannerHeight|Proportional(기본값) : 디바이스 긴 방향 해상도의 10%<br/>Fixed_50 : 50dp
 	threadPriority|스레드 우선 순위 지정 : 1~10(기본값 : 5)
 	
 	[XML 방식 끝]
@@ -207,7 +207,7 @@ CAULY Android SDK 연동 가이드
 			Effect()|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>RightSlide : 오른쪽에서 왼쪽으로 슬라이드<br/>TopSlide : 위에서 아래로 슬라이드<br/>BottomSlide : 아래서 위로 슬라이드<br/>FadeIn : 전에 있던 광고가 서서히 사라지는 효과 <br/>Circle : 한 바퀴 롤링<br/>None : 애니메이션 효과 없이 바로 광고 교체
 			reloadInterval()|min(기본값) : 20초)<br/>max : 120 초
 			dynamicReloadInterval()|true(기본값) : 광고에 따라 노출 주기 조정할 수 있도록 하여 광고 수익 상승 효과 기대<br/>false : reloadInterval 설정 값으로 Rolling
-			bannerHeight()|Proportional(기본값) : 디바이스 긴방향 해상도의 10%<br/>Fixed_50 : 50dp
+			bannerHeight()|Proportional(기본값) : 디바이스 긴방향 해상도의 10% <br/> Fixed_50 : 50dp
 			enableDefaultBannerAd ()|false : 디폴트배너 미노출 <br/>true : 디폴트배너 노출
 			threadPriority()|스레드 우선 순위 지정 : 1~10(기본값 : 5)
 
