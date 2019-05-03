@@ -38,10 +38,24 @@ CAULY Android SDK 연동 가이드
 		-dontwarn android.webkit.**
 	```
 	- 권장 환경
-		- Android 2.1 버전 이상 (API level 7 이상)
+		- Android 2.1 버전 이상 (API level 26 이상)
 	- SDK 구성
 		- caulySDK-3.4.xx.jar
 		- CaulyExample project
+	
+	- Android Studio 3.4 이상 부터 (gradle build tool 3.4.0)는 아래 와 같이 설정 해야합니다.
+	```java
+		-keep class com.fsn.cauly.** {
+		 	   public *; protected *;
+		}
+		-keep class com.trid.tridad.** {
+		  	  public *; protected *;
+		}
+		-dontwarn android.webkit.**
+	```
+	- 권장 환경
+		- Android 3.4 버전 이상 (API level 26 이상)
+	
 
 #### SDK 설치 방법
 
