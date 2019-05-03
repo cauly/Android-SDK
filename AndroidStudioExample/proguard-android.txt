@@ -19,22 +19,4 @@
 #   public *;
 #}
 
-# for android studio under 3.4
--keep public class com.fsn.cauly.** {
-	public protected *;
-};
-
--keep public class com.trid.tridad.** {
-	public protected *;
-};
-
-# for android studio 3.4
-#-keep class com.fsn.cauly.** {
-# public*; protected *;
-	}
-#-keep class com.trid.tridad.** {
-#  public*; protected *;
-#	}
-
-#-dontwarn android.webkit.**
 
