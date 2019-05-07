@@ -46,7 +46,6 @@ CAULY Android SDK 연동 가이드
 		  	  public *; protected *;
 		}
 		-dontwarn android.webkit.**
-		
 	```
 	- 권장 환경
 		- Android 2.1 버전 이상 (API level 26 이상)
