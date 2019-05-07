@@ -12,8 +12,9 @@ CAULY Android SDK 연동 가이드
 	- 이번 버전에서 향상된 점
 		- 광고 기능 개선 및 버그 수정
 		- bannerHeight : fixed size 변경 (48dp > 50 dp)
-		- targetSdkVersion : API 26
-		- minSdkVersion : API 14
+		- targetSdkVersion/minSdkVersion 변경 
+			- targetSdkVersion : API 26
+			- minSdkVersion : API 14
 		- 광고 기능 개선 및 버그 수정
 		
 2. 주의 사항
@@ -26,7 +27,7 @@ CAULY Android SDK 연동 가이드
 	- <supports-screens> 사용 시
 		- android:anyDensity=["true”] 를 권장 합니다
 		- false로 설정할 경우 bannerHeight를 ‘Fixed_50’로 설정한 높이 고정형 배너가 정상적인 크기로 표시되지 않을 수 있으니 					주의바랍니다.
-	- cauly SDK Android 4.0(Ice Cream Sandwich, API Level 14) 이상 기기에서 동작합니다.
+	- CAULY SDK Android 4.0(Ice Cream Sandwich, API Level 14) 이상 기기에서 동작합니다.
 	- proguard 설정 하는 경우 cauly SDK 포함된 Class 는 난독화 시키시면 안됩니다.
 	```java
 		-keep public class com.fsn.cauly.** {
