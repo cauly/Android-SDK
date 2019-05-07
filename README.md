@@ -11,13 +11,12 @@ CAULY Android SDK 연동 가이드
 1. Release note
 	- 이번 버전에서 향상된 점
 		- 광고 기능 개선 및 버그 수정
+		- bannerHeight : fixed size 변경 (48dp > 50 dp)
+		- targetSdkVersion : API 26
+		- minSdkVersion : API 14
+		- 광고 기능 개선 및 버그 수정
 		
 2. 주의 사항
-	- P/E광고 설정 관련
-		- 앱 마다 P/E광고 허용 여부를 설정 할 수 있으며, P/E광고 노출을 원하는 경우 ‘cauly홈페이지>> APP관리’에서 ‘ON’ 으로 설정하면 됩니다.
-			- cauly 홈페이지 >> app 관리 >> 수익구분 : 배너CPM >> ON
-		- 아래 API를 활용하시면 ‘FALSE’로 설정된 ‘View’에서만 P/E광고가 호출 되지 않습니다.
-			- setShowPreExpandableAd(boolean)
 	- 전면광고 플로팅형_Close Ad Type 설정 관련
 		-	onKeyDown() API에서 KEYCODE_BACK 키 입력시, Close Ad show() API를 호출합니다.  
 			이 때 광고 구동을 위해 필요한 리소스를 다운받았는지 isModuleLoaded() API를 통해 확인 하고, 필요한 리소스를 						다운받는데 실패했을 경우를 대비해 기본 종료팝업을 구현하는 것을 추천합니다.
@@ -27,6 +26,7 @@ CAULY Android SDK 연동 가이드
 	- <supports-screens> 사용 시
 		- android:anyDensity=["true”] 를 권장 합니다
 		- false로 설정할 경우 bannerHeight를 ‘Fixed_50’로 설정한 높이 고정형 배너가 정상적인 크기로 표시되지 않을 수 있으니 					주의바랍니다.
+	- cauly SDK Android 4.0(Ice Cream Sandwich, API Level 14) 이상 기기에서 동작합니다.
 	- proguard 설정 하는 경우 cauly SDK 포함된 Class 는 난독화 시키시면 안됩니다.
 	```java
 		-keep public class com.fsn.cauly.** {
