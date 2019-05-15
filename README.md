@@ -17,7 +17,16 @@ CAULY Android SDK 연동 가이드
 			- minSdkVersion : API 14
 		- 광고 기능 개선 및 버그 수정
 		
-2. 주의 사항
+2. 
+사항
+
+	- targetSdkVersion 28 이상 AndroidManifest.xml에 아래와 같이 설정 합니다.
+```java   
+ 	<application
+         android:usesCleartextTraffic="true"
+	 />
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+```
 	- 전면광고 플로팅형_Close Ad Type 설정 관련
 		-	onKeyDown() API에서 KEYCODE_BACK 키 입력시, Close Ad show() API를 호출합니다.  
 			이 때 광고 구동을 위해 필요한 리소스를 다운받았는지 isModuleLoaded() API를 통해 확인 하고, 필요한 리소스를 						다운받는데 실패했을 경우를 대비해 기본 종료팝업을 구현하는 것을 추천합니다.
