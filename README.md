@@ -19,7 +19,7 @@ CAULY Android SDK 연동 가이드
 		
 2. 주의사항
 
-	- targetSdkVersion 28 이상 AndroidManifest.xml에 아래와 같이 설정 합니다.
+        - targetSdkVersion 28 이상 AndroidManifest.xml에 아래와 같이 설정 합니다.
 ```java   
  	<application
          android:usesCleartextTraffic="true"
