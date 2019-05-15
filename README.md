@@ -17,8 +17,7 @@ CAULY Android SDK 연동 가이드
 			- minSdkVersion : API 14
 		- 광고 기능 개선 및 버그 수정
 		
-2. 
-사항
+2. 주의사항
 
 	- targetSdkVersion 28 이상 AndroidManifest.xml에 아래와 같이 설정 합니다.
 ```java   
