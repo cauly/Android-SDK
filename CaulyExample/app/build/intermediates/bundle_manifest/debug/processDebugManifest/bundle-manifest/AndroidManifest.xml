@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fsn.cauly.example" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="26" />
+
+    <!-- Cauly : 광고 노출을 위한 필수 권한 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:debuggable="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:testOnly="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true" >
+        <activity
+            android:name="com.fsn.cauly.example.JavaActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="@string/title_activity_java" > <!-- orientation 변경 시 Activity 재시작 방지 -->
+        </activity>
+        <activity
+            android:name="com.fsn.cauly.example.XMLActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="@string/title_activity_xml" > <!-- orientation 변경 시 Activity 재시작 방지 -->
+        </activity>
+        <activity
+            android:name="com.fsn.cauly.example.NativeListActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation" >
+        </activity>
+        <activity
+            android:name="com.fsn.cauly.example.NativeViewActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation" >
+        </activity>
+        <activity
+            android:name="com.fsn.cauly.example.NativeCardActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation" >
+        </activity>
+        <activity
+            android:name="com.fsn.cauly.example.NativeDataActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation" >
+        </activity>
+        <activity
+            android:name="com.fsn.cauly.example.CloseActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation" >
+        </activity>
+        <activity
+            android:name="com.fsn.cauly.example.EntryActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
+            android:configChanges="keyboardHidden|orientation|keyboard" >
+        </activity>
+    </application>
+
+</manifest>

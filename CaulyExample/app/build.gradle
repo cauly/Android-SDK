@@ -17,5 +17,5 @@ android {
 }
 
 dependencies {
-    implementation files('libs/CaulySDK-3.4.25.jar')
+    implementation files('libs/CaulySDK-3.4.26.jar')
 }

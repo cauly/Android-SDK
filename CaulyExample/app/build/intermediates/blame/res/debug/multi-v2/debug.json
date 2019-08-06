@@ -1,0 +1,79 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\github\\CaulyExample\\app\\build\\intermediates\\res\\merged\\debug\\values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\github\\CaulyExample\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "2,3,5,8,7,4,6",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "19,69,185,353,305,123,245",
+                        "endColumns": "48,52,58,47,46,60,58",
+                        "endOffsets": "63,117,239,396,347,179,299"
+                    },
+                    "to": {
+                        "startLines": "10,11,12,13,14,15,16",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "416,465,518,577,625,672,733",
+                        "endColumns": "48,52,58,47,46,60,58",
+                        "endOffsets": "460,513,572,620,667,728,787"
+                    }
+                },
+                {
+                    "source": "C:\\github\\CaulyExample\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "19",
+                        "endColumns": "58",
+                        "endOffsets": "73"
+                    },
+                    "to": {
+                        "startLines": "17",
+                        "startColumns": "4",
+                        "startOffsets": "792",
+                        "endColumns": "57",
+                        "endOffsets": "845"
+                    }
+                },
+                {
+                    "source": "C:\\github\\CaulyExample\\app\\src\\main\\res\\values\\cauly_attrs.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "59",
+                        "endLines": "14",
+                        "endColumns": "24",
+                        "endOffsets": "675"
+                    },
+                    "to": {
+                        "startLines": "18",
+                        "startColumns": "4",
+                        "startOffsets": "850",
+                        "endLines": "29",
+                        "endColumns": "24",
+                        "endOffsets": "1445"
+                    }
+                },
+                {
+                    "source": "C:\\github\\CaulyExample\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "4,5,2,3,9,8,6,7",
+                        "startColumns": "4,3,1,3,3,3,3,3",
+                        "startOffsets": "154,207,54,104,382,343,259,302",
+                        "endColumns": "52,50,46,47,40,37,41,39",
+                        "endOffsets": "202,254,99,148,419,377,297,338"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,107,158,207,255,296,334,376",
+                        "endColumns": "51,50,48,47,40,37,41,39",
+                        "endOffsets": "102,153,202,250,291,329,371,411"
+                    }
+                }
+            ]
+        }
+    ]
+}
