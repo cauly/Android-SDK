@@ -9,21 +9,23 @@ CAULY Android SDK 연동 가이드
 #### CAULY SDK v3.4
 
 1. Release note
-		- google Play families 정책 대응
-			- google Play families 정책 대응을 위해 광고 요청 시 아래와 같이 처리 해야한다
-			```java   
-			14세 미만 일 때 tagForChildDirectedTreatment(true) 
-			```
-		google families policy : https://play.google.com/about/families/#!?zippy_activeEl=designed-for-families#designed-for-families
-		coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
+  - google Play families 정책 대응
+      -  google Play families 정책 대응을 위해 광고 요청 시 아래와 같이 처리 해야한다.
+	```java   
+ 		14세 미만 일 때 tagForChildDirectedTreatment(true) 
+	```
+	google families policy : https://play.google.com/about/families/#!?zippy_activeEl=designed-for-families#designed-for-families
+	
+	coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
 
-			- gdpr corsent 샘플
+  -  gdpr corsent
+	```java
+ 		 gdpr 동의 시 gdprConsentAvailable(true).age() 
+	```
+
 			
-			```java 
-			 gdpr 동의 시 
-			gdprConsentAvailable(true).age() 
-			```
-		- 광고 기능 개선 및 버그 수정
+		
+  - 광고 기능 개선 및 버그 수정
 		
 2. 주의사항
 
