@@ -14,13 +14,14 @@ CAULY Android SDK 연동 가이드
 			```java   
 			14세 미만 일 때 tagForChildDirectedTreatment(true) 
 			```
-			google families policy : https://play.google.com/about/families/#!?zippy_activeEl=designed-for-families#designed-for-families
-			coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
+		google families policy : https://play.google.com/about/families/#!?zippy_activeEl=designed-for-families#designed-for-families
+		coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
 
 			- gdpr corsent 샘플
+			
 			```java 
 			 gdpr 동의 시 
-			'gdprConsentAvailable(true).age() 
+			gdprConsentAvailable(true).age() 
 			```
 		- 광고 기능 개선 및 버그 수정
 		
