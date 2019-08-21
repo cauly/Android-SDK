@@ -9,12 +9,19 @@ CAULY Android SDK 연동 가이드
 #### CAULY SDK v3.4
 
 1. Release note
-	- 이번 버전에서 향상된 점
-		- 광고 기능 개선 및 버그 수정
-		- bannerHeight : fixed size 변경 (48dp > 50 dp)
-		- targetSdkVersion/minSdkVersion 변경 
-			- targetSdkVersion : API 26
-			- minSdkVersion : API 14
+		- google Play families 정책 대응
+			- google Play families 정책 대응을 위해 광고 요청 시 아래와 같이 처리 해야한다
+			```java   
+			14세 미만 일 때 tagForChildDirectedTreatment(true) 
+			```
+			google families policy : https://play.google.com/about/families/#!?zippy_activeEl=designed-for-families#designed-for-families
+			coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
+
+			- gdpr corsent 샘플
+			```java 
+			 gdpr 동의 시 
+			'gdprConsentAvailable(true).age() 
+			```
 		- 광고 기능 개선 및 버그 수정
 		
 2. 주의사항
@@ -24,7 +31,6 @@ CAULY Android SDK 연동 가이드
  	<application
          android:usesCleartextTraffic="true"
 	 />
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 	```
 	- 전면광고 플로팅형_Close Ad Type 설정 관련
 		-	onKeyDown() API에서 KEYCODE_BACK 키 입력시, Close Ad show() API를 호출합니다.  
@@ -630,6 +636,8 @@ CaulyAdInfoBuilder(String)	|지정한 App Code로 CaulyAdInfoBuilder 생성
 appCode(String)	|App Code 지정
 gender(String)	|성별 지정 : “all", “male”, “female”
 age(String)	|연령대 지정 : “all”, “age10”, “age20”, “age30”, “age40”, “age50”
+tagForChildDirectedTreatment(boolean)	|14세 미만 일 때 여부 지정
+gdprConsentAvailable(boolean)	|gdpr 동의 여부 지정
 effect(String)	|광고 교체 효과 지정 : “None”, “LeftSlide”, “RightSlide”, “TopSlide”, “BottomSlide”, “FadeIn”, “Circle”
 dynamicReloadInterval(boolean)	|광고 노출 시간 서버 제어 허용 여부 지정
 reloadInterval(int)	|광고 갱신 주기 지정 : min 15, max 120
