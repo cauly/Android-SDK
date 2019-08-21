@@ -9,7 +9,8 @@ CAULY Android SDK 연동 가이드
 #### CAULY SDK v3.4
 
 1. Release note	
-  - 광고 기능 개선 및 버그 수정
+  - google play families 정책 대응
+  - 광고 기능 개선
 		
 2. 주의사항
 
@@ -609,6 +610,27 @@ CAULY Android SDK 연동 가이드
 			```
 > cauly SDK 설치 관련하여 문의 사항은 고객센터 1544-8867
 > 또는 cauly@fsn.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
+
+#### TIP
+- 아동 온라인 개인정보 보호법(COPPA) 의 취지에 따라 '아동 대상 서비스로 취급용 태그' 설정 방법
+	- 아동대상 콘텐츠로 지정되는 경우 관심 기반 광고 및 리마케팅 광고가 필터링 됩니다.
+	- google families policy : https://play.google.com/about/families/#!?zippy_activeEl=designed-for-families#designed-for-families
+	- coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
+	
+- COPPA에 따라 콘텐츠를 아동 대상으로 지정하려면 'tagForChildDirectedTreatment(true)' 로 호출 한다.
+
+```java
+ CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APPCODE).
+ 	tagForChildDirectedTreatment(true).
+	build()
+```
+- COPPA에 따라 콘텐츠를 아동 대상으로 지정하지 않으려면 'tagForChildDirectedTreatment(false)' 로 호출 한다
+```java
+ CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APPCODE).
+	 tagForChildDirectedTreatment(false).
+ 	 build()
+```
+ \* tagForChildDirectedTreatment을 처리 하지 않는 경우 아동 대상 콘테츠가 아닌 것으로 간주 합니다.
 
 Class Reference
 =================
