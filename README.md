@@ -18,7 +18,7 @@ CAULY Android SDK 연동 가이드
 	
 	coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
 	
-  -  gdpr corsent
+       -  gdpr corsent
 
 	     gdpr 동의 시 gdprConsentAvailable(true).age() 
            
