@@ -9,8 +9,8 @@ CAULY Android SDK 연동 가이드
 #### CAULY SDK v3.4
 
 1. Release note	
-  - tagForChildDirectedTreatment api 
-  - 광고 기능 개선
+   - tagForChildDirectedTreatment 추가 
+   - 광고 기능 개선
 		
 2. 주의사항
 
