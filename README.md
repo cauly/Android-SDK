@@ -2,18 +2,24 @@ CAULY Android SDK 연동 가이드
 ----
 
 ### 목차 
-1. cauly SDK v3.4
+1. cauly SDK
 2. SDK 설치 방법
 3. Class Reference
  
-#### CAULY SDK v3.4
+#### CAULY SDK
 
 1. Release note	
-   - tagForChildDirectedTreatment 추가 
-   - 광고 기능 개선
+   - AndroidX 라이브러리 대응
 		
 2. 주의사항
-
+      - AndroidX 라이브러리 을 사용하는 경우
+      ```java
+      gradle.properties ::
+	* android.useAndroidX=true
+	* android.enableJetifier=true
+      ```
+    
+	참고 : https://developer.android.com/jetpack/androidx/migrate
       - targetSdkVersion 28 이상 AndroidManifest.xml에 아래와 같이 설정 합니다.
 	```java   
  	<application
