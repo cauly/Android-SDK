@@ -59,7 +59,7 @@ CAULY Android SDK 연동 가이드
 	- 권장 환경
 		- Android 2.1 버전 이상 (API level 26 이상)
 	- SDK 구성
-		- caulySDK-3.4.xx.jar
+		- caulySDK-3.5.xx.jar
 		- CaulyExample project
 		
 	
@@ -67,12 +67,12 @@ CAULY Android SDK 연동 가이드
 
 1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.4.xx.jar’ 파일 복사 한다
 2. 
-	- Eclipse :  ‘caulySDK-3.4.xx.jar’ 파일을 라이브러리에 import 한다
-		- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.4.xx.jar’
+	- Eclipse :  ‘caulySDK-3.5.xx.jar’ 파일을 라이브러리에 import 한다
+		- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.5.xx.jar’
 	
 	- Studio :
-		-  ‘caulySDK-3.4.xx.jar’를 libs 폴더에 넣는다
-		-  ‘caulySDK-3.4.xx.jar’를 선택하고 오른쪽 마우스 클릭하면, Add Ad Library를 클릭하고 자동으로 빌드되는것을 볼 수 있다. 
+		-  ‘caulySDK-3.5.xx.jar’를 libs 폴더에 넣는다
+		-  ‘caulySDK-3.5.xx.jar’를 선택하고 오른쪽 마우스 클릭하면, Add Ad Library를 클릭하고 자동으로 빌드되는것을 볼 수 있다. 
 		- Project Structure > Module> 해당 모듈 선택 후 >Dependencues로 라이브러리가 등록되었는지 확인한다
 3. ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
 	- Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
