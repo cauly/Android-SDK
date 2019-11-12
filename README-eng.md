@@ -78,7 +78,7 @@ Cauly Android SDK Installation Guide
 	```	
 
 ### Recommended environment
-	Android 8 (API level 26) or above
+	Android 4 (API level 14) or above
 
 ### SDK Components
 	caulySDK-3.5.x.jar
