@@ -33,7 +33,7 @@ Cauly Android SDK Installation Guide
 	* android.enableJetifier=true
       ```
       참고 : https://developer.android.com/jetpack/androidx/migrate
-      - Starting with Android 9.0 (API level 28) In the AndroidManifest
+ - Starting with Android 9.0 (API level 28) In the AndroidManifest
 	```java   
  	<application
          android:usesCleartextTraffic="true"
