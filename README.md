@@ -57,7 +57,7 @@ CAULY Android SDK 연동 가이드
 		-dontwarn android.webkit.**
 	```
 	- 권장 환경
-		- Android 2.1 버전 이상 (API level 26 이상)
+		- Android 8 버전 이상 (API level 26 이상)
 	- SDK 구성
 		- caulySDK-3.5.xx.jar
 		- CaulyExample project
@@ -65,7 +65,7 @@ CAULY Android SDK 연동 가이드
 	
 #### SDK 설치 방법
 
-1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.4.xx.jar’ 파일 복사 한다
+1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.5.xx.jar’ 파일 복사 한다
 2. 
 	- Eclipse :  ‘caulySDK-3.5.xx.jar’ 파일을 라이브러리에 import 한다
 		- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.5.xx.jar’
