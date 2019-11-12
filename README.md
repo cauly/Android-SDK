@@ -12,7 +12,7 @@ CAULY Android SDK 연동 가이드
    - AndroidX 라이브러리 대응
 		
 2. 주의사항
-      - AndroidX 라이브러리 을 사용하는 경우
+      - AndroidX 라이브러리 사용하는 경우
       ```java
       gradle.properties ::
 	* android.useAndroidX=true
