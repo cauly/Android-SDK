@@ -590,10 +590,27 @@ Cauly Android SDK Installation Guide
 				});
 			// CaulyCustomAd.INTERSTITIAL_PORTRAIT,CaulyCustomAd.NATIVE_PORTRAIT,CaulyCustomAd.NATIVE_LANDSCAPE
 				CaulyCustomAd requestAdData(type,  ad_count);
-			```
 
-If you need more informations to install cauly SDK, please give us a call to the customer center +82-1544-8867 or send an e-mail to cauly@futurestream.co.kr.
+#### TIP
+- 'Child-directed setting
+		
+- google families policy : https://play.google.com/about/families/#!?zippy_activeEl=designed-for-families#designed-for-families
+		- coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
+	
+- Call setTagForChildDirectedTreatment(true) to indicate that you want your content treated as child-directed for purposes of COPPA.
 
+```java
+ CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APPCODE).
+ 	tagForChildDirectedTreatment(true).
+	build()
+```
+- Call setTagForChildDirectedTreatment(false) to indicate that you don't want your content treated as child-directed for purposes of COPPA.
+```java
+ CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APPCODE).
+	 tagForChildDirectedTreatment(false).
+ 	 build()
+```
+ \* if you don't want to indicate how you would like your content treated with respect to COPPA in ad requests.
 ## Class Reference
 ### CaulyAdInfo[Class for ad settings] 
 | CaulyAdInfoBuilder[CaulyAdInfo builder class]	||
@@ -702,3 +719,4 @@ destroy()	|Destroy a recieved ad|
 |onReceiveNativeAd(CaulyNativeAd, boolean isChargeableAd)	|Called when ad received, isChargeableAd indicate whether the received ad is free or not.|
 |onFailedToReceiveNativeAd(CaulyNativeAd, int errorCode, String errorMsg)	|Called when failed to receive an ad. errorCode, errorMsg shows error details.|
 
+If you need more informations to install cauly SDK, please give us a call to the customer center +82-1544-8867 or send an e-mail to cauly@futurestream.co.kr.
