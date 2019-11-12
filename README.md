@@ -577,7 +577,18 @@ CAULY Android SDK 연동 가이드
 			- sendImpressInform(광고ID)
 		7. 광고 클릭시, linkUrl 로 이동
 			- BrowserUtil.openBrowser(Context, linkUrl)
-		8. 파싱방법
+		8. 구현 형태
+			- WebView 형태로 구현해주세요
+			```java
+			WebView web = (WebView) v.findViewById(R.id.webbanner);
+       			web.getSettings().setJavaScriptEnabled(true);
+        		web.setVerticalScrollBarEnabled(false);
+        		web.setHorizontalScrollBarEnabled(false);
+        		web.getSettings().setUseWideViewPort(true);
+        		web.getSettings().setLoadsImagesAutomatically(true);
+        		web.loadUrl(item.image);
+			```
+		9. 파싱방법
 			- List<HashMap<KEY,VALUE>> 방식으로 가져오는 경우,<br/>mCaulyAdView.getAdsList();
 			- Raw JSON String을 직접가져 경우<br/>mCaulyAdView.getJsonString();
 			```java
