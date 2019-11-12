@@ -32,8 +32,8 @@ Cauly Android SDK Installation Guide
 	* android.useAndroidX=true
 	* android.enableJetifier=true
       ```
-      참고 : https://developer.android.com/jetpack/androidx/migrate
- - Starting with Android 9.0 (API level 28) In the AndroidManifest
+      reference: https://developer.android.com/jetpack/androidx/migrate
+ - Android 9.0 or above (API level 28) In the AndroidManifest
 	```java   
  	<application
          android:usesCleartextTraffic="true"
@@ -66,7 +66,7 @@ Cauly Android SDK Installation Guide
 		}
 		-dontwarn android.webkit.**
 	
-	- Starting with Android 3.4 (gradle build tool 3.4.0)
+	- Android 3.4 (gradle build tool 3.4.0) or above
 	
 		-keep class com.fsn.cauly.** {
 		 	   public *; protected *;
