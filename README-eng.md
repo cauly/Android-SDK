@@ -4,7 +4,10 @@ Cauly Android SDK Installation Guide
 - Table Of Contents
 	1. Cauly SDK
 		- Release note
-		- AndroidX support Library
+		- Cautions
+		- Recommended environment
+		- SDK Components
+	
 	2. SDK installation guide
 	3. Class Reference
 		- CaulyAdInfo[Class for ad settings]
@@ -20,8 +23,7 @@ Cauly Android SDK Installation Guide
 
 ### Release note
   - The improvement of this version
-    - Required permissions minimized.
-    - Mandatory permissions are minimized and unnecessary permissions are removed.
+    - AndroidX support Library
 
 ### Cautions
  - In case your app uses the AndroidX library
