@@ -57,7 +57,7 @@ CAULY Android SDK 연동 가이드
 		-dontwarn android.webkit.**
 	```
 	- 권장 환경
-		- Android 8 버전 이상 (API level 26 이상)
+		- Android 4 버전 이상 (API level 14 이상)
 	- SDK 구성
 		- caulySDK-3.5.xx.jar
 		- CaulyExample project
