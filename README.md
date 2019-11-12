@@ -59,20 +59,20 @@ CAULY Android SDK 연동 가이드
 	- 권장 환경
 		- Android 4 버전 이상 (API level 14 이상)
 	- SDK 구성
-		- caulySDK-3.5.xx.jar
+		- caulySDK-3.x.xx.jar
 		- CaulyExample project
 		
 	
 #### SDK 설치 방법
 
-1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.5.xx.jar’ 파일 복사 한다
+1. CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘caulySDK-3.x.xx.jar’ 파일 복사 한다
 2. 
-	- Eclipse :  ‘caulySDK-3.5.xx.jar’ 파일을 라이브러리에 import 한다
-		- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.5.xx.jar’
+	- Eclipse :  ‘caulySDK-3.x.xx.jar’ 파일을 라이브러리에 import 한다
+		- ’Properties’  ’javaBuild Path’  ’Libraries’  ’Add JARs…’‘caulySDK-3.x.xx.jar’
 	
 	- Studio :
-		-  ‘caulySDK-3.5.xx.jar’를 libs 폴더에 넣는다
-		-  ‘caulySDK-3.5.xx.jar’를 선택하고 오른쪽 마우스 클릭하면, Add Ad Library를 클릭하고 자동으로 빌드되는것을 볼 수 있다. 
+		-  ‘caulySDK-3.x.xx.jar’를 libs 폴더에 넣는다
+		-  ‘caulySDK-3.x.xx.jar’를 선택하고 오른쪽 마우스 클릭하면, Add Ad Library를 클릭하고 자동으로 빌드되는것을 볼 수 있다. 
 		- Project Structure > Module> 해당 모듈 선택 후 >Dependencues로 라이브러리가 등록되었는지 확인한다
 3. ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
 	- Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
@@ -625,9 +625,7 @@ CAULY Android SDK 연동 가이드
 			// CaulyCustomAd.INTERSTITIAL_PORTRAIT,CaulyCustomAd.NATIVE_PORTRAIT,CaulyCustomAd.NATIVE_LANDSCAPE
 				CaulyCustomAd requestAdData(type,  ad_count);
 			```
-> cauly SDK 설치 관련하여 문의 사항은 고객센터 1544-8867
-> 또는 cauly@fsn.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
-
+			
 #### TIP
 - '아동 대상 서비스 취급용 태그' 설정 방법
 	- 아동대상 콘텐츠로 지정한 경우 관심 기반 광고 및 리마케팅 광고 등이 필터링 됩니다.
@@ -789,7 +787,8 @@ textID(int)	|Layout 중 설명부분이 나타날 영역을 지정한다.
 clickingView(int id)	|Layout 중 클릭영역이 나타날 영역을 지정한다.
 build()	|설정한 정보에 따라 CaulyAdInfo 생성
 
-
+> cauly SDK 설치 관련하여 문의 사항은 고객센터 1544-8867
+> 또는 cauly@fsn.co.kr 로 문의 주시면 빠르게 응대해 드리도록 하겠습니다.
 
 
 
