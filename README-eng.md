@@ -92,10 +92,10 @@ Cauly Android SDK Installation Guide
 ----------
 
 
-1. After creating ‘libs’ folder to the project where cauly SDK will be installed, copy the ‘caulySDK-3.3.x.jar’ file.
+1. After creating ‘libs’ folder to the project where cauly SDK will be installed, copy the ‘caulySDK-3.5.x.jar’ file.
 
-2. Connect ‘caulySDK-3.3.x.jar’ with the project.  
-: ’Properties’ ->  ’javaBuild Path’ -> ’Libraries’ -> ’Add JARs…’ -> ‘caulySDK-3.3.x.jar’
+2. Connect ‘caulySDK-3.5.x.jar’ with the project.  
+: ’Properties’ ->  ’javaBuild Path’ -> ’Libraries’ -> ’Add JARs…’ -> ‘caulySDK-3.5.x.jar’
 
 
 
