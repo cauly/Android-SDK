@@ -66,7 +66,7 @@ Cauly Android SDK Installation Guide
 		}
 		-dontwarn android.webkit.**
 	
-	- Android 3.4 (gradle build tool 3.4.0) or above
+	- Use Android Studio 3.4 or later (gradle build tool 3.4.0)
 	
 		-keep class com.fsn.cauly.** {
 		 	   public *; protected *;
