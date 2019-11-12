@@ -2,11 +2,9 @@ Cauly Android SDK Installation Guide
 ==============================
 
 - Table Of Contents
-	1. Cauly SDK v3.3
+	1. Cauly SDK
 		- Release note
-		- Cautions
-		- Recommended environment
-		- SDK Components
+		- AndroidX support Library
 	2. SDK installation guide
 	3. Class Reference
 		- CaulyAdInfo[Class for ad settings]
@@ -16,7 +14,7 @@ Cauly Android SDK Installation Guide
 		- Interstitial _Floating Type
 
 
-## Cauly SDK v3.3
+## Cauly SDK
 
 ----------
 
@@ -26,6 +24,20 @@ Cauly Android SDK Installation Guide
     - Mandatory permissions are minimized and unnecessary permissions are removed.
 
 ### Cautions
+ - In case your app uses the AndroidX library
+      ```java
+      gradle.properties ::
+	* android.useAndroidX=true
+	* android.enableJetifier=true
+      ```
+      참고 : https://developer.android.com/jetpack/androidx/migrate
+      - Starting with Android 9.0 (API level 28) In the AndroidManifest
+	```java   
+ 	<application
+         android:usesCleartextTraffic="true"
+	 />
+	```
+      
 - P/E Ad configurations
 	- P/E Ad allowance can be controlled by App-wide. If you want to deliver P/E Ad, please contact the Cauly’s Customer Center. 
 	- P/E Ad allowance can also be controlled by AdView object with a following API.
@@ -45,19 +57,29 @@ Cauly Android SDK Installation Guide
 - If you are using proguard, following classes included in cauly SDK must not be obfuscated.
 	```java
 		-keep public class com.fsn.cauly.** {
-			public protected *;
+		 	   public protected *;
 		}
 		-keep public class com.trid.tridad.** {
-			public protected *;
+		  	  public protected *;
 		}
-		- dontwarn android.webkit.**`
+		-dontwarn android.webkit.**
+	
+	- Starting with Android 3.4 (gradle build tool 3.4.0)
+	
+		-keep class com.fsn.cauly.** {
+		 	   public *; protected *;
+		}
+		-keep class com.trid.tridad.** {
+		  	  public *; protected *;
+		}
+		-dontwarn android.webkit.**
 	```	
 
 ### Recommended environment
-	Android 2.1 (API level 7) or above
+	Android 8 (API level 26) or above
 
 ### SDK Components
-	caulySDK-3.3.x.jar
+	caulySDK-3.5.x.jar
 	CaulyExample project
 
 
