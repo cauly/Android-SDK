@@ -595,7 +595,8 @@ Cauly Android SDK Installation Guide
 - 'Child-directed setting
 		
 - google families policy : https://play.google.com/about/families/#!?zippy_activeEl=designed-for-families#designed-for-families
-		- coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
+		
+- coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
 	
 - Call setTagForChildDirectedTreatment(true) to indicate that you want your content treated as child-directed for purposes of COPPA.
 
