@@ -441,7 +441,8 @@ CAULY Android SDK 연동 가이드
 				// 네이티브애드가 정상적으로 수신되었을 떄, 호출된다.
 				public void onReceiveNativeAd(CaulyNativeAdView adView, boolean isChargeableAd) {
 					//우선  앱의 리스트에 등록을 하고, 똑같은 위치의 포지션에 수신한 네이티브애드를 등록한다. 
-					mList.add(원하는포지션,null);																									CaulyNativeAdHelper.getInstance().add(this,listview,원하는포지션,adView);
+					mList.add(원하는포지션,null);								   
+					CaulyNativeAdHelper.getInstance().add(this,listview,원하는포지션,adView);
 					mAdapter.notifyDataSetChanged();
 				}
 			
