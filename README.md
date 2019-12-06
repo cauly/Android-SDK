@@ -153,23 +153,22 @@ CAULY Android SDK 연동 가이드
 		</RelativeLayout>
 		```
 	- 배너 광고
-		- 위치 : src >> ‘package name’ >> ‘광고를 붙일 Activity’.java
-			```java
-			private CaulyAdView javaAdView;
-			@Override
-			public void onCreate(Bundle savedInstanceState) {
-			     super.onCreate(savedInstanceState);
-			     setContentView(R.layout.activity_java);
-				// Cauly 로그 수준 지정 : 로그의 상세함 순서는 다음과 같다.
-			   //LogLevel.Verbose > LogLevel.Debug > LogLevel.Info > LogLevel.Warn > LogLevel.Error > LogLevel.None
-			     Logger.setLogLevel(LogLevel.Debug);
+		```java
+		private CaulyAdView javaAdView;
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_java);
+		    // Cauly 로그 수준 지정 : 로그의 상세함 순서는 다음과 같다.
+			//LogLevel.Verbose > LogLevel.Debug > LogLevel.Info > LogLevel.Warn > LogLevel.Error > LogLevel.None
+			Logger.setLogLevel(LogLevel.Debug);
 			
-				// CaulyAdInfo 상세 설정 방법은 하단 표 참조
-				// 설정하지 않은 항목들은 기본값으로 설정됨
-				CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).
-					effect("RightSlide").
-					bannerHeight("Fixed_50").
-					build();
+			  // CaulyAdInfo 상세 설정 방법은 하단 표 참조
+			  // 설정하지 않은 항목들은 기본값으로 설정됨
+			  CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).
+				effect("RightSlide").
+				bannerHeight("Fixed_50").
+				build();
 			
 				// CaulyAdInfo를 이용, CaulyAdView 생성.
 				javaAdView = new CaulyAdView(this);
