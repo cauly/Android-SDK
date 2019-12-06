@@ -154,7 +154,7 @@ CAULY Android SDK 연동 가이드
 		```
 	- 배너 광고
 		- 위치 : src >> ‘package name’ >> ‘광고를 붙일 Activity’.java
-			``` java
+			```java
 			private CaulyAdView javaAdView;
 			@Override
 			public void onCreate(Bundle savedInstanceState) {
