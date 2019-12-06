@@ -9,7 +9,7 @@ CAULY Android SDK 연동 가이드
 #### CAULY SDK
 
 1. Release note	
-   - AndroidX 라이브러리 대응
+   - 전면광고 노출 시  Toast 메세지 노출되는 현상 수정
 		
 2. 주의사항
       - AndroidX 라이브러리 사용하는 경우
@@ -30,11 +30,11 @@ CAULY Android SDK 연동 가이드
 		-	onKeyDown() API에서 KEYCODE_BACK 키 입력시, Close Ad show() API를 호출합니다.  
 			이 때 광고 구동을 위해 필요한 리소스를 다운받았는지 isModuleLoaded() API를 통해 확인 하고, 필요한 리소스를 다운받는데 실패했을 경우를 대비해 기본 종료팝업을 구현하는 것을 추천합니다.
 		-	Activity ‘onResume()’ 에서 ‘resume(this)’ 을 호출해야 한다.
-	- 전면광고 호출방식이 변경되어 XML 방식에서는 전면광고를 부착할 수 없으며, Java방식으로 코딩을 해야 전면광고를 노출할 수 		있습니다.
-		전면광고를 보여주기 위해서는 CaulyInterstitialAd 클래스로 광고를 받아와서, Listener 에서 명시적으로 show()를 호출해야 		광고가 보여지게 됩니다.
+	- 전면광고 호출방식이 변경되어 XML 방식에서는 전면광고를 부착할 수 없으며, Java방식으로 코딩을 해야 전면광고를 노출할 수 있습니다.
+		전면광고를 보여주기 위해서는 CaulyInterstitialAd 클래스로 광고를 받아와서, Listener 에서 명시적으로 show()를 호출해야 광고가 보여지게 됩니다.
 	- <supports-screens> 사용 시
 		- android:anyDensity=["true”] 를 권장 합니다
-		- false로 설정할 경우 bannerHeight를 ‘Fixed_50’로 설정한 높이 고정형 배너가 정상적인 크기로 표시되지 않을 수 있으니 					주의바랍니다.
+		- false로 설정할 경우 bannerHeight를 ‘Fixed_50’로 설정한 높이 고정형 배너가 정상적인 크기로 표시되지 않을 수 있으니 주의바랍니다.
 	- CAULY SDK Android 4.0(Ice Cream Sandwich, API Level 14) 이상 기기에서 동작합니다.
 	- proguard 설정 하는 경우 cauly SDK 포함된 Class 는 난독화 시키시면 안됩니다.
 	```java
@@ -46,6 +46,7 @@ CAULY Android SDK 연동 가이드
 		}
 		-dontwarn android.webkit.**
 	
+
 	- Android Studio 3.4 이상 부터 (gradle build tool 3.4.0)는 아래 와 같이 설정 해야합니다.
 	
 		-keep class com.fsn.cauly.** {
