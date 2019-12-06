@@ -159,7 +159,7 @@ CAULY Android SDK 연동 가이드
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_java);
-		    // Cauly 로그 수준 지정 : 로그의 상세함 순서는 다음과 같다.
+		     //Cauly 로그 수준 지정 : 로그의 상세함 순서는 다음과 같다.
 			//LogLevel.Verbose > LogLevel.Debug > LogLevel.Info > LogLevel.Warn > LogLevel.Error > LogLevel.None
 			Logger.setLogLevel(LogLevel.Debug);
 			
@@ -170,25 +170,25 @@ CAULY Android SDK 연동 가이드
 				bannerHeight("Fixed_50").
 				build();
 			
-				// CaulyAdInfo를 이용, CaulyAdView 생성.
+				//CaulyAdInfo를 이용, CaulyAdView 생성.
 				javaAdView = new CaulyAdView(this);
 				javaAdView.setAdInfo(adInfo);
 				javaAdView.setAdViewListener(this);
 				
 				RelativeLayout rootView = (RelativeLayout) findViewById(R.id.java_root_view);
-				// 예시 : 화면 하단에 배너 부착
+				//예시 : 화면 하단에 배너 부착
 				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					     LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 				rootView.addView(javaAdView, params);		
 			}
-		    // CaulyAdViewListener
-		    //	광고 동작에 대해 별도 처리가 필요 없는 경우,
-		    //	Activity의 "implements CaulyAdViewListener" 부분 제거하고 생략 가능.
+		    //CaulyAdViewListener
+		    //광고 동작에 대해 별도 처리가 필요 없는 경우,
+		    //Activity의 "implements CaulyAdViewListener" 부분 제거하고 생략 가능.
 			@Override
 			public void onReceiveAd(CaulyAdView adView, boolean isChargeableAd) {
-				// 광고 수신 성공 & 노출된 경우 호출됨.
-				// 수신된 광고가 무료 광고인 경우 isChargeableAd 값이 false 임.
+				//광고 수신 성공 & 노출된 경우 호출됨.
+				//수신된 광고가 무료 광고인 경우 isChargeableAd 값이 false 임.
 				if (isChargeableAd == false) {
 					Log.d("CaulyExample", "free banner AD received.");
 				}else {
@@ -197,23 +197,23 @@ CAULY Android SDK 연동 가이드
 			}
 			@Override
 			public void onFailedToReceiveAd(CaulyAdView adView, int errorCode, String errorMsg) {
-				// 배너 광고 수신 실패할 경우 호출됨.
+				//배너 광고 수신 실패할 경우 호출됨.
 				Log.d("CaulyExample", "failed to receive banner AD.");
 			}
 			
 			@Override
 			public void onShowLandingScreen(CaulyAdView adView) {
-				// 광고 배너를 클릭하여 랜딩 페이지가 열린 경우 호출됨.
+				//광고 배너를 클릭하여 랜딩 페이지가 열린 경우 호출됨.
 				Log.d("CaulyExample", "banner AD landing screen opened.");
 			}    
 			
 			@Override
 			public void onCloseLandingScreen(CaulyAdView adView) {
-				// 광고 배너를 클릭하여 열린 랜딩 페이지가 닫힌 경우 호출됨.
+				//광고 배너를 클릭하여 열린 랜딩 페이지가 닫힌 경우 호출됨.
 				Log.d("CaulyExample", "banner AD landing screen closed.");
 			}	
-			// Activity 버튼 처리
-			// - Java 배너 광고 갱신 버튼
+			//Activity 버튼 처리
+			//- Java 배너 광고 갱신 버튼
 			public void onReloadJavaAdView(View button) {
 				javaAdView.reload();
 			}
