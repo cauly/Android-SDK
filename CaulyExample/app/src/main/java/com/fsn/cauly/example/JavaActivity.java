@@ -6,6 +6,7 @@ import com.fsn.cauly.CaulyAdView;
 import com.fsn.cauly.CaulyAdViewListener;
 import com.fsn.cauly.CaulyInterstitialAd;
 import com.fsn.cauly.CaulyInterstitialAdListener;
+
 import com.fsn.cauly.Logger;
 import com.fsn.cauly.Logger.LogLevel;
 
@@ -50,7 +51,6 @@ public class JavaActivity extends Activity implements CaulyAdViewListener, Cauly
         // 설정 메소드
         //    	appCode(String appCode)				: APP_CODE 지정. 생성자 "CaulyAdInfoBuilder(APP_CODE)"를 사용해도 됨.
         //    	effect(CaulyAdInfo.Effect effect)	: 광고 교체 애니메이션. CaulyAdInfo.Effect.[None|LeftSlide(기본값)|RightSlide|TopSlide|BottomSlide|FadeIn|Circle]
-        //    	gps(String gps)						: GPS 정보 사용 여부. [auto|off]
         //    	allowcall(boolean allowcall)		: call 광고 노출 여부. [true(기본값)|false]
         //    	dynamicReloadInterval(boolean dynamicReloadInterval)	: 광고별 갱신 주기 사용. true이면 아래의 reloadInterval 무시. [true(기본값)|false]
         //    	reloadInterval(int reloadInterval)	: 광고 갱신 주기(초단위). 기본값 20초. 최소값 15초.
