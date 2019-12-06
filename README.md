@@ -9,7 +9,7 @@ CAULY Android SDK 연동 가이드
 #### CAULY SDK
 
 1. Release note	
-   - 전면광고 노출 시  Toast 메세지 노출되는 현상 수정
+   - AndroidX 라이브러리 대응
 		
 2. 주의사항
       - AndroidX 라이브러리 사용하는 경우
