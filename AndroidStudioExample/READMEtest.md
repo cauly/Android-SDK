@@ -66,7 +66,7 @@ CAULY Android SDK 연동 가이드
 		- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
 	```xml
 	<activity
- 	    android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
+ 	    android:name=".MainActivity"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"> 
     </activity>
 	```
