@@ -2,145 +2,139 @@ CAULY Android SDK 연동 가이드
 ----
 
 ### 목차 
-1. cauly SDK
-2. 설치 방법
- 	- 배너
-		- Java
-		- xml
- 	- 전면
-		- 일반
-		- close AD 
- 	- 네이티브광고
-		- BASE
-		- Custom
-3. TIP
-4. Class Reference
- 
-#### CAULY SDK
+1. Release note
+2. 준비
+	- build gradle
+		- aar 파일 추가
+		- Google Play Services API 추가
+	- AndroidManifest
+		- permission
+		- 네트워크 보안 설정
+		- Hardware Acceleration
+		- Activity orientation
+	- proguard 설정
+	- AndroidX 설정
+3. 배너
+	- Java
+	- xml
+4. 전면
+	- full
+	- close AD 
+5. 네이티브광고
+	- BASE
+	- Custom
 
-1. Release note	
+6. 아동 대상 서비스 취급용 태그' 설정 방법
+7. Error code
+8. Class Reference
+ 
+#### Release note
    - SDK파일 AAR파일 변경
    - native AD base mainImageID WebView로 변경
    - call/ gps 기능 삭제
 		
-2. 준비
-    - AndroidX 라이브러리 사용하는 경우
+#### 준비
 
-      ```xml
-      gradle.properties ::
-	  * android.useAndroidX=true
-	  * android.enableJetifier=true
-      ```
-    
-	참고 : https://developer.android.com/jetpack/androidx/migrate
-    - targetSdkVersion 28 이상 AndroidManifest.xml에 아래와 같이 설정 합니다.
-	 ```xml
-	  <application
-         android:usesCleartextTraffic="true"
-	  />
-	```
+[build.gradle]
+- aar 설정
 
-	- CAULY SDK Android 4.0(Ice Cream Sandwich, API Level 14) 이상 기기에서 동작합니다.
-	- proguard 설정 하는 경우 cauly SDK 포함된 Class 는 난독화 시키시면 안됩니다.
-	```clojure
-		-keep public class com.fsn.cauly.** {
-		 	   public protected *;
-		}
-		-keep public class com.trid.tridad.** {
-		  	  public protected *;
-		}
-		-dontwarn android.webkit.**
-	
-	- Android Studio 3.4 이상 부터 (gradle build tool 3.4.0)는 아래 와 같이 설정 해야합니다.
-	
-		-keep class com.fsn.cauly.** {
-		 	   public *; protected *;
-		}
-		-keep class com.trid.tridad.** {
-		  	  public *; protected *;
-		}
-		-dontwarn android.webkit.**
-	```
-	- ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
-		- Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
-		- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 초기화 됩니다.
-	```xml
-	<activity
- 	    android:name=".MainActivity"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize"> 
-    </activity>
-	```
+	- CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘CaulySDK-3.x.xx.aar’ 파일 복사 한다.	
+    - Gradle 설정 `app-level build.gradle`
 
-	- 필수 퍼미션 추가
-	```xml
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-	```	
-
-
-	- aar 설정
-		- CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성 한 후, ‘CaulySDK-3.x.xx.aar’ 파일 복사 한다
-		- Gradle 설정
-	`app-level build.gradle`
 	```clojure
  	repositories {
         flatDir {
             dirs 'libs'
         }
     }
+
+    Google Play Services
+
 	dependencies {
 		implementation name: 'CaulySDK-3.x.xx', ext: 'aar'
     	implementation 'com.google.android.gms:play-services-ads-identifier:xx.x.x'
 	}
 	```
 
-	- 권장 환경
-		- Android 4 버전 이상 (API level 14 이상)
+
+[AndroidManifest.xml]
+- 필수 퍼미션 추가
+	```xml
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	```	
+
+- 네트워크 보안 설정 (targetSdkVersion 28 이상)
+
+`광고 노출 및 클릭이 정상적으로 동작하기 위해서 cleartext 네트워크 설정 필요`
+
+```xml
+<application android:usesCleartextTraffic="true" />
+```	
+
+- Hardware Acceleration
+  	- html5, video 광고 노출을 위해서는 설정 필요
+```xml
+<application android:hardwareAccelerated="true" />
+```	
+
+- ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
+
+	- Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
+	- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 `초기화` 됩니다.
+
+```xml
+<activity
+    android:name=".MainActivity"
+    android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+</activity>
+```
+
+```xml
+<activity
+    android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
+    android:configChanges="keyboard|keyboardHidden|orientation|screenSize"> 
+</activity>
+```
+
+- proguard 설정 하는 경우 cauly SDK 포함된 Class는 난독화 시키시면 안됩니다.
+
+```clojure
+proguard-rules.pro ::
+-keep public class com.fsn.cauly.** {
+      public protected *;
+}
+-keep public class com.trid.tridad.** {
+  	  public protected *;
+}
+-dontwarn android.webkit.**
+
+- Android Studio 3.4 이상 부터 (gradle build tool 3.4.0)는 아래 와 같이 설정 해야합니다.
+
+-keep class com.fsn.cauly.** {
+	   public *; protected *;
+}
+-keep class com.trid.tridad.** {
+  	  public *; protected *;
+}
+-dontwarn android.webkit.**
+```
 	
-	
-#### 설치 방법
+- AndroidX 사용하는 경우
+```xml
+gradle.properties ::
+ * android.useAndroidX=true
+ * android.enableJetifier=true
+```
+
+참고 : https://developer.android.com/jetpack/androidx/migrate
 
 
-	
+#### 배너
+
 - 광고를 삽입하고 싶은 layout에 광고를 소스를 삽입(두 가지 방식 제공 : XML 방식, JAVA 방식)
-	
-	- `XML 방식` : 설정하지 않은 항목들은 기본값으로 설정됩니다.
-	```xml
-	<com.fsn.cauly.CaulyAdView
-		xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
-		android:id="@+id/xmladview"
-		android:layout_width="wrap_content"
-		android:layout_height="match_parent"
-		android:layout_alignParentBottom="true"
-		app:appcode="CAULY"
-		app:bannerHeight="Fixed"  
-	/>
-	```
-	- 'project > res > values'에 'attrs.xml' 파일 생성 후 아래 코드 추가	
- 	```xml
-	<declare-styleable name="com.cauly.android.ad.AdView">
-		<attr name="appcode" format="string" />
-		<attr name="effect" format="string" />
-		<attr name="dynamicReloadInterval" format="boolean" />
-		<attr name="reloadInterval" format="integer" />
-		<attr name="threadPriority" format="integer" />
-		<attr name="bannerHeight" format="string" />
-		<attr name=" enableDefaultBannerAd " format=" boolean " /> 
-		</declare-styleable>
-	```
 
-	
-	- `JAVA 방식` base [자세한 내용은 ‘CaulyExample’ 참조]
-		- 위치 : ‘ res  layout  ‘광고 삽입할 부분’.xml 
-	```xml
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:id="@+id/layout"
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-	</RelativeLayout>
-	```
-- 배너 광고
+- `JAVA 방식` base [자세한 내용은 ‘CaulyExample’ 참조]
 ``` java
    private CaulyAdView javaAdView;
 
@@ -210,9 +204,50 @@ CAULY Android SDK 연동 가이드
         javaAdView.reload();
     }
 ```
-			
-[CaulyAdinfo 설정 방법]
-			
+
+- 위치 : ‘ res  layout  ‘광고 삽입할 부분’.xml 
+
+```xml
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        </RelativeLayout>
+```
+
+- `XML 방식` : 설정하지 않은 항목들은 기본값으로 설정됩니다.
+
+```xml
+	<com.fsn.cauly.CaulyAdView
+            xmlns:app="http://schemas.android.com/apk/res/[개발자 프로젝트 PACKAGENAME]"
+            android:id="@+id/xmladview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            app:appcode="CAULY"
+            app:bannerHeight="Fixed" />
+```
+
+- 'project > res > values'에 'attrs.xml' 파일 생성 후 아래 코드 추가
+
+```xml
+	<declare-styleable name="com.cauly.android.ad.AdView">
+		<attr name="appcode" format="string" />
+		<attr name="effect" format="string" />
+		<attr name="dynamicReloadInterval" format="boolean" />
+		<attr name="reloadInterval" format="integer" />
+		<attr name="threadPriority" format="integer" />
+		<attr name="bannerHeight" format="string" />
+		<attr name=" enableDefaultBannerAd " format=" boolean " /> 
+		</declare-styleable>
+```
+
+\* 주의사항
+- Lifecycle에 따라 BannerAdView의 pause/resume/destroy API를 호출하지 않을 경우, 광고 수신에 불이익을 받을 수 있습니다.
+
+
 Adinfo|설 명
 ---|---
 Appcode|APP 등록 후 부여 받은 APP CODE[발급ID] 입력
@@ -222,8 +257,13 @@ dynamicReloadInterval()|true(기본값) : 광고에 따라 노출 주기 조정�
 bannerHeight()|Proportional(기본값) : 디바이스 긴방향 해상도의 10% <br/> Fixed : 50dp
 enableDefaultBannerAd ()|false : 디폴트배너 미노출 <br/>true : 디폴트배너 노출
 threadPriority()|스레드 우선 순위 지정 : 1~10(기본값 : 5)
+tagForChildDirectedTreatment(boolean)	|14세 미만 일 때 true
+gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
 
-- 전면광고
+
+#### 전면광고
+
+- 전면광고 플로팅형_ full Type
 ```java
     // 아래와 같이 전면 광고 표시 여부 플래그를 사용하면, 전면 광고 수신 후, 노출 여부를 선택할 수 있다.
     private boolean showInterstitial = false;
@@ -385,6 +425,15 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
 }
 ```
 
+\* 주의사항
+
+- Lifecycle에 따라 pause/resume/destroy API를 호출하지 않을 경우, 광고 수신에 불이익을 받을 수 있습니다.
+
+
+
+
+#### 네이티브광고
+
 - 네이티브광고 : BASE
 ```java
 public class JavaActivity extends Activity implements CaulyCloseAdListener {
@@ -449,6 +498,7 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
 }
 ```
 ```xml
+-activity_native_iconlist.xml
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -521,6 +571,8 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
 </RelativeLayout>
 ```
 
+
+
 - 네이티브광고:Custom
 
  1. CaulyAdInfo 생성
@@ -535,7 +587,7 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
  8. 구현 형태
 	- WebView 형태로 구현해주세요
  9. 파싱방법
- 	- List<HashMap<KEY,VALUE>> 방식으로 가져오는 경우, `mCaulyAdView.getAdsList();` `JAVA 방식`
+ 	- List<HashMap<KEY,VALUE>> 방식으로 가져오는 경우, `mCaulyAdView.getAdsList();`
 	- Raw JSON String을 직접가져 경우 `mCaulyAdView.getJsonString();`
 
 ```
@@ -573,13 +625,13 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
 ```java
 {
 CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
-                .iconImageID(R.id.main_image)       // 아이콘 이미지를 사용할 경우  
+                .iconImageID(R.id.main_image) // 아이콘 이미지를 사용할 경우  
                 .mainImageID(R.id.icon)       //메인 이미지를 사용할 경우
-                .adRatio("720x720")    //메인이미지 비율설정  안할경우, default: 720x480  or 480x720
-				.build();
-        mCaulyAdView = new CaulyCustomAd(this);
-        mCaulyAdView.setAdInfo(adInfo);
-        mCaulyAdView.setCustomAdListener(new CaulyCustomAdListener() {
+                .adRatio("720x720")			  //메인이미지 비율설정  안할경우, default: 720x480  or 480x720
+	.build();
+        	mCaulyAdView = new CaulyCustomAd(this);
+       		mCaulyAdView.setAdInfo(adInfo);
+        	mCaulyAdView.setCustomAdListener(new CaulyCustomAdListener() {
             @Override
             public void onShowedAd() {
             }
@@ -644,35 +696,13 @@ CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
         mCaulyAdView.sendImpressInform(item.id);
 }
 ```
-			
-#### TIP
-
-[설정방법]
-
-Attrs|설명
----|---
-Appcode	APP|등록 후 부여 받은 APP CODE`[발급ID]`입력
-Effect|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>RightSlide : 오른쪽에서 왼쪽으로 슬라이드<br/>TopSlide : 위에서 아래로 슬라이드<br/>BottomSlide : 아래서 위로 슬라이드<br/>FadeIn : 전에 있던 광고가 서서히 사라지는 효과 <br/>Circle : 한 바퀴 롤링<br/>None : 애니메이션 효과 없이 바로 광고 교체
-reloadInterval|min(기본값) : 20 초 <br/>max : 120 초
-enableDefaultBannerAd|false : 디폴트배너 미노출<br/>true : 디폴트배너 노출
-bannerHeight|Proportional(기본값) : 디바이스 긴 방향 해상도의 10%<br/>Fixed : 50dp
-threadPriority|스레드 우선 순위 지정 : 1~10(기본값 : 5)
+\* 주의사항
+- 광고영역에 WebView 권고 및 Lifecycle에 따라 pause/resume/destroy API를 호출하지 않을 경우, 광고 수신에 불이익을 받을 수 있습니다.
 
 
-[error 코드 정의]
-		
-Code|Message|설명
----|---|---
-0|OK|유료 광고
-200|	No filled AD	|전면CPM 광고 없음
-400|	The app code is invalid. Please check your app code!	|App code 불일치 또는default app code
-500|	Server error	|cauly서버 에러
--100|	SDK error	|SDK 에러
--200|	Request Failed(You are not allowed to send requests under minimum interval)	|최소요청주기 미달
+#### '아동 대상 서비스 취급용 태그' 설정 방법
 
-
-- '아동 대상 서비스 취급용 태그' 설정 방법
-	- 아동대상 콘텐츠로 지정한 경우 관심 기반 광고 및 리마케팅 광고 등이 필터링 됩니다.
+- 아동대상 콘텐츠로 지정한 경우 관심 기반 광고 및 리마케팅 광고 등이 필터링 됩니다.
 		- google families policy : https://play.google.com/about/families/#!?zippy_activeEl=designed-for-families#designed-for-families
 		- coppa : https://www.ftc.gov/tips-advice/business-center/privacy-and-security/children's-privacy
 	
@@ -691,28 +721,22 @@ Code|Message|설명
 ```
  \* tagForChildDirectedTreatment을 호출하지 않으면 아동 대상 콘테츠가 아닌 것으로 간주 합니다.
 
+		
+#### error code
+[error 코드 정의]
+		
+Code|Message|설명
+---|---|---
+0|OK|유료 광고
+200|	No filled AD	|전면CPM 광고 없음
+400|	The app code is invalid. Please check your app code!	|App code 불일치 또는default app code
+500|	Server error	|cauly서버 에러
+-100|	SDK error	|SDK 에러
+-200|	Request Failed(You are not allowed to send requests under minimum interval)	|최소요청주기 미달
+	
+
 Class Reference
 =================
-
-CaulyAdInfo[광고 설정 클래스]
-------------------------------
-
-CaulyAdInfoBuilder CaulyAdInfo 생성용 클래스||
----|---
-CaulyAdInfoBuilder(Context, AttributeSet)|지정한 Context 및 AttributSet으로 CaulyAdInfoBuilder 생성
-CaulyAdInfoBuilder(String)	|지정한 App Code로 CaulyAdInfoBuilder 생성
-appCode(String)	|App Code 지정
-gender(String)	|성별 지정 : “all", “male”, “female”
-age(String)	|연령대 지정 : “all”, “age10”, “age20”, “age30”, “age40”, “age50”
-tagForChildDirectedTreatment(boolean)	|14세 미만 일 때 true
-gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
-effect(String)	|광고 교체 효과 지정 : “None”, “LeftSlide”, “RightSlide”, “TopSlide”, “BottomSlide”, “FadeIn”, “Circle”
-dynamicReloadInterval(boolean)	|광고 노출 시간 서버 제어 허용 여부 지정
-reloadInterval(int)	|광고 갱신 주기 지정 : min 15, max 120
-threadPriority(int)	|스레드 우선 순위 지정
-bannerHeight(BannerHeight)	|배너 높이 설정 : Fixed, Proportional
-enableDefaultBannerAd()	|광고 수신 실패 시 카울리 배너 노출 여부 선택
-build()	|설정한 정보에 따라 CaulyAdInfo 생성
 
 Logger 로그 생성 클래스
 ------------------------------
