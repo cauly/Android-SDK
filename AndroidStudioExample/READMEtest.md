@@ -627,7 +627,7 @@ CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
                 .iconImageID(R.id.main_image) // 아이콘 이미지를 사용할 경우  
                 .mainImageID(R.id.icon)       //메인 이미지를 사용할 경우
                 .adRatio("720x720")			  //메인이미지 비율설정  안할경우, default: 720x480  or 480x720
-	.build();
+		.build();
         	mCaulyAdView = new CaulyCustomAd(this);
        		mCaulyAdView.setAdInfo(adInfo);
         	mCaulyAdView.setCustomAdListener(new CaulyCustomAdListener() {
@@ -696,7 +696,7 @@ CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
 }
 ```
 \* 주의사항
-- 광고영역에 WebView 권고 및 Lifecycle에 따라 pause/resume/destroy API를 호출하지 않을 경우, 광고 수신에 불이익을 받을 수 있습니다.
+- 광고영역에 WebView 권장 및 Lifecycle에 따라 pause/resume/destroy API를 호출하지 않을 경우, 광고 수신에 불이익을 받을 수 있습니다.
 
 
 #### '아동 대상 서비스 취급용 태그' 설정 방법
@@ -721,7 +721,7 @@ CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
  \* tagForChildDirectedTreatment을 호출하지 않으면 아동 대상 콘테츠가 아닌 것으로 간주 합니다.
 
 		
-#### error code
+#### Error Code
 [error 코드 정의]
 		
 Code|Message|설명
