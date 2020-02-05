@@ -97,6 +97,7 @@ CAULY Android SDK 연동 가이드
 </activity>
 ```
 
+[proguard-rules]
 - proguard 설정 하는 경우 cauly SDK 포함된 Class는 난독화 시키시면 안됩니다.
 
 ```clojure
@@ -119,7 +120,7 @@ proguard-rules.pro ::
 }
 -dontwarn android.webkit.**
 ```
-	
+[AndroidX]	
 - AndroidX 사용하는 경우
 ```xml
 gradle.properties ::
