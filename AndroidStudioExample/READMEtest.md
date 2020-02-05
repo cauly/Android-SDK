@@ -48,10 +48,9 @@ CAULY Android SDK 연동 가이드
         }
     }
 
-    Google Play Services
-
 	dependencies {
 		implementation name: 'CaulySDK-3.x.xx', ext: 'aar'
+		//Google Play Services
     	implementation 'com.google.android.gms:play-services-ads-identifier:xx.x.x'
 	}
 	```
@@ -97,7 +96,6 @@ CAULY Android SDK 연동 가이드
 </activity>
 ```
 
-[proguard-rules]
 - proguard 설정 하는 경우 cauly SDK 포함된 Class는 난독화 시키시면 안됩니다.
 
 ```clojure
@@ -120,7 +118,7 @@ proguard-rules.pro ::
 }
 -dontwarn android.webkit.**
 ```
-[AndroidX]	
+	
 - AndroidX 사용하는 경우
 ```xml
 gradle.properties ::
