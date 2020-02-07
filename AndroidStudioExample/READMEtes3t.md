@@ -33,6 +33,7 @@ CAULY Android SDK 연동 가이드
    - native AD base mainImageID WebView로 변경
    - call/ gps 기능 삭제
 		
+
 #### 준비
 
 [build.gradle]
@@ -77,7 +78,7 @@ CAULY Android SDK 연동 가이드
 <application android:hardwareAccelerated="true" />
 ```	
 
-- ‘AndroidManifest.xml’ 설정 방법 [자세한 내용은 ‘CaulyExample’ 참조]
+- Activity orientation
 
 	- Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
 	- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 `초기화` 됩니다.
@@ -204,7 +205,7 @@ gradle.properties ::
     }
 ```
 
-- 위치 : ‘ res  layout  ‘광고 삽입할 부분’.xml 
+- ‘광고 삽입할 부분’.xml 
 
 ```xml
         <RelativeLayout
@@ -240,12 +241,17 @@ gradle.properties ::
 		<attr name="threadPriority" format="integer" />
 		<attr name="bannerHeight" format="string" />
 		<attr name=" enableDefaultBannerAd " format=" boolean " /> 
-		</declare-styleable>
+	</declare-styleable>
 ```
 
 \* 주의사항
-- Lifecycle에 따라 BannerAdView의 pause/resume/destroy API를 호출하지 않을 경우, 광고 수신에 불이익을 받을 수 있습니다.
+- Lifecycle에 따라 CaulyAdView의 pause/resume/destroy API를 호출하지 않을 경우, 광고 수신에 불이익을 받을 수 있습니다.
+- 미디에이션 사용시 카울리배너광고 호출하면 광고 삽입한 부분의 View를 removeView 및 CaulyAdView의 destroy, null 처리 해주시길 바랍니다.    또한 배너 광고 수신 실패할 경우 광고 삽입한 부분의 View를 removeView 해주세요.
 
+
+
+
+[CaulyAdinfo 설정 방법]
 
 Adinfo|설 명
 ---|---
@@ -262,13 +268,13 @@ gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
 
 #### 전면광고
 
-- 전면광고 플로팅형_ full Type
+- 전면광고 fullScreen Type
 ```java
     // 아래와 같이 전면 광고 표시 여부 플래그를 사용하면, 전면 광고 수신 후, 노출 여부를 선택할 수 있다.
     private boolean showInterstitial = false;
 
     // Activity 버튼 처리
-	// - 전면 광고 요청 버튼
+    // - 전면 광고 요청 버튼
     public void onRequestInterstitial(View button) {
 
         // CaulyAdInfo 생성
@@ -327,7 +333,7 @@ gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
     }
 ```
 		
-- 전면광고 플로팅형_ Close Ad Type
+- 전면광고 Close Ad Type
 ```java
 public class JavaActivity extends Activity implements CaulyCloseAdListener {
 
@@ -721,7 +727,7 @@ CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
  \* tagForChildDirectedTreatment을 호출하지 않으면 아동 대상 콘테츠가 아닌 것으로 간주 합니다.
 
 		
-#### Error Code
+#### Error code
 [error 코드 정의]
 		
 Code|Message|설명
@@ -763,11 +769,13 @@ pause()	|광고 요청 중단
 resume()	|광고 요청 재개
 destroy()	|광고 소멸
 
+
 CaulyAdViewListener||
-onReceiveAd(CaulyAdView, boolean isChargeableAd)	|광고 노출 성공 시 호출됨. 유,무료 광고 여부가 isChargeableAd 변수에 설정됨
-onFailedToReceiveAd(CaulyAdView, int errorCode, String errorMsg)	|광고 노출 실패 시 호출됨. 오류 코드와 내용이 errorCode, errorMsg 변수에 설정됨
-onShowLandingScreen(CaulyAdView)	|랜딩 페이지가 열린 경우 호출됨
-onCloseLandingScreen(CaulyAdView)	|랜딩 페이지가 닫힌 경우 호출됨
+---|---
+onReceiveAd(CaulyAdView, boolean isChargeableAd)    |광고 노출 성공 시 호출됨. 유,무료 광고 여부가 isChargeableAd 변수에 설정됨
+onFailedToReceiveAd(CaulyAdView, int errorCode, String errorMsg)    |광고 노출 실패 시 호출됨. 오류 코드와 내용이 errorCode, errorMsg 변수에 설정됨
+onShowLandingScreen(CaulyAdView)    |랜딩 페이지가 열린 경우 호출됨
+onCloseLandingScreen(CaulyAdView)   |랜딩 페이지가 닫힌 경우 호출됨
 
 전면 광고_풀스크린형
 ---------------------------------
