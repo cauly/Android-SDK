@@ -45,8 +45,8 @@
 
 #### 필수 퍼미션 추가
 ```xml
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 ```
 
 #### 네트워크 보안 설정 (targetSdkVersion 28 이상)
