@@ -44,7 +44,6 @@
 ### 앱 AndroidManifest.xml 속성 지정
 
 #### 필수 퍼미션 추가
-
 	```xml
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
