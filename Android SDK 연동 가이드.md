@@ -44,10 +44,10 @@
 ### 앱 AndroidManifest.xml 속성 지정
 
 #### 필수 퍼미션 추가
-	```xml
+```xml
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-	```
+```
 
 #### 네트워크 보안 설정 (targetSdkVersion 28 이상)
 
