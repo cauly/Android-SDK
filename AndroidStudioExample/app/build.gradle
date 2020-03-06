@@ -6,6 +6,8 @@ android {
         applicationId "com.fsn.cauly.example"
         minSdkVersion 14
         targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -20,10 +22,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
-    implementation files('libs/CaulySDK-3.5.02.jar')
+    implementation name: 'CaulySDK-3.5.04', ext: 'aar'
 }
