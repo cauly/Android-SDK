@@ -17,7 +17,6 @@ Release Note
 - native AD base mainImageID WebView로 변경
 - call/ gps 기능 삭제
 
-SDK 변경 이력은 [Release History](https://github.com/cauly/Android-SDK/blob/master/Release%20History.md) 에서 확인하실 수 있습니다.
 
 문의
 ----
