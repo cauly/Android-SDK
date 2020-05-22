@@ -32,5 +32,5 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation name: 'CaulySDK-3.5.04', ext: 'aar'
+    implementation name: 'CaulySDK-3.5.06', ext: 'aar'
 }
