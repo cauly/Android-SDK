@@ -261,7 +261,9 @@ gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
     public void onRequestInterstitial(View button) {
 
         // CaulyAdInfo 생성
-        CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).build();
+        CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE)
+                          // statusbarHide(boolean) : 상태바 가리기 옵션(true : 상태바 가리기)
+                            .build();
 
         // 전면 광고 생성
         CaulyInterstitialAd interstial = new CaulyInterstitialAd();
@@ -329,7 +331,9 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_java);
         //CloseAd 초기화 
-        CaulyAdInfo closeAdInfo = new CaulyAdInfoBuilder(APP_CODE).build();
+        CaulyAdInfo closeAdInfo = new CaulyAdInfoBuilder(APP_CODE)
+                          // statusbarHide(boolean) : 상태바 가리기 옵션(true : 상태바 가리기)
+                            .build();	
         mCloseAd = new CaulyCloseAd();
 					
 		/*  Optional
@@ -588,7 +592,10 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
                     "title":"제목",
                     "subtitle":"부제목",
                     "description":"설명"
-                "linkUrl":랜딩 페이지 URL
+                "optout_img_url":"optout 버튼 이미지(png)",
+                "optout_url":"optout page url",
+                "optout":"관심기반 광고 여부 , true or false",
+		"linkUrl":랜딩 페이지 URL
             }
 			]
         }
