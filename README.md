@@ -13,9 +13,8 @@ SDK 연동 방법은 [Android SDK 연동 가이드](https://github.com/cauly/And
 Release Note
 ----
 
-- SDK파일 AAR파일 변경
-- native AD base mainImageID WebView로 변경
-- call/ gps 기능 삭제
+- closeAD/ext_interstitial : 상태바 가리기 옵션 추가
+- optout 필드 추가
 
 
 문의
