@@ -592,10 +592,10 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
                     "title":"제목",
                     "subtitle":"부제목",
                     "description":"설명"
-                "optout_img_url":"optout 버튼 이미지(png)",
-                "optout_url":"optout page url",
-                "optout":"관심기반 광고 여부 , true or false",
-		"linkUrl":랜딩 페이지 URL
+		"linkUrl":"랜딩 페이지 URL",
+		"optout_img_url":"optout 버튼 이미지(png)",
+		"optout_url":"optout page url",
+		"optout":"관심기반 광고 여부 , true or false"
             }
 			]
         }
