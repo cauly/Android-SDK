@@ -55,11 +55,12 @@ public class JavaActivity extends Activity implements CaulyAdViewListener, Cauly
         //    	dynamicReloadInterval(boolean dynamicReloadInterval)	: 광고별 갱신 주기 사용. true이면 아래의 reloadInterval 무시. [true(기본값)|false]
         //    	reloadInterval(int reloadInterval)	: 광고 갱신 주기(초단위). 기본값 20초. 최소값 15초.
         //    	threadPriority(int priority)		: 광고 요청 스레드의 우선 순위. 기본값은 부모 스레드와 동일.
-        //    	bannerHeight(BannerHeight height)	: 배너 광고의 높이. CaulyAdInfo.BannerHeight.[Proportional(기본값, 디바이스 긴방향 해상도의 10%)|Fixed_50(50dp)]
+        //    	bannerHeight(BannerHeight height)	: 배너 광고의 높이. CaulyAdInfo.BannerHeight.[Fixed_50(50dp)]
         //    	enableDefaultBannerAd()	            : 광고 수신 실패 시 디폴트 배너 노출 막기. [true|false(기본값)]
 		CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).
 				effect("TopSlide").
-				enableDefaultBannerAd(false). 
+				enableDefaultBannerAd(false).
+				bannerHeight("Fixed").
 				build();
 
 		// CaulyAdInfo를 이용, CaulyAdView 생성.
