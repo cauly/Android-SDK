@@ -51,7 +51,6 @@ public class JavaActivity extends Activity implements CaulyAdViewListener, Cauly
         // 설정 메소드
         //    	appCode(String appCode)				: APP_CODE 지정. 생성자 "CaulyAdInfoBuilder(APP_CODE)"를 사용해도 됨.
         //    	effect(CaulyAdInfo.Effect effect)	: 광고 교체 애니메이션. CaulyAdInfo.Effect.[None|LeftSlide(기본값)|RightSlide|TopSlide|BottomSlide|FadeIn|Circle]
-        //    	allowcall(boolean allowcall)		: call 광고 노출 여부. [true(기본값)|false]
         //    	dynamicReloadInterval(boolean dynamicReloadInterval)	: 광고별 갱신 주기 사용. true이면 아래의 reloadInterval 무시. [true(기본값)|false]
         //    	reloadInterval(int reloadInterval)	: 광고 갱신 주기(초단위). 기본값 20초. 최소값 15초.
         //    	threadPriority(int priority)		: 광고 요청 스레드의 우선 순위. 기본값은 부모 스레드와 동일.
