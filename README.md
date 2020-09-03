@@ -13,8 +13,7 @@ SDK 연동 방법은 [Android SDK 연동 가이드](https://github.com/cauly/And
 Release Note
 ----
 
-- 상태바 가리기 옵션 추가(closeAD/ext_interstitial)
-- optout 필드 추가
+- targetSdkVersion  28 > 29  변경
 
 
 문의
