@@ -18,7 +18,14 @@ allprojects {
     repositories {
         google()
         jcenter()
-
+        // Cauly SDK Repository
+        maven {
+            url "s3://repo.cauly.net/releases"
+            credentials(AwsCredentials) {
+                accessKey "AKIAWRZUK5MFKYVSUOLB"
+                secretKey "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"
+            }
+        }
     }
 }
 
