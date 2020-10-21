@@ -1,6 +1,6 @@
 # 목차
 1. [CAULY 시작하기](#1-CAULY-시작하기)
-    * [build.gradle > aar 파일 추가, Google Play Services API 추가](#buildgradle--aar-파일-추가-google-play-services-api-추가)   
+    * [CAULY SDK 추가](#cauly-sdk-추가)   
     * [앱 AndroidManifest.xml 속성 지정](#앱-androidmanifestxml-속성-지정)
     * [proguard 설정](#proguard-설정-하는-경우-cauly-sdk-포함된-class는-난독화-시키시면-안됩니다)
     * [AndroidX 설정](#androidx-사용하는-경우)
