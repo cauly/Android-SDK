@@ -21,24 +21,34 @@
 # 1. CAULY 시작하기
 
 
-### build.gradle > aar 파일 추가, Google Play Services API 추가
-
-- CAULY SDK를 설치할 project 에 ‘libs’ 폴더를 생성한 후, ‘CaulySDK-3.x.xx.aar’ 파일 복사한다.	
-- Gradle 설정 `app-level build.gradle`
+### CAULY SDK 추가
+	
+- 최상위 level build.gradle 에  maven repository 추가
 
 	```clojure
- 	repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
-
-	dependencies {
-		implementation name: 'CaulySDK-3.x.xx', ext: 'aar'
-		//Google Play Services
-    	implementation 'com.google.android.gms:play-services-ads-identifier:xx.x.x'
+	allprojects {
+	    repositories {
+        	google()
+	        jcenter()
+        	maven {
+            	url "s3://repo.cauly.net/releases"
+		credentials(AwsCredentials) {
+			accessKey "AKIAWRZUK5MFKYVSUOLB"
+                	secretKey "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"
+			}
+		}
+	    }
 	}
 	```
+	
+- app level build.gradle 에 'dependencies'  추가
+
+	```clojure
+ 	dependencies {
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.11' 
+    }
+	```
+
 
 
 ### 앱 AndroidManifest.xml 속성 지정
@@ -172,13 +182,13 @@ gradle.properties ::
 
     @Override
     public void onShowLandingScreen(CaulyAdView adView) {
-        // 광고 배너를 클릭하여 랜딩 페이지가 열린 경우 호출됨.
+        // 광고 배너를 클릭하여 WebView를 통해 랜딩 페이지가 열린 경우 호출됨.
         Log.d("CaulyExample", "banner AD landing screen opened.");
     }
 
     @Override
     public void onCloseLandingScreen(CaulyAdView adView) {
-        // 광고 배너를 클릭하여 열린 랜딩 페이지가 닫힌 경우 호출됨.
+        // 광고 배너를 클릭하여 WebView를 통해 열린 랜딩 페이지가 닫힌 경우 호출됨.
         Log.d("CaulyExample", "banner AD landing screen closed.");
     }
 
@@ -763,8 +773,8 @@ CaulyAdViewListener||
 ---|---
 onReceiveAd(CaulyAdView, boolean isChargeableAd)    |광고 노출 성공 시 호출됨. 유,무료 광고 여부가 isChargeableAd 변수에 설정됨
 onFailedToReceiveAd(CaulyAdView, int errorCode, String errorMsg)    |광고 노출 실패 시 호출됨. 오류 코드와 내용이 errorCode, errorMsg 변수에 설정됨
-onShowLandingScreen(CaulyAdView)    |랜딩 페이지가 열린 경우 호출됨
-onCloseLandingScreen(CaulyAdView)   |랜딩 페이지가 닫힌 경우 호출됨
+onShowLandingScreen(CaulyAdView)    |webView를 통해 랜딩 페이지가 열린 경우 호출됨
+onCloseLandingScreen(CaulyAdView)   |webView를 통해 열린 랜딩 페이지가 닫힌 경우 호출됨
 
 
 전면 광고_풀스크린형
