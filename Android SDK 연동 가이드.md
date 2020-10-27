@@ -67,12 +67,6 @@
 <application android:usesCleartextTraffic="true" />
 ```	
 
-#### Hardware Acceleration
-
-html5, video 광고 노출을 위해서는 설정 필요
-```xml
-<application android:hardwareAccelerated="true" />
-```	
 
 #### Activity orientation
 - Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
