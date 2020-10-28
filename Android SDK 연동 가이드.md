@@ -45,7 +45,7 @@
 
 	```clojure
  	dependencies {
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.11' 
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.12' 
     }
 	```
 
@@ -136,11 +136,12 @@ gradle.properties ::
 
         // CaulyAdInfo 상세 설정 방법은 하단 표 참조
         // 설정하지 않은 항목들은 기본값으로 설정됨
+	// banner size 320x50
         CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).
-                effect("RightSlide").
-                bannerHeight("Fixed").
+                bannerHeight(CaulyAdInfoBuilder.FIXED).
+		setBannerSize(320,50). // 배너 지원 사이즈 (320x50 , 320x100)
                 build();
-
+	
         // CaulyAdInfo를 이용, CaulyAdView 생성.
         javaAdView = new CaulyAdView(this);
         javaAdView.setAdInfo(adInfo);
@@ -160,12 +161,7 @@ gradle.properties ::
     @Override
     public void onReceiveAd(CaulyAdView adView, boolean isChargeableAd) {
         // 광고 수신 성공 & 노출된 경우 호출됨.
-        // 수신된 광고가 무료 광고인 경우 isChargeableAd 값이 false 임.
-        if (isChargeableAd == false) {
-            Log.d("CaulyExample", "free banner AD received.");
-        } else {
-            Log.d("CaulyExample", "normal banner AD received.");
-        }
+            Log.d("CaulyExample", "banner AD received.");
     }
 
     @Override
@@ -228,7 +224,6 @@ gradle.properties ::
 		<attr name="reloadInterval" format="integer" />
 		<attr name="threadPriority" format="integer" />
 		<attr name="bannerHeight" format="string" />
-		<attr name=" enableDefaultBannerAd " format=" boolean " /> 
 	</declare-styleable>
 ```
 
@@ -246,8 +241,8 @@ Appcode|APP 등록 후 부여 받은 APP CODE[발급ID] 입력
 Effect()|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>RightSlide : 오른쪽에서 왼쪽으로 슬라이드<br/>TopSlide : 위에서 아래로 슬라이드<br/>BottomSlide : 아래서 위로 슬라이드<br/>FadeIn : 전에 있던 광고가 서서히 사라지는 효과 <br/>Circle : 한 바퀴 롤링<br/>None : 애니메이션 효과 없이 바로 광고 교체
 reloadInterval()|min(기본값) : 20초)<br/>max : 120 초
 dynamicReloadInterval()|true(기본값) : 광고에 따라 노출 주기 조정할 수 있도록 하여 광고 수익 상승 효과 기대<br/>false : reloadInterval 설정 값으로 Rolling
-bannerHeight()|Fixed : 50dp
-enableDefaultBannerAd ()|false : 디폴트배너 미노출 <br/>true : 디폴트배너 노출
+bannerHeight()|FIXED : 높이 고정 형태  </br> SQUARE : 가로/세로 고정 형태
+setBannerSize ()| 지원하는 배너 사이즈 : 320x50, 320x100
 threadPriority()|스레드 우선 순위 지정 : 1~10(기본값 : 5)
 tagForChildDirectedTreatment(boolean)	|14세 미만 일 때 true
 gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
