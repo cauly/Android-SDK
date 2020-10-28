@@ -136,7 +136,6 @@ gradle.properties ::
 
         // CaulyAdInfo 상세 설정 방법은 하단 표 참조
         // 설정하지 않은 항목들은 기본값으로 설정됨
-	// banner size 320x50
         CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).
                 bannerHeight(CaulyAdInfoBuilder.FIXED).
 		setBannerSize(320,50). // 배너 지원 사이즈 (320x50 , 320x100)
