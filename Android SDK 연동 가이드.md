@@ -138,7 +138,7 @@ gradle.properties ::
         // 설정하지 않은 항목들은 기본값으로 설정됨
         CaulyAdInfo adInfo = new CaulyAdInfoBuilder(APP_CODE).
                 bannerHeight(CaulyAdInfoBuilder.FIXED).
-		setBannerSize(320,50). // 배너 지원 사이즈 (320x50 , 320x100)
+		setBannerSize(320,50). // 배너 지원 사이즈 (320x50 , 320x100, 300x250)
                 build();
 	
         // CaulyAdInfo를 이용, CaulyAdView 생성.
@@ -241,7 +241,7 @@ Effect()|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>Ri
 reloadInterval()|min(기본값) : 20초)<br/>max : 120 초
 dynamicReloadInterval()|true(기본값) : 광고에 따라 노출 주기 조정할 수 있도록 하여 광고 수익 상승 효과 기대<br/>false : reloadInterval 설정 값으로 Rolling
 bannerHeight()|FIXED : 높이 고정 형태  </br> SQUARE : 가로/세로 고정 형태
-setBannerSize ()| 지원하는 배너 사이즈 : 320x50, 320x100
+setBannerSize ()| 지원하는 배너 사이즈 : 320x50, 320x100,300x250
 threadPriority()|스레드 우선 순위 지정 : 1~10(기본값 : 5)
 tagForChildDirectedTreatment(boolean)	|14세 미만 일 때 true
 gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
