@@ -45,7 +45,7 @@
 
 	```clojure
  	dependencies {
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.12' 
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.14' 
     }
 	```
 
