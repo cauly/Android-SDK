@@ -242,7 +242,7 @@ Effect()|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>Ri
 reloadInterval()|min(기본값) : 20초)<br/>max : 120 초
 dynamicReloadInterval()|true(기본값) : 광고에 따라 노출 주기 조정할 수 있도록 하여 광고 수익 상승 효과 기대<br/>false : reloadInterval 설정 값으로 Rolling
 bannerHeight()|Adaptive : 적응형 높이 형태 </br> Fixed : 높이 고정 형태
-setBannerSize ()| <br>Adaptive 지원하는 배너 사이즈 : (기본값)320x50, 320x100<br><br>Fixed 지원하는 배너 사이즈 : (기본값)320x50, 320x100,300x250<br><br>* xml 방식의 경우 320x50만 지원합니다.<br/>
+setBannerSize ()| Adaptive 지원하는 배너 사이즈 : (기본값)320x50, 320x100<br/>Fixed 지원하는 배너 사이즈 : (기본값)320x50, 320x100,300x250<br/>* xml 방식의 경우 320x50만 지원합니다.
 threadPriority()|스레드 우선 순위 지정 : 1~10(기본값 : 5)
 tagForChildDirectedTreatment(boolean)	|14세 미만 일 때 true
 gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
