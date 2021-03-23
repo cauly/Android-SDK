@@ -201,6 +201,7 @@ gradle.properties ::
 ```
 
 #### `XML 방식` : 설정하지 않은 항목들은 기본값으로 설정됩니다.
+- banner size는 320x50만 지원합니다. 
 
 ```xml
 	<com.fsn.cauly.CaulyAdView
@@ -210,7 +211,7 @@ gradle.properties ::
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             app:appcode="CAULY"
-            app:bannerHeight="Fixed" />
+            app:bannerHeight="Adaptive" />
 ```
 
 #### 'project > res > values'에 'attrs.xml' 파일 생성 후 아래 코드 추가
@@ -240,8 +241,8 @@ Appcode|APP 등록 후 부여 받은 APP CODE[발급ID] 입력
 Effect()|LeftSlide(기본값) : 왼쪽에서 오른쪽으로 슬라이드<br/>RightSlide : 오른쪽에서 왼쪽으로 슬라이드<br/>TopSlide : 위에서 아래로 슬라이드<br/>BottomSlide : 아래서 위로 슬라이드<br/>FadeIn : 전에 있던 광고가 서서히 사라지는 효과 <br/>Circle : 한 바퀴 롤링<br/>None : 애니메이션 효과 없이 바로 광고 교체
 reloadInterval()|min(기본값) : 20초)<br/>max : 120 초
 dynamicReloadInterval()|true(기본값) : 광고에 따라 노출 주기 조정할 수 있도록 하여 광고 수익 상승 효과 기대<br/>false : reloadInterval 설정 값으로 Rolling
-bannerHeight()|ADAPTIVE : 적응형 높이 형태 </br> FIXED : 높이 고정 형태
-setBannerSize ()| 지원하는 배너 사이즈 : 320x50, 320x100,300x250
+bannerHeight()|Adaptive : 적응형 높이 형태 </br> Fixed : 높이 고정 형태
+setBannerSize ()| <br>Adaptive 지원하는 배너 사이즈 : (기본값)320x50, 320x100<br><br>Fixed 지원하는 배너 사이즈 : (기본값)320x50, 320x100,300x250<br><br>* xml 방식의 경우 320x50만 지원합니다.<br/>
 threadPriority()|스레드 우선 순위 지정 : 1~10(기본값 : 5)
 tagForChildDirectedTreatment(boolean)	|14세 미만 일 때 true
 gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
