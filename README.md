@@ -13,7 +13,7 @@ SDK 연동 방법은 [Android SDK 연동 가이드](https://github.com/cauly/And
 Release Note
 ----
 
-- targetSdkVersion  28 > 29  변경
+- 적응형(adaptive)배너 지원
 
 
 문의
