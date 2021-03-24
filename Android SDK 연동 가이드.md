@@ -7,6 +7,7 @@
 2. [배너 광고 추가하기](#2-배너-광고-추가하기)
     * [JAVA 방식 base](#java-방식-base-자세한-내용은-caulyexample-참조)
     * [XML 방식](#xml-방식--설정하지-않은-항목들은-기본값으로-설정됩니다)
+     * [CaulyAdinfo 설정방법](#CaulyAdinfo-설정방법)
 3. [전면 광고 추가하기](#3-전면-광고-추가하기)
     * [전면광고 fullScreen Type](#전면광고-fullscreen-type)   
     * [전면광고 Close Ad Type](#전면광고-close-ad-type)   
@@ -233,7 +234,7 @@ gradle.properties ::
 - 미디에이션 사용시 카울리배너광고 호출하면 광고 삽입한 부분의 View를 removeView 및 CaulyAdView의 destroy, null 처리 해주시길 바랍니다.    또한 배너 광고 수신 실패할 경우 광고 삽입한 부분의 View를 removeView 해주세요.
 
 
-[CaulyAdinfo 설정 방법]
+CaulyAdinfo 설정방법
 
 Adinfo|설 명
 ---|---
