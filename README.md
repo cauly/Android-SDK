@@ -13,7 +13,7 @@ SDK 연동 방법은 [Android SDK 연동 가이드](https://github.com/cauly/And
 Release Note
 ----
 
-- 적응형(adaptive)배너 지원
+- [적응형(adaptive)배너 지원](https://github.com/cauly/Android-SDK/blob/master/Android%20SDK%20%EC%97%B0%EB%8F%99%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
 
 
 문의
