@@ -15,7 +15,7 @@ Release Note
 
 - android 11 대응 
 - closeAd 일부 버그 수정
-- Webview 기능 강화
+- webView 기능 강화
 
 문의
 ----
