@@ -50,7 +50,7 @@ public class CaulyBanner implements CustomEventBanner, CaulyAdBannerViewListener
                 layout = bannerActivity.findViewById(R.id.adView);
 
                 // 광고 정보 설정
-                CaulyAdInfo ai = new CaulyAdInfoBuilder("RNPLpEkQ") // CAULY app code
+                CaulyAdInfo ai = new CaulyAdInfoBuilder("CAULY") // CAULY app code
                         .bannerHeight(CaulyAdInfoBuilder.FIXED)
                         .banner_interval(false)
                         .dynamicReloadInterval(false)
