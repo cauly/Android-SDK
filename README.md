@@ -13,10 +13,10 @@ SDK 연동 방법은 [Android SDK 연동 가이드](https://github.com/cauly/And
 Release Note
 ----
 
-- android 11 대응 
-- closeAd 일부 버그 수정
-- webView 기능 강화
-
+- interstitial 닫기 처리 관련 버그 수정
+- Resource Failed to end warning 수정
+- 그외 일부 광고 기능 개선
+ 
 문의
 ----
 
