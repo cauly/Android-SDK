@@ -46,7 +46,7 @@
 
 	```clojure
  	dependencies {
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.20' 
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.21' 
     }
 	```
 
@@ -58,6 +58,7 @@
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+<uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 ```
 
 #### 네트워크 보안 설정 (targetSdkVersion 28 이상)
