@@ -28,6 +28,9 @@ Release Note
    - 최신 SDK 3.5.21 버전으로 업데이트를 해주셔야 안드로이드 12 환경에서 정상적인 광고ID 수집이 가능하며,
    - 구글 광고ID가 없는 경우에는 app set ID 식별자 값을 수집하여 분석 및 프로드 방어 를 문제 없이 수행 할 수 있도록 지원합니다.
    - 퍼미션 추가와 함께, 카울리 안드로이드 SDK 또한 최신 버전으로 업데이트가 필요합니다.
+   - 로컬저장소에 수동으로 업데이트 하시는 경우 app set ID 수집을 위해 gradle 파일에 아래 Dependency 를 추가 해야 합니다.
+     implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+	 implementation 'com.google.android.gms:play-services-appset:16.0.0'
 3. 개인정보 처리방침(Pivacy Policy) 업데이트 
    - 3rd Party SDK 가 수집하는 항목에서 디바이스 래밸의 app set ID 항목이 추가 되었습니다. 귀사 서비스의 개인정보 처리방침에 추가가 필요한 경우 업데이트를 부탁 드립니다.
 
