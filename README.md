@@ -33,7 +33,7 @@ Release Note
    - 로컬 저장소에 [Cauly SDK 를 수동으로 Import 하여 사용하시는 경우](https://github.com/cauly/Android-SDK/tree/master/CaulyLib) App set ID 수집을 위해 gradle 파일에 아래 Dependency 를 추가 해야 합니다.
      ```
      implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
-	  implementation 'com.google.android.gms:play-services-appset:16.0.0'
+     implementation 'com.google.android.gms:play-services-appset:16.0.0'
      ```
 3. 개인정보 처리방침 (Pivacy Policy) 업데이트 
    - 3rd Party SDK 가 수집하는 항목에서 디바이스 레벨의 App set ID 항목이 추가 되었습니다. 귀사 서비스의 개인정보 처리방침에 추가가 필요한 경우 업데이트를 부탁 드립니다.
