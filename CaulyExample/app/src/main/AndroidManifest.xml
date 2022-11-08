@@ -53,7 +53,7 @@
         <activity
             android:name=".EntryActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

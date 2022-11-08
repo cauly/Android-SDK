@@ -48,7 +48,7 @@
  	dependencies {
 	implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
 	implementation 'com.google.android.gms:play-services-appset:16.0.0'
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.22' 
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.24' 
     }
 	```
 
@@ -70,6 +70,13 @@
 ```xml
 <application android:usesCleartextTraffic="true" />
 ```	
+
+#### 더 안전한 구성요소 내보내기 설정 (targetSdkVersion 31 이상)
+`intent-filter를 사용하는 활동을 포함하는 경우 android:exported 속성 설정 필요 (MAIN/LAUNCHER activity는 ture 설정 필수)`
+
+```xml
+<activity android:exported="true" />
+``` 
 
 
 #### Activity orientation
