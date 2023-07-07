@@ -9,10 +9,13 @@
     * [Admob 네이티브 광고 추가하기](#admob-네이티브-광고-추가하기)
     * [Admob 보상형 광고 추가하기](#admob-보상형-광고-추가하기)
 3. [파트너 통합 네트워크 추가하기](#3-파트너-통합-네트워크-추가하기)
-    * [Inmobi 설정](#inmobi-설정)
-    * [AppLovin 설정](#applovin-설정)
-    * [Vungle 설정](#vungle-설정)
-    * [DT Exchange 설정](#dt-exchange-설정)
+    * [Inmobi 설정](#inmobi-설정-옵션)
+    * [AppLovin 설정](#applovin-설정-옵션)
+    * [Vungle 설정](#vungle-설정-옵션)
+    * [DT Exchange 설정](#dt-exchange-설정-옵션)
+    * [Mintegral 설정](#mintegral-설정-옵션---신규-네트워크사임시)
+    * [Pangle 설정](#pangle-설정---신규-네트워크사임시)
+    * [Unity Ads 설정](#unity-ads-설정---신규-네트워크사임시)
     * [광고 요청 연결](#광고-요청-연결)
 4. [커스텀 이벤트 네트워크 추가하기](#4-커스텀-이벤트-네트워크-추가하기)
     * [Cauly 광고 추가하기](#cauly-광고-추가하기)
@@ -57,28 +60,38 @@
 - com.google.android.ads:mediation-test-suite:3.0.0 은 앱 테스트 시 필수 항목으로, 상용화 시 반드시 제거해야합니다. 
 
     ```clojure
-    dependencies {
-        // google admob
-        implementation 'com.google.android.gms:play-services-ads:21.4.0'
-
-        // google admob mediation test
-        implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
-
-        // cauly sdk
-        implementation 'com.fsn.cauly:cauly-sdk:3.5.24'
-
-        // inmobi mediation
-        implementation 'com.google.ads.mediation:inmobi:10.1.2.1'
-
-        // applobin mediation
-        implementation 'com.google.ads.mediation:applovin:11.6.1.0'
-
-        // vungle mediation
-        implementation 'com.google.ads.mediation:vungle:6.12.0.1'
-
-        // DT Exchange mediation
-        implementation 'com.google.ads.mediation:fyber:8.2.1.0'
-    }
+   dependencies {
+      // google admob
+      implementation 'com.google.android.gms:play-services-ads:21.4.0'
+      
+      // google admob mediation test
+      implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
+      
+      // cauly sdk
+      implementation 'com.fsn.cauly:cauly-sdk:3.5.24'
+      
+      // inmobi mediation
+      implementation 'com.google.ads.mediation:inmobi:10.1.2.1'
+      
+      // applobin mediation
+      implementation 'com.google.ads.mediation:applovin:11.6.1.0'
+      
+      // vungle mediation
+      implementation 'com.google.ads.mediation:vungle:6.12.0.1'
+      
+      // DT Exchange mediation
+      implementation 'com.google.ads.mediation:fyber:8.2.1.0'
+      
+      // Mintegral mediation - 신규 네트워크사(임시)
+      implementation 'com.google.ads.mediation:mintegral:16.4.61.0'
+      
+      // Pangle mediation - 신규 네트워크사(임시)
+      implementation 'com.google.ads.mediation:pangle:5.2.0.7.0'
+      
+      // Unity ads mediation - 신규 네트워크사(임시)
+      implementation 'com.unity3d.ads:unity-ads:4.7.1'
+      implementation 'com.google.ads.mediation:unity:4.7.1.0'
+   }
     ```
 
 
@@ -87,21 +100,30 @@
 
 - Cauly SDK 사용을 위해 필수
 
-    ```clojure
-    allprojects {
-        repositories {
-            google()
-            jcenter()
-            maven {
-                url "s3://repo.cauly.net/releases"
-                credentials(AwsCredentials) {
-                    accessKey "AKIAWRZUK5MFKYVSUOLB"
-                    secretKey "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"
-                }
+   ```clojure
+   allprojects {
+      repositories {
+         google()
+         jcenter()
+         // Cauly SDK Repository
+         maven {
+            url "s3://repo.cauly.net/releases"
+            credentials(AwsCredentials) {
+               accessKey "AKIAWRZUK5MFKYVSUOLB"
+               secretKey "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"
             }
-        }
-    }
-    ```
+         }
+         // Mintegral mediation - 신규 네트워크사(임시)
+         maven {
+            url 'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea'
+         }
+         // Pangle mediation - 신규 네트워크사(임시)
+         maven {
+            url 'https://artifact.bytedance.com/repository/pangle/'
+         }
+      }
+   }
+   ```
 
 
 
@@ -651,7 +673,9 @@ private void showRewardedAd() {
 
 # 3. 파트너 통합 네트워크 추가하기
 
-### Inmobi 설정
+### Inmobi 설정 (옵션)
+- Inmobi SDK 설정을 위해 추가 코드가 필요하지 않습니다.
+- 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/inmobi#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 ``` java
 Bundle inMobiextras= new Bundle();
@@ -676,7 +700,9 @@ InMobiNetworkKeys.COUNTRY<br/>사용자의 국가|문자열
 InMobiNetworkKeys.LOGLEVEL<br/>InMobi SDK의 로그 수준을 설정합니다.|InMobiNetworkValues.LOGLEVEL_NONE<br/>InMobiNetworkValues.LOGLEVEL_DEBUG<br/>InMobiNetworkValues.LOGLEVEL_ERROR
 
 
-### AppLovin 설정
+### AppLovin 설정 (옵션)
+- AppLovin SDK 설정을 위해 추가 코드가 필요하지 않습니다.
+- 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/applovin#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 ``` java
 Bundle appLovinExtras = new AppLovinExtras.Builder()
@@ -686,7 +712,9 @@ Bundle appLovinExtras = new AppLovinExtras.Builder()
 
 
 
-### Vungle 설정
+### Vungle 설정 (옵션)
+- Vungle SDK 설정을 위해 추가 코드가 필요하지 않습니다.
+- 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/liftoff-monetize#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 ``` java
 Bundle vungleExtras = new VungleExtrasBuilder(null)
@@ -696,7 +724,9 @@ Bundle vungleExtras = new VungleExtrasBuilder(null)
 
 
 
-### DT Exchange 설정
+### DT Exchange 설정 (옵션)
+- DT Exchange SDK 설정을 위해 추가 코드가 필요하지 않습니다.
+- 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/dt-exchange#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 ``` java
 Bundle fyberExtras = new Bundle();
@@ -705,7 +735,29 @@ fyberExtras.putInt(InneractiveMediationDefs.KEY_AGE, 10);
 
 
 
+### Mintegral 설정 (옵션) - 신규 네트워크사(임시)
+- Mintegral SDK 설정을 위해 추가 코드가 필요하지 않습니다.
+- 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/mintegral#optional_steps)를 참고하여 옵션 설정이 가능합니다.
+
+
+
+
+### Pangle 설정 - 신규 네트워크사(임시)
+- ProGuard를 사용하여 Android 코드를 난독화하는 경우 [Pangle 설명서의 지침에 따라](https://www.pangleglobal.com/integration/integrate-pangle-sdk-for-android#as5ja83qobk0) Pangle SDK 코드가 난독화되지 않도록 하십시오.
+- ProGuard 설정 이외에 Pangle SDK 설정을 위해 추가 코드가 필요하지 않습니다.
+
+``` clojure
+proguard-rules.pro ::
+-keep class com.bytedance.sdk.** { *; }
+```
+
+### Unity Ads 설정 - 신규 네트워크사(임시)
+- Unity Ads SDK 설정을 위해 추가 코드가 필요하지 않습니다.
+- 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/unity#optional_steps)를 참고하여 옵션 설정이 가능합니다.
+
+
 ### 광고 요청 연결
+- 옵션 설정을 추가한 경우에만 AdRequest에 연결하시면 됩니다.
 
 ``` java
 adRequest = new AdRequest.Builder()
@@ -721,7 +773,83 @@ adRequest = new AdRequest.Builder()
 
 # 4. 커스텀 이벤트 네트워크 추가하기
 
-### Cauly 광고 추가하기
+## Cauly 광고 추가하기
+
+### AndroidManifest.xml 속성 지정
+
+#### 필수 퍼미션 추가
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+<uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+```
+
+#### 네트워크 보안 설정 (targetSdkVersion 28 이상)
+
+`광고 노출 및 클릭이 정상적으로 동작하기 위해서 cleartext 네트워크 설정 필요`
+
+```xml
+<application android:usesCleartextTraffic="true" />
+```	
+
+#### 더 안전한 구성요소 내보내기 설정 (targetSdkVersion 31 이상)
+`intent-filter를 사용하는 활동을 포함하는 경우 android:exported 속성 설정 필요 (MAIN/LAUNCHER activity는 ture 설정 필수)`
+
+```xml
+<activity android:exported="true" />
+``` 
+
+
+#### Activity orientation
+- Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
+- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 `초기화` 됩니다.
+
+```xml
+<activity
+    android:name=".MainActivity"
+    android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+</activity>
+```
+
+```xml
+<activity
+    android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
+    android:configChanges="keyboard|keyboardHidden|orientation|screenSize"> 
+</activity>
+```
+
+### proguard 설정 하는 경우 cauly SDK 포함된 Class는 난독화 시키시면 안됩니다.
+
+```clojure
+proguard-rules.pro ::
+-keep public class com.fsn.cauly.** {
+      public protected *;
+}
+-keep public class com.trid.tridad.** {
+  	  public protected *;
+}
+-dontwarn android.webkit.**
+
+- Android Studio 3.4 이상 부터 (gradle build tool 3.4.0)는 아래 와 같이 설정 해야합니다.
+
+-keep class com.fsn.cauly.** {
+	   public *; protected *;
+}
+-keep class com.trid.tridad.** {
+  	  public *; protected *;
+}
+-dontwarn android.webkit.**
+```
+	
+### AndroidX 사용하는 경우
+```xml
+gradle.properties ::
+ * android.useAndroidX=true
+ * android.enableJetifier=true
+```
+
+- 참고 : https://developer.android.com/jetpack/androidx/migrate
+
 
 #### `CaulyAdInfo 설정방법`
 
