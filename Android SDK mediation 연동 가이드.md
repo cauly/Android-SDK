@@ -37,6 +37,8 @@
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 ```
 
 
@@ -49,6 +51,53 @@
         android:name="com.google.android.gms.ads.APPLICATION_ID"
         android:value="ca-app-pub-xxxxxxxxxx" />
     ```
+
+
+
+#### 네트워크 보안 설정 (targetSdkVersion 28 이상)
+
+`광고 노출 및 클릭이 정상적으로 동작하기 위해서 cleartext 네트워크 설정 필요`
+
+```xml
+<application android:usesCleartextTraffic="true" />
+```	
+
+#### 더 안전한 구성요소 내보내기 설정 (targetSdkVersion 31 이상)
+`intent-filter를 사용하는 활동을 포함하는 경우 android:exported 속성 설정 필요 (MAIN/LAUNCHER activity는 ture 설정 필수)`
+
+```xml
+<activity android:exported="true" />
+``` 
+
+
+#### Activity orientation
+- Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
+- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 `초기화` 됩니다.
+
+```xml
+<activity
+    android:name=".MainActivity"
+    android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+</activity>
+```
+
+```xml
+<activity
+    android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
+    android:configChanges="keyboard|keyboardHidden|orientation|screenSize"> 
+</activity>
+```
+
+
+	
+#### AndroidX 사용하는 경우
+```xml
+gradle.properties ::
+ * android.useAndroidX=true
+ * android.enableJetifier=true
+```
+
+- 참고 : https://developer.android.com/jetpack/androidx/migrate
 
 
 
@@ -773,52 +822,9 @@ adRequest = new AdRequest.Builder()
 
 # 4. 커스텀 이벤트 네트워크 추가하기
 
-## Cauly 광고 추가하기
+### Cauly 광고 추가하기
 
-### AndroidManifest.xml 속성 지정
-
-#### 필수 퍼미션 추가
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-<uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-```
-
-#### 네트워크 보안 설정 (targetSdkVersion 28 이상)
-
-`광고 노출 및 클릭이 정상적으로 동작하기 위해서 cleartext 네트워크 설정 필요`
-
-```xml
-<application android:usesCleartextTraffic="true" />
-```	
-
-#### 더 안전한 구성요소 내보내기 설정 (targetSdkVersion 31 이상)
-`intent-filter를 사용하는 활동을 포함하는 경우 android:exported 속성 설정 필요 (MAIN/LAUNCHER activity는 ture 설정 필수)`
-
-```xml
-<activity android:exported="true" />
-``` 
-
-
-#### Activity orientation
-- Activity 형식의 전체 화면 랜딩을 지원하기 위해선 아래의 설정으로 추가한다.
-- 만약, 설정하지 않으면 화면 전환 시 마다 광고view 가 `초기화` 됩니다.
-
-```xml
-<activity
-    android:name=".MainActivity"
-    android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
-</activity>
-```
-
-```xml
-<activity
-    android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
-    android:configChanges="keyboard|keyboardHidden|orientation|screenSize"> 
-</activity>
-```
-
-### proguard 설정 하는 경우 cauly SDK 포함된 Class는 난독화 시키시면 안됩니다.
+- proguard 설정 하는 경우 cauly SDK 포함된 Class는 난독화 시키시면 안됩니다.
 
 ```clojure
 proguard-rules.pro ::
@@ -840,16 +846,6 @@ proguard-rules.pro ::
 }
 -dontwarn android.webkit.**
 ```
-	
-### AndroidX 사용하는 경우
-```xml
-gradle.properties ::
- * android.useAndroidX=true
- * android.enableJetifier=true
-```
-
-- 참고 : https://developer.android.com/jetpack/androidx/migrate
-
 
 #### `CaulyAdInfo 설정방법`
 
