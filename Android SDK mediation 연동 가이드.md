@@ -131,15 +131,20 @@ gradle.properties ::
       // DT Exchange mediation
       implementation 'com.google.ads.mediation:fyber:8.2.1.0'
       
-      // Mintegral mediation - 신규 네트워크사(임시)
-      implementation 'com.google.ads.mediation:mintegral:16.4.61.0'
+      // Mintegral mediation - 신규 네트워크사
+      implementation 'com.google.ads.mediation:mintegral:16.4.81.0'
       
-      // Pangle mediation - 신규 네트워크사(임시)
-      implementation 'com.google.ads.mediation:pangle:5.2.0.7.0'
+      // Pangle mediation - 신규 네트워크사
+      implementation 'com.google.ads.mediation:pangle:5.3.0.4.0'
       
-      // Unity ads mediation - 신규 네트워크사(임시)
-      implementation 'com.unity3d.ads:unity-ads:4.7.1'
-      implementation 'com.google.ads.mediation:unity:4.7.1.0'
+      // Unity ads mediation - 신규 네트워크사
+      implementation 'com.unity3d.ads:unity-ads:4.8.0'
+      implementation 'com.google.ads.mediation:unity:4.8.0.0'
+
+      // facebook
+      implementation 'com.google.android.gms:play-services-ads:22.2.0'
+      implementation 'com.google.ads.mediation:facebook:6.14.0.0'
+      
    }
     ```
 
@@ -189,6 +194,9 @@ MobileAds.initialize(this, new OnInitializationCompleteListener() {
     } 
 }); 
 ```
+``` kotlin
+MobileAds.initialize(this) {}
+```
 
 
 
@@ -212,6 +220,13 @@ MobileAds.initialize(this, new OnInitializationCompleteListener() {
         new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList(Config.ADMOB_TEST_DEVICE_ID))
                 .build());
     ```
+    
+    ``` kotlin
+    val testDeviceIds = Arrays.asList("33BE2250B43518CCDA7DE426D04EE231")
+    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+    MobileAds.setRequestConfiguration(configuration)
+    ```
+
 
 
 
@@ -224,6 +239,9 @@ MobileAds.initialize(this, new OnInitializationCompleteListener() {
 
     ``` java
     MediationTestSuite.launch(MainActivity.this);
+    ```
+    ``` kotlin
+    MediationTestSuite.launch(context);
     ```
 
 
@@ -337,6 +355,81 @@ private void setAdmobBannerListener() {
 }
 ```
 
+``` kotlin
+private var adRequest: AdRequest? = null
+private var adView: AdView? = null
+
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    
+    MobileAds.initialize(
+            this
+    ) { initializationStatus ->
+        val statusMap = initializationStatus.adapterStatusMap
+        for (adapterClass in statusMap.keys) {
+            val status = statusMap[adapterClass]
+            Log.i(
+                TAG, String.format(
+                "Adapter name: %s, Description: %s, Latency: %d",
+                adapterClass, status!!.description, status.latency
+                )
+            )
+        }
+    }
+    //admob 레이아웃에 AdView 추가
+    adView = findViewById<View>(R.id.adView) as AdView
+    //admob 배너 리스너
+    setAdmobBannerListener()
+    MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTestDeviceIds(Arrays.asList<String>(Config().ADMOB_TEST_DEVICE_ID))
+                .build()
+   )
+    
+    adRequest = AdRequest.Builder().build()
+
+    adView!!.loadAd(adRequest!!)
+    MediationTestSuite.launch(this@MainActivity) // 앱 테스트시 필수로 상용화시 제거해야함.
+}
+
+private fun setAdmobBannerListener() {
+        adView!!.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Log.d(TAG, "banner onAdLoaded")
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                // Code to be executed when an ad request fails.
+                Log.d(TAG, "onAdFailedToLoad " + adError.code + "  " + adError.message)
+            }
+
+            override fun onAdImpression() {
+                // Code to be executed when an impression is recorded
+                // for an ad.
+                Log.d(TAG, "onAdImpression")
+            }
+
+            override fun onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+                Log.d(TAG, "onAdOpened")
+            }
+
+            override fun onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+                Log.d(TAG, "onAdClicked")
+            }
+
+            override fun onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+                Log.d(TAG, "onAdClosed")
+            }
+        }
+    }
+```
 
 
 ### Admob 전면 광고 추가하기
@@ -477,6 +570,129 @@ private void showInterstitialAd() {
 
 ```
 
+``` kotlin
+private var mInterstitialAd: InterstitialAd? = null
+lateinit var show_interstitial_btn: Button
+
+override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        MobileAds.initialize(
+            this
+        ) { initializationStatus ->
+            val statusMap = initializationStatus.adapterStatusMap
+            for (adapterClass in statusMap.keys) {
+                val status = statusMap[adapterClass]
+                Log.i(
+                    TAG, String.format(
+                        "Adapter name: %s, Description: %s, Latency: %d",
+                        adapterClass, status!!.description, status.latency
+                    )
+                )
+            }
+        }
+        //admob 레이아웃에 AdView 추가
+        adView = findViewById<View>(R.id.adView) as AdView
+        
+
+        //admob 배너 리스너
+        setAdmobBannerListener()
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+            .setTestDeviceIds(Arrays.asList<String>(Config().ADMOB_TEST_DEVICE_ID))
+            .build()
+        )
+    
+        adRequest = AdRequest.Builder().build()
+
+
+        //전면 요청
+        val request_interstitial_btn = findViewById<Button>(R.id.request_interstitial_btn)
+        request_interstitial_btn.setOnClickListener(View.OnClickListener { loadInterstitialAd() })
+
+        // 전면 노출
+        show_interstitial_btn = findViewById(R.id.show_interstitial_btn)
+        show_interstitial_btn.setEnabled(false)
+        show_interstitial_btn.setOnClickListener(View.OnClickListener { showInterstitialAd() })
+
+        MediationTestSuite.launch(this@MainActivity) // 앱 테스트시 필수로 상용화시 제거해야함.
+
+
+    }
+
+private fun loadInterstitialAd() {
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(this, Config().ADMOB_INTERSTITIAL_ID, adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    // The mInterstitialAd reference will be null until
+                    // an ad is loaded.
+                    mInterstitialAd = interstitialAd
+                    show_interstitial_btn!!.isEnabled = true
+                    Log.i(TAG, "onAdLoaded")
+                    Toast.makeText(this@MainActivity, "onAdLoaded()", Toast.LENGTH_SHORT).show()
+                    mInterstitialAd!!.setFullScreenContentCallback(object :
+                        FullScreenContentCallback() {
+                        override fun onAdClicked() {
+                            // Called when a click is recorded for an ad.
+                            Log.d(TAG, "Ad was clicked.")
+                        }
+
+                        override fun onAdDismissedFullScreenContent() {
+                            // Called when fullscreen content is dismissed.
+                            // Make sure to set your reference to null so you don't
+                            // show it a second time.
+                            mInterstitialAd = null
+                            Log.d("TAG", "The ad was dismissed.")
+                        }
+
+                        override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                            // Called when fullscreen content failed to show.
+                            // Make sure to set your reference to null so you don't
+                            // show it a second time.
+                            Log.e(TAG, "The ad failed to show.")
+                            mInterstitialAd = null
+                            show_interstitial_btn!!.isEnabled = false
+                        }
+
+                        override fun onAdImpression() {
+                            // Called when an impression is recorded for an ad.
+                            Log.d(TAG, "Ad recorded an impression.")
+                        }
+
+                        override fun onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                            Log.d(TAG, "The ad was shown.")
+                        }
+                    })
+                }
+
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    // Handle the error
+                    Log.i(TAG, loadAdError.message)
+                    mInterstitialAd = null
+                    val error = String.format(
+                        "domain: %s, code: %d, message: %s",
+                        loadAdError.domain, loadAdError.code, loadAdError.message
+                    )
+                    Toast.makeText(
+                        this@MainActivity,
+                        "onAdFailedToLoad() with error: $error",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            })
+    }
+
+private fun showInterstitialAd() {
+        show_interstitial_btn!!.isEnabled = false
+        mInterstitialAd!!.show(this)
+}
+
+
+```
 
 
 ### Admob 네이티브 광고 추가하기
@@ -569,6 +785,96 @@ private void loadAdmobNativeAd() {
     adLoader.loadAd(new AdRequest.Builder().build());
 }
 
+```
+
+``` kotlin
+private var nativeAd: NativeAd? = null
+lateinit var native_btn: Button
+override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        MobileAds.initialize(
+            this
+        ) { initializationStatus ->
+            val statusMap = initializationStatus.adapterStatusMap
+            for (adapterClass in statusMap.keys) {
+                val status = statusMap[adapterClass]
+                Log.i(
+                    TAG, String.format(
+                        "Adapter name: %s, Description: %s, Latency: %d",
+                        adapterClass, status!!.description, status.latency
+                    )
+                )
+            }
+        }
+        //admob 레이아웃에 AdView 추가
+        adView = findViewById<View>(R.id.adView) as AdView
+        
+        //admob 배너 리스너
+        setAdmobBannerListener()
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+            .setTestDeviceIds(Arrays.asList<String>(Config().ADMOB_TEST_DEVICE_ID))
+            .build()
+        )
+
+
+        //네이티브 요청
+        native_btn = findViewById<Button>(R.id.native_btn)
+        native_btn.setOnClickListener(View.OnClickListener { loadAdmobNativeAd() })
+
+        MediationTestSuite.launch(this@MainActivity) // 앱 테스트시 필수로 상용화시 제거해야함.
+
+
+    }
+
+private fun loadAdmobNativeAd() {
+        native_btn!!.isEnabled = false
+        val adLoader = AdLoader.Builder(this, Config().ADMOB_NATIVE_ID)
+            .forNativeAd(OnNativeAdLoadedListener { nativeAd ->
+                var isDestroyed = false
+                native_btn!!.isEnabled = true
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    isDestroyed = isDestroyed()
+                }
+                if (isDestroyed || isFinishing || isChangingConfigurations) {
+                    nativeAd.destroy()
+                    return@OnNativeAdLoadedListener
+                }
+                if (this@MainActivity.nativeAd != null) {
+                    this@MainActivity.nativeAd!!.destroy()
+                }
+                this@MainActivity.nativeAd = nativeAd
+                val frameLayout = findViewById<FrameLayout>(R.id.fl_adplaceholder)
+                val adView =
+                    layoutInflater.inflate(R.layout.ad_unified, frameLayout, false) as NativeAdView
+                populateNativeAdView(nativeAd, adView)
+                frameLayout.removeAllViews()
+                frameLayout.addView(adView)
+            })
+            .withAdListener(object : AdListener() {
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    super.onAdFailedToLoad(loadAdError)
+                    native_btn!!.isEnabled = true
+                    val error = String.format(
+                        Locale.getDefault(),
+                        "domain: %s, code: %d, message: %s",
+                        loadAdError.domain,
+                        loadAdError.code,
+                        loadAdError.message
+                    )
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Failed to load native ad with error $error",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            })
+            .build()
+        adLoader.loadAd(AdRequest.Builder().build())
+    }
 ```
 
 
@@ -718,6 +1024,136 @@ private void showRewardedAd() {
 
 ```
 
+``` kotlin
+private var mRewardedAd: RewardedAd? = null
+lateinit var show_rewarded_btn: Button
+override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        MobileAds.initialize(
+            this
+        ) { initializationStatus ->
+            val statusMap = initializationStatus.adapterStatusMap
+            for (adapterClass in statusMap.keys) {
+                val status = statusMap[adapterClass]
+                Log.i(
+                    TAG, String.format(
+                        "Adapter name: %s, Description: %s, Latency: %d",
+                        adapterClass, status!!.description, status.latency
+                    )
+                )
+            }
+        }
+        //admob 레이아웃에 AdView 추가
+        adView = findViewById<View>(R.id.adView) as AdView
+        
+        //admob 배너 리스너
+        setAdmobBannerListener()
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+            .setTestDeviceIds(Arrays.asList<String>(Config().ADMOB_TEST_DEVICE_ID))
+            .build()
+        )
+
+
+        // 보상형 광고 요청
+        val request_rewarded_btn = findViewById<Button>(R.id.request_rewarded_btn)
+        request_rewarded_btn.setOnClickListener(View.OnClickListener { loadRewardedAd() })
+
+        show_rewarded_btn = findViewById<Button>(R.id.show_rewarded_btn)
+        show_rewarded_btn.setEnabled(false)
+        show_rewarded_btn.setOnClickListener(View.OnClickListener { showRewardedAd() })
+
+        MediationTestSuite.launch(this@MainActivity) // 앱 테스트시 필수로 상용화시 제거해야함.
+
+    }
+
+private fun loadRewardedAd() {
+        if (mRewardedAd == null) {
+            val adRequest = AdRequest.Builder().build()
+            RewardedAd.load(this, Config().ADMOB_REWARDED_ID, adRequest,
+                object : RewardedAdLoadCallback() {
+                    override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                        // Handle the error.
+                        show_rewarded_btn!!.isEnabled = false
+                        Log.d(TAG, loadAdError.message)
+                        mRewardedAd = null
+                        Toast.makeText(this@MainActivity, "onAdFailedToLoad", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    override fun onAdLoaded(rewardedAd: RewardedAd) {
+                        show_rewarded_btn!!.isEnabled = true
+                        mRewardedAd = rewardedAd
+                        Log.d(TAG, "onAdLoaded")
+                        Toast.makeText(this@MainActivity, "onAdLoaded", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
+    }
+
+
+    private fun showRewardedAd() {
+        if (mRewardedAd == null) {
+            Log.d("TAG", "The rewarded ad wasn't ready yet.")
+            return
+        }
+        show_rewarded_btn!!.isEnabled = false
+        mRewardedAd!!.setFullScreenContentCallback(
+            object : FullScreenContentCallback() {
+                override fun onAdShowedFullScreenContent() {
+                    // Called when ad is shown.
+                    Log.d(TAG, "onAdShowedFullScreenContent")
+                    Toast.makeText(
+                        this@MainActivity,
+                        "onAdShowedFullScreenContent",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+
+                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                    // Called when ad fails to show.
+                    Log.d(TAG, "onAdFailedToShowFullScreenContent")
+                    // Don't forget to set the ad reference to null so you
+                    // don't show the ad a second time.
+                    mRewardedAd = null
+                    Toast.makeText(
+                        this@MainActivity,
+                        "onAdFailedToShowFullScreenContent",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+
+                override fun onAdDismissedFullScreenContent() {
+                    // Called when ad is dismissed.
+                    // Don't forget to set the ad reference to null so you
+                    // don't show the ad a second time.
+                    mRewardedAd = null
+                    Log.d(TAG, "onAdDismissedFullScreenContent")
+                    Toast.makeText(
+                        this@MainActivity,
+                        "onAdDismissedFullScreenContent",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                    // Preload the next rewarded ad.
+//                        MainActivity.this.loadRewardedAd();
+                }
+            })
+        val activityContext: Activity = this@MainActivity
+        mRewardedAd!!.show(
+            activityContext,
+            OnUserEarnedRewardListener { rewardItem -> // Handle the reward.
+                Log.d("TAG", "The user earned the reward.")
+                val rewardAmount = rewardItem.amount
+                val rewardType = rewardItem.type
+            }
+        )
+    }
+```
 
 
 # 3. 파트너 통합 네트워크 추가하기
@@ -784,14 +1220,14 @@ fyberExtras.putInt(InneractiveMediationDefs.KEY_AGE, 10);
 
 
 
-### Mintegral 설정 (옵션) - 신규 네트워크사(임시)
+### Mintegral 설정 (옵션) - 신규 네트워크사
 - Mintegral SDK 설정을 위해 추가 코드가 필요하지 않습니다.
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/mintegral#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 
 
 
-### Pangle 설정 - 신규 네트워크사(임시)
+### Pangle 설정 - 신규 네트워크사
 - ProGuard를 사용하여 Android 코드를 난독화하는 경우 [Pangle 설명서의 지침에 따라](https://www.pangleglobal.com/integration/integrate-pangle-sdk-for-android#as5ja83qobk0) Pangle SDK 코드가 난독화되지 않도록 하십시오.
 - ProGuard 설정 이외에 Pangle SDK 설정을 위해 추가 코드가 필요하지 않습니다.
 
@@ -800,9 +1236,13 @@ proguard-rules.pro ::
 -keep class com.bytedance.sdk.** { *; }
 ```
 
-### Unity Ads 설정 - 신규 네트워크사(임시)
+### Unity Ads 설정 - 신규 네트워크사
 - Unity Ads SDK 설정을 위해 추가 코드가 필요하지 않습니다.
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/unity#optional_steps)를 참고하여 옵션 설정이 가능합니다.
+
+### Facebook(Meta) 설정 - 신규 네트워크사
+- Facebook(Meta) Ads SDK 설정을 위해 추가 코드가 필요하지 않습니다.
+- 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/meta?hl=ko)를 참고하여 옵션 설정이 가능합니다.
 
 
 ### 광고 요청 연결
