@@ -13,9 +13,9 @@
     * [AppLovin 설정](#applovin-설정-옵션)
     * [Vungle 설정](#vungle-설정-옵션)
     * [DT Exchange 설정](#dt-exchange-설정-옵션)
-    * [Mintegral 설정](#mintegral-설정-옵션---신규-네트워크사임시)
-    * [Pangle 설정](#pangle-설정---신규-네트워크사임시)
-    * [Unity Ads 설정](#unity-ads-설정---신규-네트워크사임시)
+    * [Mintegral 설정](#mintegral-설정-옵션)
+    * [Pangle 설정](#pangle-설정)
+    * [Unity Ads 설정](#unity-ads-설정)
     * [광고 요청 연결](#광고-요청-연결)
 4. [커스텀 이벤트 네트워크 추가하기](#4-커스텀-이벤트-네트워크-추가하기)
     * [Cauly 광고 추가하기](#cauly-광고-추가하기)
@@ -105,13 +105,14 @@ gradle.properties ::
 
 #### app level build.gradle 에 'dependencies'  추가
 
-- inmobi 10.1.2.1 은 targetSdkVersion 32 이상에서 사용 가능합니다.
+- inmobi 10.1.2.1 은 targetSdkVersion 32 이상에서 동작합니다.
+- Unity ads 4.8.0, Unity 4.8.0.0 은 targetSdkVersion 33 이상에서 동작합니다.
 - com.google.android.ads:mediation-test-suite:3.0.0 은 앱 테스트 시 필수 항목으로, 상용화 시 반드시 제거해야합니다. 
 
     ```clojure
    dependencies {
       // google admob
-      implementation 'com.google.android.gms:play-services-ads:21.4.0'
+      implementation 'com.google.android.gms:play-services-ads:22.2.0'
       
       // google admob mediation test
       implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
@@ -122,7 +123,7 @@ gradle.properties ::
       // inmobi mediation
       implementation 'com.google.ads.mediation:inmobi:10.1.2.1'
       
-      // applobin mediation
+      // applovin mediation
       implementation 'com.google.ads.mediation:applovin:11.6.1.0'
       
       // vungle mediation
@@ -131,18 +132,17 @@ gradle.properties ::
       // DT Exchange mediation
       implementation 'com.google.ads.mediation:fyber:8.2.1.0'
       
-      // Mintegral mediation - 신규 네트워크사
+      // Mintegral mediation
       implementation 'com.google.ads.mediation:mintegral:16.4.81.0'
       
-      // Pangle mediation - 신규 네트워크사
+      // Pangle mediation
       implementation 'com.google.ads.mediation:pangle:5.3.0.4.0'
       
-      // Unity ads mediation - 신규 네트워크사
+      // Unity ads mediation
       implementation 'com.unity3d.ads:unity-ads:4.8.0'
       implementation 'com.google.ads.mediation:unity:4.8.0.0'
 
       // facebook
-      implementation 'com.google.android.gms:play-services-ads:22.2.0'
       implementation 'com.google.ads.mediation:facebook:6.14.0.0'
       
    }
@@ -167,11 +167,11 @@ gradle.properties ::
                secretKey "SGOr65MOJeKBUFxeVNZ4ogITUKvcltWqEApC41JL"
             }
          }
-         // Mintegral mediation - 신규 네트워크사(임시)
+         // Mintegral mediation
          maven {
             url 'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea'
          }
-         // Pangle mediation - 신규 네트워크사(임시)
+         // Pangle mediation
          maven {
             url 'https://artifact.bytedance.com/repository/pangle/'
          }
@@ -187,15 +187,19 @@ gradle.properties ::
 
 #### Admob 광고 SDK 초기화
 
+
 ``` java
+Java ::
 MobileAds.initialize(this, new OnInitializationCompleteListener() { 
     @Override 
     public void onInitializationComplete(InitializationStatus initializationStatus) { 
     } 
 }); 
 ```
+
+
 ``` kotlin
-<코틀린>
+Kotlin ::
 MobileAds.initialize(this) {}
 ```
 
@@ -216,19 +220,20 @@ MobileAds.initialize(this) {}
 
 - `RequestConfiguration.Builder().setTestDeviceIds()`를 호출하고 테스트 기기 ID의 목록을 전달하도록 코드를 수정합니다.
 
-    ``` java
-    MobileAds.setRequestConfiguration(
-        new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList(Config.ADMOB_TEST_DEVICE_ID))
-                .build());
-    ```
-    
-    ``` kotlin
-    <코틀린>
-    val testDeviceIds = Arrays.asList("33BE2250B43518CCDA7DE426D04EE231")
-    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-    MobileAds.setRequestConfiguration(configuration)
-    ```
 
+``` java
+Java ::
+MobileAds.setRequestConfiguration(
+    new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("33BE2250B43518CCDA7DE426D04EE231"))
+            .build());
+```
+
+``` kotlin
+Kotlin ::
+val testDeviceIds = Arrays.asList("33BE2250B43518CCDA7DE426D04EE231")
+val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+MobileAds.setRequestConfiguration(configuration)
+```
 
 
 
@@ -239,13 +244,18 @@ MobileAds.initialize(this) {}
     - 로그인 페이지가 없는 경우 메인 화면 Activity의 onCreate() 에 코드 추가
 - 상용화 시 해당 코드를 반드시 삭제해야 합니다.
 
-    ``` java
-    MediationTestSuite.launch(MainActivity.this);
-    ```
-    ``` kotlin
-    <코틀린>
-    MediationTestSuite.launch(context);
-    ```
+
+``` java
+Java ::
+MediationTestSuite.launch(MainActivity.this);
+```
+
+
+
+``` kotlin
+Kotlin ::
+MediationTestSuite.launch(context)
+```
 
 
 
@@ -271,6 +281,8 @@ MobileAds.initialize(this) {}
 
 
 #### 광고를 삽입하고 싶은 layout에 소스를 삽입
+
+<details> <summary>Java</summary>
 
 ``` java
 private AdRequest adRequest;
@@ -358,8 +370,12 @@ private void setAdmobBannerListener() {
 }
 ```
 
+</details>
+
+
+<details> <summary>Kotlin</summary>
+
 ``` kotlin
-<코틀린>
 private var adRequest: AdRequest? = null
 private var adView: AdView? = null
 
@@ -435,6 +451,8 @@ private fun setAdmobBannerListener() {
     }
 ```
 
+</details>
+
 
 ### Admob 전면 광고 추가하기
 
@@ -442,6 +460,9 @@ private fun setAdmobBannerListener() {
 - InterstitialAdLoadCallback: InterstitialAd 로드와 관련된 이벤트를 처리합니다.
 - FullScreenContentCallback: InterstitialAd 표시와 관련된 이벤트를 처리합니다. 
     - InterstitialAd를 표시하기 전에 콜백을 설정해야 합니다.
+
+
+<details> <summary>Java</summary>
 
 ``` java
 private InterstitialAd mInterstitialAd;
@@ -574,8 +595,13 @@ private void showInterstitialAd() {
 
 ```
 
+
+</details>
+
+
+<details> <summary>Kotlin</summary>
+
 ``` kotlin
-<코틀린>
 private var mInterstitialAd: InterstitialAd? = null
 lateinit var show_interstitial_btn: Button
 
@@ -695,14 +721,18 @@ private fun showInterstitialAd() {
         show_interstitial_btn!!.isEnabled = false
         mInterstitialAd!!.show(this)
 }
-
-
 ```
+
+</details>
+
 
 
 ### Admob 네이티브 광고 추가하기
 
 - AdLoader.Builder() 호출하고 광고가 게재되는 앱의 광고 단위에 지정할 고유 식별자를 설정합니다.
+
+
+<details> <summary>Java</summary>
 
 ``` java
 private NativeAd nativeAd;
@@ -792,8 +822,12 @@ private void loadAdmobNativeAd() {
 
 ```
 
+</details>
+
+
+<details> <summary>Kotlin</summary>
+
 ``` kotlin
-<코틀린>
 private var nativeAd: NativeAd? = null
 lateinit var native_btn: Button
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -883,6 +917,7 @@ private fun loadAdmobNativeAd() {
     }
 ```
 
+</details>
 
 
 ### Admob 보상형 광고 추가하기
@@ -891,6 +926,9 @@ private fun loadAdmobNativeAd() {
 - RewardedAdLoadCallback: RewardedAd 로드와 관련된 이벤트를 처리합니다.
 - FullScreenContentCallback: RewardedAd 표시와 관련된 이벤트를 처리합니다.
 - OnUserEarnedRewardListener: 보상형 광고를 게재할 때 보상 이벤트를 처리합니다.
+
+
+<details> <summary>Java</summary>
 
 ``` java
 private RewardedAd mRewardedAd;
@@ -1009,7 +1047,6 @@ private void showRewardedAd() {
                     Toast.makeText(MainActivity.this, "onAdDismissedFullScreenContent", Toast.LENGTH_SHORT)
                             .show();
                     // Preload the next rewarded ad.
-//                        MainActivity.this.loadRewardedAd();
                 }
             });
     Activity activityContext = MainActivity.this;
@@ -1030,8 +1067,12 @@ private void showRewardedAd() {
 
 ```
 
+</details>
+
+
+<details> <summary>Kotlin</summary>
+
 ``` kotlin
-<코틀린>
 private var mRewardedAd: RewardedAd? = null
 lateinit var show_rewarded_btn: Button
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -1147,7 +1188,6 @@ private fun loadRewardedAd() {
                     )
                         .show()
                     // Preload the next rewarded ad.
-//                        MainActivity.this.loadRewardedAd();
                 }
             })
         val activityContext: Activity = this@MainActivity
@@ -1162,6 +1202,8 @@ private fun loadRewardedAd() {
     }
 ```
 
+</details>
+
 
 # 3. 파트너 통합 네트워크 추가하기
 
@@ -1170,10 +1212,19 @@ private fun loadRewardedAd() {
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/inmobi#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 ``` java
+Java ::
 Bundle inMobiextras= new Bundle();
 inMobiextras.putString(InMobiNetworkKeys.AGE_GROUP, InMobiNetworkValues.BETWEEN_25_AND_29);
 inMobiextras.putString(InMobiNetworkKeys.AREA_CODE, "12345");
 InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG);
+```
+
+``` kotlin
+Kotlin ::
+val inMobiextras = Bundle()
+inMobiextras.putString(InMobiNetworkKeys.AGE_GROUP, InMobiNetworkValues.BETWEEN_25_AND_29)
+inMobiextras.putString(InMobiNetworkKeys.AREA_CODE, "12345")
+InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG)
 ```
 
 
@@ -1197,11 +1248,18 @@ InMobiNetworkKeys.LOGLEVEL<br/>InMobi SDK의 로그 수준을 설정합니다.|I
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/applovin#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 ``` java
+Java ::
 Bundle appLovinExtras = new AppLovinExtras.Builder()
         .setMuteAudio(true)
         .build();
 ```
 
+``` kotlin
+Kotlin ::
+val appLovinExtras = AppLovinExtras.Builder()
+    .setMuteAudio(true)
+    .build()
+```
 
 
 ### Vungle 설정 (옵션)
@@ -1209,11 +1267,18 @@ Bundle appLovinExtras = new AppLovinExtras.Builder()
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/liftoff-monetize#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 ``` java
+Java :: 
 Bundle vungleExtras = new VungleExtrasBuilder(null)
         .setStartMuted(false)
         .build();
 ```
 
+``` kotlin
+Kotlin ::
+val vungleExtras = VungleExtrasBuilder(null)
+    .setStartMuted(false)
+    .build()
+```
 
 
 ### DT Exchange 설정 (옵션)
@@ -1221,20 +1286,27 @@ Bundle vungleExtras = new VungleExtrasBuilder(null)
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/dt-exchange#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 ``` java
+Java :: 
 Bundle fyberExtras = new Bundle();
 fyberExtras.putInt(InneractiveMediationDefs.KEY_AGE, 10);
 ```
 
+``` kotlin
+Kotlin :: 
+val fyberExtras = Bundle()
+fyberExtras.putInt(InneractiveMediationDefs.KEY_AGE, 10)
+```
 
 
-### Mintegral 설정 (옵션) - 신규 네트워크사
+
+### Mintegral 설정 (옵션)
 - Mintegral SDK 설정을 위해 추가 코드가 필요하지 않습니다.
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/mintegral#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
 
 
 
-### Pangle 설정 - 신규 네트워크사
+### Pangle 설정
 - ProGuard를 사용하여 Android 코드를 난독화하는 경우 [Pangle 설명서의 지침에 따라](https://www.pangleglobal.com/integration/integrate-pangle-sdk-for-android#as5ja83qobk0) Pangle SDK 코드가 난독화되지 않도록 하십시오.
 - ProGuard 설정 이외에 Pangle SDK 설정을 위해 추가 코드가 필요하지 않습니다.
 
@@ -1243,11 +1315,11 @@ proguard-rules.pro ::
 -keep class com.bytedance.sdk.** { *; }
 ```
 
-### Unity Ads 설정 - 신규 네트워크사
+### Unity Ads 설정
 - Unity Ads SDK 설정을 위해 추가 코드가 필요하지 않습니다.
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/unity#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
-### Facebook(Meta) 설정 - 신규 네트워크사
+### Facebook(Meta) 설정
 - Facebook(Meta) Ads SDK 설정을 위해 추가 코드가 필요하지 않습니다.
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/meta?hl=ko)를 참고하여 옵션 설정이 가능합니다.
 
@@ -1256,6 +1328,7 @@ proguard-rules.pro ::
 - 옵션 설정을 추가한 경우에만 AdRequest에 연결하시면 됩니다.
 
 ``` java
+Java ::
 adRequest = new AdRequest.Builder()
     .addNetworkExtrasBundle(InMobiAdapter.class, inMobiextras)
     .addNetworkExtrasBundle(ApplovinAdapter.class, appLovinExtras)
@@ -1265,6 +1338,16 @@ adRequest = new AdRequest.Builder()
     .build();
 ```
 
+``` kotlin
+Kotlin ::
+adRequest = AdRequest.Builder()
+    .addNetworkExtrasBundle(InMobiAdapter::class.java, inMobiextras)
+    .addNetworkExtrasBundle(ApplovinAdapter::class.java, appLovinExtras)
+    .addNetworkExtrasBundle(VungleAdapter::class.java, vungleExtras) // Rewarded
+    .addNetworkExtrasBundle(VungleInterstitialAdapter::class.java, vungleExtras) // Interstitial
+    .addNetworkExtrasBundle(FyberMediationAdapter::class.java, fyberExtras)
+    .build()
+```
 
 
 # 4. 커스텀 이벤트 네트워크 추가하기
