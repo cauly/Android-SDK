@@ -195,6 +195,7 @@ MobileAds.initialize(this, new OnInitializationCompleteListener() {
 }); 
 ```
 ``` kotlin
+<코틀린>
 MobileAds.initialize(this) {}
 ```
 
@@ -222,6 +223,7 @@ MobileAds.initialize(this) {}
     ```
     
     ``` kotlin
+    <코틀린>
     val testDeviceIds = Arrays.asList("33BE2250B43518CCDA7DE426D04EE231")
     val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
     MobileAds.setRequestConfiguration(configuration)
@@ -241,6 +243,7 @@ MobileAds.initialize(this) {}
     MediationTestSuite.launch(MainActivity.this);
     ```
     ``` kotlin
+    <코틀린>
     MediationTestSuite.launch(context);
     ```
 
@@ -356,6 +359,7 @@ private void setAdmobBannerListener() {
 ```
 
 ``` kotlin
+<코틀린>
 private var adRequest: AdRequest? = null
 private var adView: AdView? = null
 
@@ -571,6 +575,7 @@ private void showInterstitialAd() {
 ```
 
 ``` kotlin
+<코틀린>
 private var mInterstitialAd: InterstitialAd? = null
 lateinit var show_interstitial_btn: Button
 
@@ -788,6 +793,7 @@ private void loadAdmobNativeAd() {
 ```
 
 ``` kotlin
+<코틀린>
 private var nativeAd: NativeAd? = null
 lateinit var native_btn: Button
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -1025,6 +1031,7 @@ private void showRewardedAd() {
 ```
 
 ``` kotlin
+<코틀린>
 private var mRewardedAd: RewardedAd? = null
 lateinit var show_rewarded_btn: Button
 override fun onCreate(savedInstanceState: Bundle?) {
