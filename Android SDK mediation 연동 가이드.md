@@ -143,7 +143,7 @@ gradle.properties ::
       implementation 'com.unity3d.ads:unity-ads:4.8.0'
       implementation 'com.google.ads.mediation:unity:4.8.0.0'
 
-      // facebook
+      // Meta(facebook) mediation
       implementation 'com.google.ads.mediation:facebook:6.14.0.0'
       
    }
