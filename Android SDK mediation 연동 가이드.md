@@ -4,6 +4,7 @@
     * [SDK 추가](#sdk-추가)
 2. [Admob 광고 추가하기](#2-admob-광고-추가하기)
     * [Admob 설정](#admob-설정)
+    * [Admob 앱 오프닝 광고 추가하기](#admob-앱-오프닝-광고-추가하기)
     * [Admob 배너 광고 추가하기](#admob-배너-광고-추가하기)
     * [Admob 전면 광고 추가하기](#admob-전면-광고-추가하기)
     * [Admob 네이티브 광고 추가하기](#admob-네이티브-광고-추가하기)
@@ -258,6 +259,303 @@ MediationTestSuite.launch(context)
 ```
 
 
+
+### Admob 앱 오프닝 광고 추가하기
+- 앱 오프닝 광고를 구현하는 자세한 내용은 [AdMob 앱 오프닝 광고 연동 가이드](https://developers.google.com/admob/android/app-open)에서 확인해주십시오.
+- 앱 오프닝 광고를 구현하는 데 필요한 단계는 크게 다음과 같습니다.
+    1. `Application` 클래스를 확장하여 Google 모바일 광고 SDK를 초기화합니다.
+    2. 광고를 게재하기 전에 광고를 요청하는 유틸리티 클래스인 `AppOpenAdManager` 클래스를 생성합니다.
+    3. 광고를 요청합니다.
+    4. `ActivityLifecycleCallbacks` 인터페이스를 구현하고 등록합니다.
+    5. 광고를 표시하고 콜백을 처리합니다.
+    6. foreground 이벤트 중에 광고를 표시하도록 `LifecycleObserver` 인터페이스를 구현하고 등록합니다.
+
+- Application 클래스를 확장하는 새 클래스를 만든 후 `AndroidManifest.xml`에 다음 코드를 추가해야합니다.
+
+``` xml
+<application
+    android:name="com.google.android.gms.example.appopendemo.MyApplication" ...>
+...
+</application>
+```
+
+<details> <summary>Kotlin</summary>
+
+- MyApplication.kt
+
+``` kotlin
+private const val AD_UNIT_ID = "ca-app-pub-xxxxxxxxxx"
+private const val LOG_TAG = "MyApplication"
+
+/** Application class that initializes, loads and show ads when activities change states. */
+class MyApplication : Application(), Application.ActivityLifecycleCallbacks, LifecycleEventObserver {
+
+    private lateinit var appOpenAdManager: AppOpenManager
+
+    private var currentActivity: Activity? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        registerActivityLifecycleCallbacks(this)
+
+        // Log the Mobile Ads SDK version.
+        Log.d(LOG_TAG, "Google Mobile Ads SDK Version: " + MobileAds.getVersion())
+
+        MobileAds.initialize(this) {}
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+        appOpenAdManager = AppOpenManager()
+    }
+
+    /** LifecycleObserver method that shows the app open ad when the app moves to foreground. */
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        if (event == Lifecycle.Event.ON_START) {
+            // Show the ad (if available) when the app moves to foreground.
+            currentActivity?.let {
+                appOpenAdManager.showAdIfAvailable(it)
+            }
+        }
+    }
+
+    /** ActivityLifecycleCallback methods. */
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+
+    override fun onActivityStarted(activity: Activity) {
+        // Updating the currentActivity only when an ad is not showing.
+        if (!appOpenAdManager.isShowingAd) {
+            currentActivity = activity
+        }
+    }
+
+    override fun onActivityResumed(activity: Activity) {}
+
+    override fun onActivityPaused(activity: Activity) {}
+
+    override fun onActivityStopped(activity: Activity) {}
+
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+
+    override fun onActivityDestroyed(activity: Activity) {}
+
+    /**
+     * Shows an app open ad.
+     *
+     * @param activity the activity that shows the app open ad
+     * @param onShowAdCompleteListener the listener to be notified when an app open ad is complete
+     */
+    fun showAdIfAvailable(activity: Activity, onShowAdCompleteListener: OnShowAdCompleteListener) {
+        // We wrap the showAdIfAvailable to enforce that other classes only interact with MyApplication
+        // class.
+        appOpenAdManager.showAdIfAvailable(activity, onShowAdCompleteListener)
+    }
+
+    /**
+     * Interface definition for a callback to be invoked when an app open ad is complete (i.e.
+     * dismissed or fails to show).
+     */
+    interface OnShowAdCompleteListener {
+        fun onShowAdComplete()
+    }
+
+    /** Inner class that loads and shows app open ads. */
+    private inner class AppOpenManager {
+
+        private var appOpenAd: AppOpenAd? = null
+        private var isLoadingAd = false
+        var isShowingAd = false
+
+        /** Keep track of the time an app open ad is loaded to ensure you don't show an expired ad. */
+        private var loadTime: Long = 0
+
+        /**
+         * Load an ad.
+         *
+         * @param context the context of the activity that loads the ad
+         */
+        fun loadAd(context: Context) {
+            // Do not load ad if there is an unused ad or one is already loading.
+            if (isLoadingAd || isAdAvailable()) {
+                return
+            }
+
+            isLoadingAd = true
+            val request = AdRequest.Builder().build()
+            AppOpenAd.load(
+                context, AD_UNIT_ID, request,
+                object : AppOpenAdLoadCallback() {
+
+                    override fun onAdLoaded(ad: AppOpenAd) {
+                        // Called when an app open ad has loaded.
+                        Log.d(LOG_TAG, "Ad was loaded.")
+                        appOpenAd = ad
+                        isLoadingAd = false
+                        loadTime = Date().time
+                    }
+
+                    override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                        // Called when an app open ad has failed to load.
+                        Log.d(LOG_TAG, loadAdError.message)
+                        isLoadingAd = false;
+                    }
+                }
+            )
+        }
+
+        /** Check if ad was loaded more than n hours ago. */
+        private fun wasLoadTimeLessThanNHoursAgo(numHours: Long): Boolean {
+            val dateDifference: Long = Date().time - loadTime
+            val numMilliSecondsPerHour: Long = 3600000
+            return dateDifference < numMilliSecondsPerHour * numHours
+        }
+
+        /** Check if ad exists and can be shown. */
+        private fun isAdAvailable(): Boolean {
+            return appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4)
+        }
+
+        /**
+         * Show the ad if one isn't already showing.
+         *
+         * @param activity the activity that shows the app open ad
+         */
+        fun showAdIfAvailable(activity: Activity) {
+            showAdIfAvailable(activity, object : OnShowAdCompleteListener {
+                override fun onShowAdComplete() {
+                    // Empty because the user will go back to the activity that shows the ad.
+                }
+            })
+        }
+
+
+        /**
+         * Show the ad if one isn't already showing.
+         *
+         * @param activity the activity that shows the app open ad
+         * @param onShowAdCompleteListener the listener to be notified when an app open ad is complete
+         */
+        fun showAdIfAvailable(activity: Activity, onShowAdCompleteListener: OnShowAdCompleteListener) {
+            // If the app open ad is already showing, do not show the ad again.
+            if (isShowingAd) {
+                Log.d(LOG_TAG, "The app ad is already showing.")
+                return
+            }
+
+            // If the app open ad is not available yet, invoke the callback then load the ad.
+            if (!isAdAvailable()) {
+                Log.d(LOG_TAG, "The app open is not ready yet.")
+                onShowAdCompleteListener.onShowAdComplete()
+                loadAd(activity)
+                return
+            }
+
+            appOpenAd?.setFullScreenContentCallback(
+                object : FullScreenContentCallback() {
+                    override fun onAdDismissedFullScreenContent() {
+                        // Called when full screen content is dismissed.
+                        // Set the reference to null so isAdAvailable() returns false.
+                        Log.d(LOG_TAG, "Ad dismissed fullscreen content.")
+                        appOpenAd = null
+                        isShowingAd = false
+
+                        onShowAdCompleteListener.onShowAdComplete()
+                        loadAd(activity)
+                    }
+
+                    override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                        // Called when fullscreen content failed to show.
+                        // Set the reference to null so isAdAvailable() returns false.
+                        Log.d(LOG_TAG, adError.message)
+                        appOpenAd = null
+                        isShowingAd = false
+
+                        onShowAdCompleteListener.onShowAdComplete()
+                        loadAd(activity)
+                    }
+
+                    override fun onAdShowedFullScreenContent() {
+                        // Called when fullscreen content is shown.
+                        Log.d(LOG_TAG, "Ad showed fullscreen content.")
+                    }
+                })
+            isShowingAd = true
+            appOpenAd?.show(activity)
+        }
+    }
+}
+```
+
+- SplashActivity.kt
+
+``` kotlin
+
+/**
+ * Number of seconds to count down before showing the app open ad. This simulates the time needed
+ * to load the app.
+ */
+private const val COUNTER_TIME = 5L;
+
+private const val LOG_TAG = "SplashActivity"
+
+class SplashActivity : AppCompatActivity() {
+
+    private var secondsRemaining: Long = 0L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
+
+        // Create a timer so the SplashActivity will be displayed for a fixed amount of time.
+        createTimer(COUNTER_TIME)
+    }
+
+    /**
+     * Create the countdown timer, which counts down to zero and show the app open ad.
+     *
+     * @param seconds the number of seconds that the timer counts down from
+     */
+    private fun createTimer(seconds: Long) {
+        val counterTextView: TextView = findViewById(R.id.timer)
+        val countDownTimer: CountDownTimer = object : CountDownTimer(seconds * 1000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                secondsRemaining = millisUntilFinished / 1000 + 1
+                counterTextView.text = "App is done loading in: $secondsRemaining"
+            }
+
+            override fun onFinish() {
+                secondsRemaining = 0
+                counterTextView.text = "Done."
+
+                val application = application as? MyApplication
+
+                // If the application is not an instance of MyApplication, log an error message and
+                // start the MainActivity without showing the app open ad.
+                if (application == null) {
+                    Log.e(LOG_TAG, "Failed to cast application to MyApplication.")
+                    startMainActivity()
+                    return
+                }
+
+                // Show the app open ad.
+                application.showAdIfAvailable(
+                    this@SplashActivity,
+                    object : MyApplication.OnShowAdCompleteListener {
+                        override fun onShowAdComplete() {
+                            startMainActivity()
+                        }
+                    })
+            }
+        }
+        countDownTimer.start()
+    }
+
+    /** Start the MainActivity. */
+    fun startMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+}
+```
+
+</details>
 
 ### Admob 배너 광고 추가하기
 
