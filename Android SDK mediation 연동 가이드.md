@@ -1692,6 +1692,9 @@ statusbarHide()|전면광고 상태가 가리기 옵션(true : 상태가 가리�
 
 #### Cauly 배너 광고 추가하기
 
+
+<details> <summary>Java</summary>
+
 - CaulyBanner
 
 ``` java
@@ -1863,9 +1866,188 @@ public class CaulyBannerLoader implements CaulyAdBannerViewListener, MediationBa
 
 ```
 
+</details>
+
+
+<details> <summary>Kotlin</summary>
+
+- CaulyBanner
+
+``` kotlin
+class CaulyBanner : Adapter() {
+    private var bannerLoader: CaulyBannerLoader? = null
+    
+    override fun loadBannerAd(
+        mediationBannerAdConfiguration: MediationBannerAdConfiguration,
+        callback: MediationAdLoadCallback<MediationBannerAd, MediationBannerAdCallback>
+    ) {
+        bannerLoader = CaulyBannerLoader(mediationBannerAdConfiguration, callback)
+        bannerLoader!!.loadAd()
+    }
+
+    // This method won't be called for custom events.
+    override fun initialize(
+        context: Context,
+        initializationCompleteCallback: InitializationCompleteCallback,
+        list: List<MediationConfiguration>
+    ) {
+        initializationCompleteCallback.onInitializationSucceeded()
+    }
+
+    override fun getVersionInfo(): VersionInfo {
+        val versionString = "1.0.0.0"
+        val splits = versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        if (splits.size >= 4) {
+            val major = splits[0].toInt()
+            val minor = splits[1].toInt()
+            val micro = splits[2].toInt() * 100 + splits[3].toInt()
+            return VersionInfo(major, minor, micro)
+        }
+        return VersionInfo(0, 0, 0)
+    }
+
+    override fun getSDKVersionInfo(): VersionInfo {
+        val versionString = "1.0.0"
+        val splits = versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        if (splits.size >= 3) {
+            val major = splits[0].toInt()
+            val minor = splits[1].toInt()
+            val micro = splits[2].toInt()
+            return VersionInfo(major, minor, micro)
+        }
+        return VersionInfo(0, 0, 0)
+    }
+
+    companion object {
+        protected val TAG = CaulyBanner::class.java.simpleName
+    }
+}
+```
+
+- CaulyBannerLoader
+
+``` kotlin
+
+class CaulyBannerLoader(
+    private val mediationBannerAdConfiguration: MediationBannerAdConfiguration,
+    private val mediationAdLoadCallback: MediationAdLoadCallback<MediationBannerAd, MediationBannerAdCallback>
+) :
+    CaulyAdBannerViewListener, MediationBannerAd {
+    private var bannerAdCallback: MediationBannerAdCallback? = null
+    private var adView: CaulyAdBannerView? = null
+    private var bannerActivity: Activity? = null
+
+    /** Loads a banner ad from the third party ad network.  */
+    fun loadAd() {
+        Log.i(TAG, "Admob Mediation : Cauly Banner loadBannerAd.")
+        //아래가 미디에이션 서버로부터 파라미터 설정한 값 받아오는 부분
+        val serverParameter =
+            mediationBannerAdConfiguration.serverParameters.getString(MediationConfiguration.CUSTOM_EVENT_SERVER_PARAMETER_FIELD)
+
+        if (TextUtils.isEmpty(serverParameter)) {
+            mediationAdLoadCallback.onFailure(
+                AdError(
+                    ERROR_NO_AD_UNIT_ID,
+                    "Ad unit id is empty",
+                    CUSTOM_EVENT_ERROR_DOMAIN
+                )
+            )
+            return
+        }
+        Log.d(TAG, "Received server parameter.$serverParameter")
+        val context = mediationBannerAdConfiguration.context
+        bannerActivity = context as Activity
+
+        if (adView != null) {
+            adView!!.destroy()
+            adView!!.removeAllViews()
+            adView = null
+        }
+
+        //AdView의 parent layout
+        layout = bannerActivity!!.findViewById(R.id.adView)
+
+        // 광고 정보 설정
+        val adInfo = CaulyAdInfoBuilder(serverParameter)
+            .bannerHeight(CaulyAdInfoBuilder.FIXED)
+            .banner_interval(false)
+            .dynamicReloadInterval(false)
+            .effect("None")
+            .build()
+
+        // Cauly 배너 광고 View 생성.
+        adView = CaulyAdBannerView(context)
+
+        // 광고 정보 설정
+        adView!!.setAdInfo(adInfo)
+        adView!!.setAdViewListener(this)
+
+        // 광고로드
+        adView!!.load(context, layout)
+    }
+
+    override fun onReceiveAd(caulyAdBannerView: CaulyAdBannerView, isChargeableAd: Boolean) {
+        // 광고 요청과 동시에 add된 광고 view를 제거함
+        layout!!.removeView(adView)
+        if (adView != null) {
+            Log.e(TAG, "onReceiveAd onAdLoaded-=-=-=-=-: ")
+            adView!!.show()
+            bannerAdCallback = mediationAdLoadCallback.onSuccess(this)
+            bannerAdCallback!!.onAdOpened()
+            bannerAdCallback!!.reportAdImpression()
+        }
+    }
+
+    override fun onFailedToReceiveAd(caulyAdBannerView: CaulyAdBannerView, i: Int, s: String) {
+        Log.e(TAG, "Failed to fetch the banner ad.")
+        mediationAdLoadCallback.onFailure(AdError(i, s, SAMPLE_SDK_DOMAIN))
+        layout!!.removeView(adView)
+    }
+
+    override fun onShowLandingScreen(caulyAdBannerView: CaulyAdBannerView) {
+        Log.e("cauly", "Admob Mediation : Cauly Banner onShowLandingScreen")
+        bannerAdCallback!!.onAdLeftApplication()
+        bannerAdCallback!!.reportAdClicked()
+    }
+
+    override fun onCloseLandingScreen(caulyAdBannerView: CaulyAdBannerView) {
+        Log.e("cauly", "Admob Mediation : Cauly Banner onCloseLandingScreen")
+    }
+
+    override fun onTimeout(caulyAdBannerView: CaulyAdBannerView, s: String) {}
+
+
+    override fun getView(): View {
+        return adView!!
+    }
+
+    companion object {
+        val TAG = CaulyBannerLoader::class.java.simpleName
+        private var layout: ViewGroup? = null
+
+        /** Error raised when the custom event adapter cannot obtain the ad unit id.  */
+        const val ERROR_NO_AD_UNIT_ID = 101
+
+        /** Error raised when the custom event adapter cannot obtain the activity context.  */
+        const val ERROR_NO_ACTIVITY_CONTEXT = 103
+        const val SAMPLE_SDK_DOMAIN = "kr.co.cauly.sdk.android"
+        const val CUSTOM_EVENT_ERROR_DOMAIN = "com.google.ads.mediation.sample.customevent"
+        fun init(viewGroup: ViewGroup?) {
+            layout = viewGroup
+        }
+    }
+}
+```
+
+</details>
+
 
 
 #### Cauly 전면 광고 추가하기
+
+<details> <summary>Java</summary>
 
 - CaulyInterstitial
 
@@ -2021,6 +2203,167 @@ public class CaulyInterstitialLoader implements CaulyInterstitialAdListener, Med
     }
 }
 ```
+
+</details>
+
+
+<details> <summary>Kotlin</summary>
+
+- CaulyInterstitial
+
+``` kotlin
+class CaulyInterstitial : Adapter() {
+    private var interstitialLoader: CaulyInterstitialLoader? = null
+    override fun loadInterstitialAd(
+        mediationInterstitialAdConfiguration: MediationInterstitialAdConfiguration,
+        callback: MediationAdLoadCallback<MediationInterstitialAd, MediationInterstitialAdCallback>
+    ) {
+        interstitialLoader = CaulyInterstitialLoader(mediationInterstitialAdConfiguration, callback)
+        interstitialLoader!!.loadAd()
+    }
+
+    override fun initialize(
+        context: Context,
+        initializationCompleteCallback: InitializationCompleteCallback,
+        list: List<MediationConfiguration>
+    ) {
+        initializationCompleteCallback.onInitializationSucceeded()
+    }
+
+    override fun getVersionInfo(): VersionInfo {
+        val versionString = "1.0.0.0"
+        val splits = versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        if (splits.size >= 4) {
+            val major = splits[0].toInt()
+            val minor = splits[1].toInt()
+            val micro = splits[2].toInt() * 100 + splits[3].toInt()
+            return VersionInfo(major, minor, micro)
+        }
+        return VersionInfo(0, 0, 0)
+    }
+
+    override fun getSDKVersionInfo(): VersionInfo {
+        val versionString = "1.0.0"
+        val splits = versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        if (splits.size >= 3) {
+            val major = splits[0].toInt()
+            val minor = splits[1].toInt()
+            val micro = splits[2].toInt()
+            return VersionInfo(major, minor, micro)
+        }
+        return VersionInfo(0, 0, 0)
+    }
+
+    companion object {
+        protected val TAG = CaulyInterstitial::class.java.simpleName
+    }
+}
+```
+
+- CaulyInterstitialLoader
+
+```kotlin
+class CaulyInterstitialLoader(
+    /** Configuration for requesting the interstitial ad from the third-party network.  */
+    private val mediationInterstitialAdConfiguration: MediationInterstitialAdConfiguration,
+    /** Callback that fires on loading success or failure.  */
+    private var mediationAdLoadCallback: MediationAdLoadCallback<MediationInterstitialAd, MediationInterstitialAdCallback>
+) :
+    CaulyInterstitialAdListener, MediationInterstitialAd {
+    /** Callback for interstitial ad events.  */
+    private var interstitialAdCallback: MediationInterstitialAdCallback? = null
+    var caulyInterstitialAd: CaulyInterstitialAd? = null
+    private var interstitialActivity: Activity? = null
+
+    /** Constructor.  */
+    init {
+        mediationAdLoadCallback = mediationAdLoadCallback
+    }
+
+    /** Loads the interstitial ad from the third-party ad network.  */
+    fun loadAd() {
+        // All custom events have a server parameter named "parameter" that returns
+        // back the parameter entered into the UI when defining the custom event.
+        Log.i(TAG, "Admob Mediation : Cauly Interstitial loadInterstitialAd.")
+        val serverParameter =
+            mediationInterstitialAdConfiguration.serverParameters.getString(MediationConfiguration.CUSTOM_EVENT_SERVER_PARAMETER_FIELD)
+        if (TextUtils.isEmpty(serverParameter)) {
+            mediationAdLoadCallback.onFailure(
+                AdError(
+                    ERROR_NO_AD_UNIT_ID,
+                    "Ad unit id is empty",
+                    CUSTOM_EVENT_ERROR_DOMAIN
+                )
+            )
+            return
+        }
+        Log.d(TAG, "Received server parameter.")
+        val context = mediationInterstitialAdConfiguration.context
+        interstitialActivity = context as Activity
+        val adInfo = CaulyAdInfoBuilder(serverParameter)
+            .build()
+
+        // 전면 광고 생성
+        val interstial = CaulyInterstitialAd()
+        interstial.setAdInfo(adInfo)
+        interstial.setInterstialAdListener(this)
+
+        // 광고 요청.
+        interstial.requestInterstitialAd(interstitialActivity)
+    }
+
+    override fun showAd(context: Context) {
+        caulyInterstitialAd!!.show()
+        interstitialAdCallback!!.reportAdImpression()
+        interstitialAdCallback!!.onAdOpened()
+    }
+
+    /** CaulyInterstitialAdListener  */
+    override fun onReceiveInterstitialAd(
+        caulyInterstitialAd: CaulyInterstitialAd,
+        isChargeableAd: Boolean
+    ) {
+        // 광고 수신 성공한 경우 호출됨.
+        // 수신된 광고가 무료 광고인 경우 isChargeableAd 값이 false 임.
+        if (isChargeableAd == false) {
+            Log.d("CaulyExample", "free interstitial AD received.")
+        } else {
+            Log.d("CaulyExample", "normal interstitial AD received.")
+        }
+        this.caulyInterstitialAd = caulyInterstitialAd
+        interstitialAdCallback = mediationAdLoadCallback.onSuccess(this)
+        interstitialAdCallback!!.reportAdImpression()
+    }
+
+    override fun onFailedToReceiveInterstitialAd(caulyInterstitialAd: CaulyInterstitialAd, i: Int, s: String) {
+        Log.e(TAG, "Failed to fetch the interstitial ad.")
+        mediationAdLoadCallback.onFailure(AdError(i, s, SAMPLE_SDK_DOMAIN))
+    }
+
+    override fun onClosedInterstitialAd(caulyInterstitialAd: CaulyInterstitialAd) {
+        // 전면 광고가 닫힌 경우 호출됨.
+        Log.d("CaulyExample", "interstitial AD closed.")
+        interstitialAdCallback!!.onAdClosed()
+    }
+
+    override fun onLeaveInterstitialAd(caulyInterstitialAd: CaulyInterstitialAd) {}
+
+    companion object {
+        val TAG = CaulyInterstitialLoader::class.java.simpleName
+
+        /** Error raised when the custom event adapter cannot obtain the ad unit id.  */
+        const val ERROR_NO_AD_UNIT_ID = 101
+
+        /** Error raised when the custom event adapter cannot obtain the activity context.  */
+        const val SAMPLE_SDK_DOMAIN = "kr.co.cauly.sdk.android"
+        const val CUSTOM_EVENT_ERROR_DOMAIN = "com.google.ads.mediation.sample.customevent"
+    }
+}
+```
+</details>
+
 
 
 
