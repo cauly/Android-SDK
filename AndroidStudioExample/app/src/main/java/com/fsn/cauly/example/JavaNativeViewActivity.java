@@ -10,7 +10,7 @@ import com.fsn.cauly.CaulyNativeAdInfoBuilder;
 import com.fsn.cauly.CaulyNativeAdView;
 import com.fsn.cauly.CaulyNativeAdViewListener;
 
-public class NativeViewActivity extends Activity implements CaulyNativeAdViewListener  {
+public class JavaNativeViewActivity extends Activity implements CaulyNativeAdViewListener  {
 
 	String APP_CODE="CAULY";// your app code which you are assigned.
 	ViewGroup native_container;
@@ -18,7 +18,7 @@ public class NativeViewActivity extends Activity implements CaulyNativeAdViewLis
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view);
+        setContentView(R.layout.activity_java_native_view);
         native_container = (ViewGroup) findViewById(R.id.native_container);
 		showNative();
     }

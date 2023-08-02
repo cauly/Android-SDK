@@ -21,7 +21,7 @@ import com.fsn.cauly.CaulyNativeAdInfoBuilder;
 import com.fsn.cauly.CaulyNativeAdView;
 import com.fsn.cauly.CaulyNativeAdViewListener;
 
-public class NativeCardActivity extends Activity implements CaulyNativeAdViewListener  {
+public class JavaNativeCardActivity extends Activity implements CaulyNativeAdViewListener  {
 
 	String APP_CODE="CAULY";// your app code which you are assigned.
 	String[] TITLE = {"블루 & 그레이 톤의 북유럽 인테리어"
@@ -53,7 +53,7 @@ public class NativeCardActivity extends Activity implements CaulyNativeAdViewLis
 			mList.add(new Item( R.drawable.a1 +i%icons.length,R.drawable.d1 +i%icons.length,TITLE[i%TITLE.length],SUBTITLE[i%TITLE.length],DESCRIPTION[i%TITLE.length],""));
 		}
 		 
-		setContentView(R.layout.activity_card);
+		setContentView(R.layout.activity_java_native_card);
 		listview = (ListView) findViewById(R.id.native_area);
 		listview.setAdapter(mAdapter);
 		showNative();

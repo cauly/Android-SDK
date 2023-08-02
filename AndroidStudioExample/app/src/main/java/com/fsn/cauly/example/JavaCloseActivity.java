@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -12,10 +11,8 @@ import com.fsn.cauly.CaulyAdInfo;
 import com.fsn.cauly.CaulyAdInfoBuilder;
 import com.fsn.cauly.CaulyCloseAd;
 import com.fsn.cauly.CaulyCloseAdListener;
-import com.fsn.cauly.CaulyInterstitialAd;
-import com.fsn.cauly.CaulyInterstitialAdListener;
 
-public class CloseActivity extends Activity implements CaulyCloseAdListener {
+public class JavaCloseActivity extends Activity implements CaulyCloseAdListener {
 
 	private static final String APP_CODE = "CAULY";
 
@@ -24,7 +21,7 @@ public class CloseActivity extends Activity implements CaulyCloseAdListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_closead);
+		setContentView(R.layout.activity_java_close_ad);
 
 		// CloseAd 초기화
 		CaulyAdInfo closeAdInfo = new CaulyAdInfoBuilder(APP_CODE).build();

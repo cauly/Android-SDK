@@ -5,15 +5,19 @@
     * [proguard 설정](#proguard-설정-하는-경우-cauly-sdk-포함된-class는-난독화-시키시면-안됩니다)
     * [AndroidX 설정](#androidx-사용하는-경우)
 2. [배너 광고 추가하기](#2-배너-광고-추가하기)
-    * [JAVA 방식 base](#java-방식-base-자세한-내용은-caulyexample-참조)
+    * [JAVA 방식 base](#java-방식-base-자세한-내용은-‘AndroidStudioExample’-참조)
+    * [Kotlin 방식 base](#kotlin-방식-base-자세한-내용은-‘AndroidStudioExample’-참조)
     * [XML 방식](#xml-방식--설정하지-않은-항목들은-기본값으로-설정됩니다)
     * [CaulyAdinfo 설정방법](#CaulyAdinfo-설정방법)
 3. [전면 광고 추가하기](#3-전면-광고-추가하기)
-    * [전면광고 fullScreen Type](#전면광고-fullscreen-type)   
-    * [전면광고 Close Ad Type](#전면광고-close-ad-type)   
+    * [JAVA 방식 base 전면광고 fullScreen Type](#java-방식-base-전면광고-fullscreen-type)   
+    * [JAVA 방식 base 전면광고 Close Ad Type](#java-방식-base-전면광고-close-ad-type)   
+    * [Kotlin 방식 base 전면광고 fullScreen Type](#kotlin-방식-base-전면광고-fullscreen-type)   
+    * [Kotlin 방식 base 전면광고 Close Ad Type](#kotlin-방식-base-전면광고-close-ad-type)       
 4. [네이티브 광고 추가하기](#4-네이티브-광고-추가하기)
-    * [네이티브광고 : BASE](#네이티브광고--base)   
-    * [네이티브광고:Custom](#네이티브광고custom)   
+    * [JAVA 방식 base 네이티브광고 : BASE](#java-방식-base-네이티브광고--base)   
+    * [JAVA 방식 base 네이티브광고:Custom](#java-방식-base-네이티브광고custom)   
+    * [Kotlin 방식 base 네이티브광고 : BASE](#kotlin-방식-base-네이티브광고--base)     
 5. [아동 대상 서비스 취급용 '태그' 설정](#5-아동-대상-서비스-취급용-태그-설정)
 6. [Error Code](#6-error-code)
 7. [Class Reference](#7-class-reference)
@@ -133,7 +137,7 @@ gradle.properties ::
 
 광고를 삽입하고 싶은 layout에 광고를 소스를 삽입(두 가지 방식 제공 : XML 방식, JAVA 방식)
 
-#### `JAVA 방식` base [자세한 내용은 ‘CaulyExample’ 참조]
+#### `JAVA 방식` base [자세한 내용은 ‘AndroidStudioExample’ 참조]
 ``` java
    private CaulyAdView javaAdView;
 
@@ -199,6 +203,70 @@ gradle.properties ::
     }
 ```
 
+#### `Kotlin 방식` base [자세한 내용은 ‘AndroidStudioExample’ 참조]
+``` java
+    private var javaAdView: CaulyAdView? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_kotlin)
+        // Cauly 로그 수준 지정 : 로그의 상세함 순서는 다음과 같다.
+        //LogLevel.Verbose > LogLevel.Debug > LogLevel.Info > LogLevel.Warn > LogLevel.Error > LogLevel.None
+        Logger.setLogLevel(Logger.LogLevel.Debug)
+
+        // CaulyAdInfo 상세 설정 방법은 하단 표 참조
+        // 설정하지 않은 항목들은 기본값으로 설정됨
+        val adInfo = CaulyAdInfoBuilder(APP_CODE)
+            .bannerHeight(CaulyAdInfoBuilder.FIXED)
+            .setBannerSize(320,50)
+            .build()
+
+	
+        // CaulyAdInfo를 이용, CaulyAdView 생성.
+        javaAdView = CaulyAdView(this)
+        javaAdView!!.setAdInfo(adInfo)
+        javaAdView!!.setAdViewListener(this)
+
+        val rootView = findViewById<View>(R.id.java_root_view) as RelativeLayout
+
+        // 화면 하단에 배너 부착
+        val params = RelativeLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        rootView.addView(javaAdView, params)
+    }
+
+    // CaulyAdViewListener
+    //	광고 동작에 대해 별도 처리가 필요 없는 경우,
+    //	Activity의 "implements CaulyAdViewListener" 부분 제거하고 생략 가능.
+    override fun onReceiveAd(adView: CaulyAdView, isChargeableAd: Boolean) {
+        // 광고 수신 성공 & 노출된 경우 호출됨.
+            Log.d("CaulyExample", "banner AD received.")
+    }
+
+    override fun onFailedToReceiveAd(adView: CaulyAdView, errorCode: Int, errorMsg: String) {
+        // 배너 광고 수신 실패할 경우 호출됨.
+        Log.d("CaulyExample", "failed to receive banner AD.")
+    }
+
+    override fun onShowLandingScreen(adView: CaulyAdView) {
+        // 광고 배너를 클릭하여 WebView를 통해 랜딩 페이지가 열린 경우 호출됨.
+        Log.d("CaulyExample", "banner AD landing screen opened.")
+    }
+
+    override fun onCloseLandingScreen(adView: CaulyAdView) {
+        // 광고 배너를 클릭하여 WebView를 통해 열린 랜딩 페이지가 닫힌 경우 호출됨.
+        Log.d("CaulyExample", "banner AD landing screen closed.")
+    }
+
+    // Activity 버튼 처리
+    // - Java 배너 광고 갱신 버튼
+    fun onReloadJavaAdView(button: View?) {
+        javaAdView.reload()
+    }
+```
+
 #### ‘광고 삽입할 부분’.xml 
 
 ```xml
@@ -260,7 +328,7 @@ gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
 
 # 3. 전면 광고 추가하기
 
-#### 전면광고 fullScreen Type
+#### `JAVA 방식` base 전면광고 fullScreen Type
 
 ```java
     // 아래와 같이 전면 광고 표시 여부 플래그를 사용하면, 전면 광고 수신 후, 노출 여부를 선택할 수 있다.
@@ -328,7 +396,7 @@ gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
     }
 ```
 		
-#### 전면광고 Close Ad Type
+#### `JAVA 방식` base 전면광고 Close Ad Type
 
 ```java
 public class JavaActivity extends Activity implements CaulyCloseAdListener {
@@ -428,13 +496,173 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
 }
 ```
 
+#### `Kotlin 방식` base 전면광고 fullScreen Type
+
+```java
+    // 아래와 같이 전면 광고 표시 여부 플래그를 사용하면, 전면 광고 수신 후, 노출 여부를 선택할 수 있다.
+    private var showInterstitial = false
+    private var interstitialAd: CaulyInterstitialAd? = null
+
+    // Activity 버튼 처리
+    // - 전면 광고 요청 버튼
+    fun onRequestInterstitial(button: View?) {
+
+        // CaulyAdInfo 생성
+        val adInfo = CaulyAdInfoBuilder(APP_CODE)
+                          // statusbarHide(boolean) : 상태바 가리기 옵션(true : 상태바 가리기)        
+                            .build()
+
+        // 전면 광고 생성
+        interstitialAd = CaulyInterstitialAd()
+        interstitialAd!!.setAdInfo(adInfo)
+        interstitialAd!!.setInterstialAdListener(this)
+
+        // 전면광고 노출 후 back 버튼 사용을 막기 원할 경우 disableBackKey();을 추가한다
+        // 단, requestInterstitialAd 위에서 추가되어야 합니다.
+        // interstitialAd.disableBackKey()
+
+        // 광고 요청. 광고 노출은 CaulyInterstitialAdListener의 onReceiveInterstitialAd에서 처리한다.
+        interstitialAd!!.requestInterstitialAd(this)
+        // 전면 광고 노출 플래그 활성화
+        showInterstitial = true
+    }
+
+    // - 전면 광고 노출 취소 버튼
+    fun onCancelInterstitial(button: View?) {
+        // 전면 광고 노출 플래그 비활성화
+        showInterstitial = false
+    }
+
+    // CaulyInterstitialAdListener
+	//전면 광고의 경우, 광고 수신 후 자동으로 노출되지 않으므로,
+	//반드시 onReceiveInterstitialAd 메소드에서 노출 처리해 주어야 한다.
+    override fun onReceiveInterstitialAd(ad: CaulyInterstitialAd, isChargeableAd: Boolean) {
+        // 광고 수신 성공한 경우 호출됨.
+        // 수신된 광고가 무료 광고인 경우 isChargeableAd 값이 false 임.
+        if (isChargeableAd == false) {
+            Log.d("CaulyExample", "free interstitial AD received.")
+        } else {
+            Log.d("CaulyExample", "normal interstitial AD received.")
+        }
+        // 노출 활성화 상태이면, 광고 노출
+        if (showInterstitial)
+            ad!!.show()
+        else
+            ad!!.cancel()
+    }
+
+    override fun onFailedToReceiveInterstitialAd(ad: CaulyInterstitialAd, errorCode: Int, errorMsg: String) {
+        // 전면 광고 수신 실패할 경우 호출됨.
+        Log.d("CaulyExample", "failed to receive interstitial AD.")
+    }
+
+    override fun onClosedInterstitialAd(ad: CaulyInterstitialAd) {
+        // 전면 광고가 닫힌 경우 호출됨.
+        Log.d("CaulyExample", "interstitial AD closed.")
+    }
+```
+		
+#### `Kotlin 방식` base 전면광고 Close Ad Type
+
+```java
+class KotlinActivity : AppCompatActivity(), CaulyCloseAdListener {
+
+    companion object {
+        // 광고 요청을 위한 App Code
+        private const val APP_CODE = "CAULY"
+    }
+
+    var mCloseAd: CaulyCloseAd? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_kotlin)
+
+        //CloseAd 초기화 
+        val closeAdInfo = CaulyAdInfoBuilder(APP_CODE)
+                          // statusbarHide(boolean) : 상태바 가리기 옵션(true : 상태바 가리기)        
+                            .build()
+        mCloseAd = CaulyCloseAd()
+					
+		/*  Optional
+		//원하는 버튼의 문구를 설정 할 수 있다.  
+		mCloseAd.setButtonText("취소", "종료");
+		//원하는 텍스트의 문구를 설정 할 수 있다.  
+		mCloseAd.setDescriptionText("종료하시겠습니까?");
+					*/
+        mCloseAd!!.setAdInfo(closeAdInfo)
+        mCloseAd!!.setCloseAdListener(this) // CaulyCloseAdListener 등록              
+        // 종료광고 노출 후 back버튼 사용을 막기 원할 경우 disableBackKey();을 추가한다
+        // mCloseAd!!.disableBackKey()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (mCloseAd != null) mCloseAd!!.resume(this) // 필수 호출 
+    }
+
+    // Back Key가 눌러졌을 때, CloseAd 호출
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // 앱을 처음 설치하여 실행할 때, 필요한 리소스를 다운받았는지 여부.
+            if (mCloseAd != null && mCloseAd!!.isModuleLoaded) {
+                mCloseAd!!.show(this)
+                //광고의 수신여부를 체크한 후 노출시키고 싶은 경우, show(this) 대신 request(this)를 호출.
+                //onReceiveCloseAd에서 광고를 정상적으로 수신한 경우 , show(this)를 통해 광고 노출
+            } else {
+                // 광고에 필요한 리소스를 한번만 다운받는데 실패했을 때 앱의 종료팝업 구현
+                showDefaultClosePopup()
+            }
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    private fun showDefaultClosePopup() {
+        AlertDialog.Builder(this).setTitle("").setMessage("종료 하시겠습니까?")
+            .setPositiveButton("예") { dialog, which -> finish() }.setNegativeButton("아니요", null)
+            .show()
+    }
+
+
+    // CaulyCloseAdListener
+    override fun onFailedToReceiveCloseAd(ad: CaulyCloseAd, errCode: Int, errMsg: String) {
+    }
+
+    // CloseAd의 광고를 클릭하여 앱을 벗어났을 경우 호출되는 함수이다.
+    override fun onLeaveCloseAd(ad: CaulyCloseAd) {
+    }
+
+    // CloseAd의 request()를 호출했을 때, 광고의 여부를 알려주는 함수이다.
+    override fun onReceiveCloseAd(ad: CaulyCloseAd, isChargable: Boolean) {
+   
+    }
+
+    // 왼쪽 버튼을 클릭 하였을 때, 원하는 작업을 수행하면 된다.
+    override fun onLeftClicked(ad: CaulyCloseAd) {
+
+    }
+
+    // 오른쪽 버튼을 클릭 하였을 때, 원하는 작업을 수행하면 된다.
+    // Default로는 오른쪽 버튼이 종료로 설정되어있다.
+    override fun onRightClicked(ad: CaulyCloseAd) {
+        finish()
+    }
+
+    override fun onShowedCloseAd(ad: CaulyCloseAd, isChargable: Boolean) {
+
+    }
+
+}
+```
+
 #### 주의사항
 
 Lifecycle에 따라 pause/resume/destroy API를 호출하지 않을 경우, 광고 수신에 불이익을 받을 수 있습니다.
 
 # 4. 네이티브 광고 추가하기
 
-#### 네이티브광고 : BASE
+#### `JAVA 방식` base 네이티브광고 : BASE
 
 ```java
 public class JavaActivity extends Activity implements CaulyCloseAdListener {
@@ -574,7 +802,7 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
 
 
 
-#### 네이티브광고:Custom
+#### `JAVA 방식` base 네이티브광고:Custom
 
  1. CaulyAdInfo 생성
  2. CaulyCustomAd 객체 생성후, CaulyAdInfo 적용
@@ -700,6 +928,138 @@ CaulyAdInfo adInfo = new CaulyNativeAdInfoBuilder(APP_CODE)
         mCaulyAdView.sendImpressInform(item.id);
 }
 ```
+
+#### `Kotlin 방식` base 네이티브광고 : BASE
+
+```java
+class KotlinNativeViewActivity : AppCompatActivity(), CaulyNativeAdViewListener {
+
+    companion object {
+        // 광고 요청을 위한 App Code
+        private const val APP_CODE = "CAULY"
+    }
+
+    private var native_container: ViewGroup? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_kotlin)
+        native_container = findViewById<View>(R.id.native_container) as ViewGroup
+        request_Native_Base(APP_CODE)
+    }
+
+    private fun request_Native_Base(APP_CODE: String?) {
+        // Request Native AD
+        // 네이티브 애드에 보여질 디자인을 정의하고 세팅하는 작업을 수행한다. (icon, image, title, subtitle, description ...)
+        // CaulyNativeAdViewListener 를 등록하여 onReceiveNativeAd or onFailedToReceiveNativeAd 로 네이티브광고의 상태를 전달받는다.
+        val caulyNativeAdInfoBuilder = CaulyNativeAdInfoBuilder(APP_CODE) // 광고 요청을 위한 App Code
+            .layoutID(R.layout.activity_native_iconlist) // 네이티브애드에 보여질 디자인을 작성하여 등록한다.
+            .mainImageID(R.id.main_image) // 메인이미지
+            .iconImageID(R.id.icon)       // 아이콘 등록
+            .titleID(R.id.title)          // 제목 등록
+            .subtitleID(R.id.subtitle)    // 부제목 등록
+            .adRatio("720x720") //메인이미지 비율설정  안할경우, default: 720x480  or 480x720
+            .sponsorPosition(R.id.sponsor, CaulyAdInfo.Direction.CENTER)
+            .build()
+
+        val nativeAd = CaulyNativeAdView(this)
+        nativeAd.adInfo = caulyNativeAdInfoBuilder
+        nativeAd.setAdViewListener(this)
+        nativeAd.request()
+
+    }
+
+    // 네이티브애드가 없거나, 네트웍상의 이유로 정상적인 수신이 불가능 할 경우 호출이 된다.
+    override fun onFailedToReceiveNativeAd(adView: CaulyNativeAdView, errorCode: Int, errorMsg: String) {
+    }
+
+    // 네이티브애드가 정상적으로 수신되었을 떄, 호출된다.
+    override fun onReceiveNativeAd(adView: CaulyNativeAdView, isChargeableAd: Boolean) {
+        adView.attachToView(native_container) //지정된 위치에 adView를 붙인다.
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        nativeAd!!.destroy()
+    }
+}
+```
+```xml
+-activity_native_iconlist.xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/listcolor" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100dp" >
+         <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp" >
+         <ImageView
+            android:id="@+id/icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+           />
+		 <ImageView
+            android:id="@+id/sponsor"
+            android:layout_width="27dp"
+            android:layout_height="9dp"
+            android:layout_centerHorizontal="true"
+           />
+        </RelativeLayout>
+		 
+		   <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:layout_marginLeft="114dp"
+               android:layout_marginTop="13dp"
+            android:textColor="#8a837e"
+             android:lines="1"
+             android:text="sponsor"
+            android:textSize="10dp" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+             android:layout_marginLeft="114dp"
+              android:layout_marginRight="14dp"
+               android:layout_marginTop="30dp"
+            android:textColor="#000000"
+             android:lines="1"
+            android:textSize="13dp" />
+         <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="114dp"
+              android:layout_marginRight="14dp"
+               android:layout_marginTop="50dp"
+               android:lines="2"
+            android:textColor="#8a837e"
+            android:textSize="10dp" />
+         
+          <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+              android:layout_marginRight="14dp"
+              android:layout_alignParentRight="true"
+                 android:layout_alignParentBottom="true"
+               android:layout_marginBottom="9dp"
+               android:lines="1"
+            android:textColor="#e15052"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+</RelativeLayout>
+```
+
 #### 주의사항
 광고영역에 WebView 권장 및 Lifecycle에 따라 pause/resume/destroy API를 호출하지 않을 경우, 광고 수신에 불이익을 받을 수 있습니다.
 

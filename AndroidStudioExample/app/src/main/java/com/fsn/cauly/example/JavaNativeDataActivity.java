@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class NativeDataActivity extends Activity {
+public class JavaNativeDataActivity extends Activity {
 	static final String APP_CODE = "CAULY"; // AppCode 
 	List<NativeItem> myList ;
 	CaulyCustomAd mCaulyAdView;
@@ -29,7 +29,7 @@ public class NativeDataActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_view);
+		setContentView(R.layout.activity_java_native_data);
 		View requestJsontype = findViewById(R.id.btn1);
 		View addView = findViewById(R.id.btn2);
 		requestJsontype.setOnClickListener(new OnClickListener() {
@@ -68,11 +68,11 @@ public class NativeDataActivity extends Activity {
 				});
 				title.setText(""+item.title);
 				subtitle.setText(""+item.subtitle);
-				ImageCacheManager.getInstance(NativeDataActivity.this).setImageBitmap(""+item.image, img);
+				ImageCacheManager.getInstance(JavaNativeDataActivity.this).setImageBitmap(""+item.image, img);
 				v.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-				         BrowserUtil.openBrowser(NativeDataActivity.this, item.linkUrl);
+				         BrowserUtil.openBrowser(JavaNativeDataActivity.this, item.linkUrl);
 					}
 				});
 				container.addView(v);
@@ -124,7 +124,7 @@ public class NativeDataActivity extends Activity {
 			public void onLoadedAd(boolean isChargeableAd) {
 			//	String dataString = mCaulyAdView.getJsonString(); 
 				
-				 myList = new ArrayList<NativeDataActivity.NativeItem>();
+				 myList = new ArrayList<JavaNativeDataActivity.NativeItem>();
 				List<HashMap<String,Object>> adlist = mCaulyAdView.getAdsList();
 				if(adlist!=null && adlist.size()>0)
 				{
@@ -145,12 +145,12 @@ public class NativeDataActivity extends Activity {
 					}
 				}
 				
-				Toast.makeText(NativeDataActivity.this, " Data "+adlist.size()+"  loaded  ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(JavaNativeDataActivity.this, " Data "+adlist.size()+"  loaded  ", Toast.LENGTH_SHORT).show();
 			}
 			// 광고 호출이 실패할 경우, 호출된다.
 			@Override
 			public void onFailedAd(int errCode, String errMsg) {
-				Toast.makeText(NativeDataActivity.this, "onFailedAd "+errCode+"  "+errMsg, Toast.LENGTH_SHORT).show();
+				Toast.makeText(JavaNativeDataActivity.this, "onFailedAd "+errCode+"  "+errMsg, Toast.LENGTH_SHORT).show();
 			}
 
 			// 광고가 클릭된 경우, 호출된다.

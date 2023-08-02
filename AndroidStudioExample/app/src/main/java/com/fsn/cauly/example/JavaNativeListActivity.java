@@ -17,9 +17,8 @@ import com.fsn.cauly.CaulyNativeAdInfoBuilder;
 import com.fsn.cauly.CaulyNativeAdView;
 import com.fsn.cauly.CaulyNativeAdViewListener;
 import com.fsn.cauly.CaulyAdInfo.Direction;
-import com.fsn.cauly.CaulyAdInfo.Orientation;
 
-public class NativeListActivity extends Activity implements CaulyNativeAdViewListener  {
+public class JavaNativeListActivity extends Activity implements CaulyNativeAdViewListener  {
 
 	String APP_CODE="CAULY";// your app code which you are assigned.
 	String[] TITLE = {"빈폴 2014 S/S시즌오프 UP TO 30%+10%...","화제의 텀블러 리버스 보틀/전용파우치","제이에스티나 외 쥬얼리& 시계 여름아이템 ~ 50% OFF",
@@ -35,7 +34,7 @@ public class NativeListActivity extends Activity implements CaulyNativeAdViewLis
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+        setContentView(R.layout.activity_java_entry);
         mAdapter = new ListAdapter();
 		mList = new ArrayList<Item>();
 		for(int i=0; i<80; i++)
@@ -122,7 +121,7 @@ public class NativeListActivity extends Activity implements CaulyNativeAdViewLis
 				
 				if(convertView==null)
 				{
-					View view=  View.inflate(NativeListActivity.this, R.layout.activity_listview, null);
+					View view=  View.inflate(JavaNativeListActivity.this, R.layout.activity_listview, null);
 					TextView title = (TextView) view.findViewById(R.id.title);
 					TextView subtitle = (TextView) view.findViewById(R.id.subtitle);
 					TextView description = (TextView) view.findViewById(R.id.description);

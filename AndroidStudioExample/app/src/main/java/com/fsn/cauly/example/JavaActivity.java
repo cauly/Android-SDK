@@ -21,7 +21,7 @@ public class JavaActivity extends Activity implements CaulyAdViewListener, Cauly
 
 	// XML Activity 전환 버튼
 	public void switchToXMLActivity(View button) {
-		Intent xmlActivityIntent = new Intent (this, XMLActivity.class);
+		Intent xmlActivityIntent = new Intent (this, JavaXMLActivity.class);
 		startActivity(xmlActivityIntent);
 	}
 	

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-public class XMLActivity extends Activity implements CaulyAdViewListener {
+public class JavaXMLActivity extends Activity implements CaulyAdViewListener {
 
 	// Java Activity 전환 버튼
 	public void switchToJavaActivity(View button) {
@@ -30,7 +30,7 @@ public class XMLActivity extends Activity implements CaulyAdViewListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_xml);
+        setContentView(R.layout.activity_java_xml);
        
         // 선택사항: XML의 AdView 항목을 찾아 Listener 설정
         xmlAdView = (CaulyAdView) findViewById(R.id.xmladview);
