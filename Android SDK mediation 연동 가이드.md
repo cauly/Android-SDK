@@ -2595,9 +2595,9 @@ public class CaulyNativeLoader {
 ### Adfit 광고 추가하기
 #### `CaulyAdInfo 설정방법`
 
-광고 요청 정보 설 정
+Adfit 네이티브 광고 추가하기
 ---|---
-- 네이티브 광고 요청하기
+- 광고 요청 정보 설 정
 
 네이티브 광고를 요청하기 위해서는 `AdFitNativeAdLoader`와 `AdFitNativeAdRequest`를 통해 가능합니다.
 
@@ -2838,5 +2838,36 @@ class SampleNativeMappedImage(
 ```
 - SampleUnifiedNativeAdMapper
 ```kotlin
+class SampleUnifiedNativeAdMapper: UnifiedNativeAdMapper {
+    var context: Context? = null
 
+    constructor(context: Context, nativeAdView: ItemNativeAdBinding) {
+        this.context = context
+
+        if (context == null) {
+            Log.e("AdfitNative", "Failed to load ad. Request must be for unified native ads.")
+            return
+        }
+
+        setMediaView(nativeAdView.mediaView)
+        icon = SampleNativeMappedImage(nativeAdView.profileIconView.drawable, getUri(context, (nativeAdView.profileIconView.drawable as BitmapDrawable).bitmap), 1.0)
+
+        headline = nativeAdView.titleTextView.text as String
+        body = nativeAdView.bodyTextView.text as String
+        callToAction = nativeAdView.callToActionButton.text as String
+        advertiser = nativeAdView.profileNameTextView.text as String
+
+
+        overrideImpressionRecording = false
+        overrideImpressionRecording = false
+    }
+
+    private fun getUri(context: Context, bitmap: Bitmap): Uri {
+        var bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "icon", null)
+        return Uri.parse(path)
+    }
+}
 ```
