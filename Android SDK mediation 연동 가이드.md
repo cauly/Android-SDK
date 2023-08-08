@@ -2593,10 +2593,8 @@ public class CaulyNativeLoader {
 }
 ```
 ### Adfit 광고 추가하기
-#### `CaulyAdInfo 설정방법`
+#### Adfit 네이티브 광고 추가하기
 
-Adfit 네이티브 광고 추가하기
----|---
 - 광고 요청 정보 설 정
 
 네이티브 광고를 요청하기 위해서는 `AdFitNativeAdLoader`와 `AdFitNativeAdRequest`를 통해 가능합니다.
