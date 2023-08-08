@@ -23,7 +23,8 @@
         * [Cauly 배너 광고 추가하기](#cauly-배너-광고-추가하기)
         * [Cauly 전면 광고 추가하기](#cauly-전면-광고-추가하기)
         * [Cauly 네이티브 광고 추가하기](#cauly-네이티브-광고-추가하기)
-
+    * [Adfit 광고 추가하기](#adfit-광고-추가하기)
+        * [Adfit 네이티브 광고 추가하기](#adfit-네이티브-광고-추가하기)
 - - - 
 
 # 1. 미디에이션 시작하기
@@ -2590,4 +2591,252 @@ public class CaulyNativeLoader {
     }
 
 }
+```
+### Adfit 광고 추가하기
+#### `CaulyAdInfo 설정방법`
+
+광고 요청 정보 설 정
+---|---
+- 네이티브 광고 요청하기
+
+네이티브 광고를 요청하기 위해서는 `AdFitNativeAdLoader`와 `AdFitNativeAdRequest`를 통해 가능합니다.
+
+* `AdFitNativeAdRequest.Builder`의 `setAdInfoIconPosition()`으로 광고 정보 아이콘 위치를 설정할 수 있습니다.<br/>
+  기본값은 `RIGHT_TOP`(오른쪽 상단)입니다.<br/>
+
+  | AdFitAdInfoIconPosition | 위치              |
+  |-------------------------|------------------|
+  | LEFT_TOP                | 왼쪽 상단          |
+  | RIGHT_TOP               | 오른쪽 상단 (기본값) |
+  | LEFT_BOTTOM             | 왼쪽 하단          |
+  | RIGHT_BOTTOM            | 오른쪽 상단         |
+
+* `AdFitNativeAdRequest.Builder`의 `setVideoAutoPlayPolicy()`로 비디오 광고 자동 재생 정책을 설정할 수 있습니다.<br/>
+  기본값은 `WIFI_ONLY`(WiFi 연결 상태에만 자동 재생)입니다.<br/>
+  
+  | AdFitVideoAutoPlayPolicy | 설정                     |
+  |--------------------------|-------------------------|
+  | NONE                     | 자동 재생하지 않음          |
+  | WIFI_ONLY                | WiFi 연결 상태에만 자동 재생 |
+  | ALWAYS                   | 항상 자동 재생             |
+
+* 요청에 성공하여 새로운 광고를 응답 받은 경우, 응답 받은 광고 소재 정보를 `AdFitNativeAdBinder`를 통해 <br/>
+  `AdLoadListener.onAdLoaded()`로 전달받을 수 있습니다. <br/>
+* 요청에 실패하거나 응답 받은 소재가 없는 경우, 오류 코드(`errorCode: Int`)를 <br/>
+  `AdLoadListener.onAdLoadError()`로 전달받을 수 있습니다. <br/>
+  | Code | 발생 상황                              |
+  |------|--------------------------------------|
+  | 202  | 네트워크 오류로 광고 요청에 실패한 경우       |
+  | 301  | 요청에는 성공했으나 네이티브 유형에 맞는 광고가 없는 경우 |
+  | 302  | 요청에는 성공했으나 노출 가능한 광고가 없는 경우 |
+  | 그 외 | 기타 오류로 광고 요청에 실패한 경우           |
+* `AdFitNativeAdLoader.load()`는 동시에 하나의 요청만 처리할 수 있으며, 이전 요청이 진행 중이면 새로운 호출은 무시됩니다.
+
+- 네이티브 광고 레이아웃 구성
+
+네이티브 광고 레이아웃은 서비스 컨텐츠와 어울리도록 구성되어야 하므로, 서비스에서 직접 광고 레이아웃을 구현하는 과정이 필요합니다.<br/>
+네이티브 광고 레이아웃 구성 샘플은 아래와 같습니다.<br/>
+
+<img src="https://t1.daumcdn.net/adfit_sdk/document-assets/ios/native-ad-components3.png" width="640" style="border:1px solid #aaa"/>
+
+| 번호 | 설명                       | UI 클래스                | AdFitNativeAdLayout |
+|-----|---------------------------|------------------------|---------------------|
+| -   | 광고 영역                   | AdFitNativeAdView      | containerView       |
+| 1   | 광고 제목                   | TextView               | titleView           |
+| 2   | 행동유도버튼                 | Button                 | callToActionButton  |
+| 3   | 광고주 이름 (브랜드명)         | TextView               | profileNameView     |
+| 4   | 광고주 아이콘 (브랜드 로고)     | ImageView              | profileIconView     |
+| 5   | 미디어 소재 (이미지, 비디오 등)  | AdFitMediaView         | mediaView           |
+| 6   | 광고 정보 아이콘              | -                      | -                   |
+| 7   | 광고 홍보문구                | TextView               | bodyView            |
+
+- 네이티브 광고는 위의 요소들로 구성됩니다.
+- 각 요소들은 위 표를 참고하여 대응하는 UI 클래스를 통해 표시되도록 구현해야 합니다.
+- "제목 텍스트"와 "미디어 소재" 요소는 필수입니다.
+- "광고 정보 아이콘 이미지"는 "광고 영역" 내에 `AdFitNativeAdRequest`에 설정한 위치에 표시됩니다.
+- 사용자가 광고임을 명확히 인지할 수 있도록 "광고", "AD", "Sponsored" 등의 텍스트를 별도로 표시해주셔야 합니다.
+- "광고 영역"은 `AdFitNativeAdView`, "미디어 소재"는 `AdFitMediaView`를 사용하셔야 합니다.
+
+- 네이티브 광고 노출 및 해제
+
+응답 받은 `AdFitNativeAdBinder`와 구성한 `AdFitNativeAdLayout`으로 네이티브 광고를 노출할 수 있습니다.
+
+```kotlin
+val nativeAdBinder: AdFitNativeAdBinder
+val nativeAdLayout: AdFitNativeAdLayout
+
+// 광고 노출 및 측정 시작
+nativeAdBinder.bind(nativeAdLayout)
+
+// 광고 노출 해제 및 측정 중단
+nativeAdBinder.unbind()
+```
+
+* `bind()` 호출 시, `AdFitNativeAdLayout`에 광고 소재(텍스트, 이미지, 비디오 등의 리소스)를 적용합니다.
+* `bind()` 호출 시부터 `AdFitNativeAdLayout`의 노출 상태를 측정하며, `unbind()`가 호출되면 측정을 중단합니다.
+* `unbind()` 호출은 필수 사항이 아닙니다.
+---|---
+
+Adfit을 사용하기 위한 4개의 클래스 파일
+
+- AdfitNative
+```kotlin
+class AdfitNative: Adapter() {
+    private var nativeLoader: AdFitNativeLoader? = null
+
+    override fun loadNativeAd(
+        mediationNativeAdConfiguration: MediationNativeAdConfiguration,
+        callback: MediationAdLoadCallback<UnifiedNativeAdMapper, MediationNativeAdCallback>
+    ) {
+        nativeLoader = AdFitNativeLoader(mediationNativeAdConfiguration, callback)
+        nativeLoader!!.loadAd()
+    }
+
+    override fun initialize(
+        context: Context,
+        initializationCompleteCallback: InitializationCompleteCallback,
+        list: List<MediationConfiguration>
+    ) {
+        initializationCompleteCallback.onInitializationSucceeded()
+    }
+
+    override fun getVersionInfo(): VersionInfo {
+        val versionString = "1.0.0.0"
+        val splits = versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        if (splits.size >= 4) {
+            val major = splits[0].toInt()
+            val minor = splits[1].toInt()
+            val micro = splits[2].toInt() * 100 + splits[3].toInt()
+            return VersionInfo(major, minor, micro)
+        }
+        return VersionInfo(0, 0, 0)
+    }
+
+    override fun getSDKVersionInfo(): VersionInfo {
+        val versionString = "1.0.0"
+        val splits = versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        if (splits.size >= 3) {
+            val major = splits[0].toInt()
+            val minor = splits[1].toInt()
+            val micro = splits[2].toInt()
+            return VersionInfo(major, minor, micro)
+        }
+        return VersionInfo(0, 0, 0)
+    }
+```
+- AdfitNativeLoader
+```kotlin
+
+class AdFitNativeLoader(
+    /** Configuration for requesting the native ad from the third-party network. */
+    private val mediationNativeAdConfiguration: MediationNativeAdConfiguration,
+    /** Callback that fires on loading success or failure. */
+    private var mediationAdLoadCallback: MediationAdLoadCallback<UnifiedNativeAdMapper, MediationNativeAdCallback>
+) {
+    /** Callback for native ad events. */
+    private var nativeAdCallback: MediationNativeAdCallback? = null
+    private var nativeAdBinder: AdFitNativeAdBinder? = null
+
+
+    /** Loads the interstitial ad from the third-party ad network.  */
+    fun loadAd() {
+        // All custom events have a server parameter named "parameter" that returns
+        // back the parameter entered into the UI when defining the custom event.
+        Log.i(TAG, "Admob Mediation : AdFit Native loadAd")
+        val serverParameter = mediationNativeAdConfiguration.serverParameters.getString(
+            MediationConfiguration.CUSTOM_EVENT_SERVER_PARAMETER_FIELD)
+        if (TextUtils.isEmpty(serverParameter)) {
+            mediationAdLoadCallback.onFailure(
+                AdError(
+                    ERROR_NO_AD_UNIT_ID,
+                    "Ad unit id is empty",
+                    CUSTOM_EVENT_ERROR_DOMAIN
+                )
+            )
+            return
+        }
+
+        Log.d(TAG, "Received server parameter.")
+        val context = mediationNativeAdConfiguration.context
+
+        // AdFitNativeAdLoader 생성
+        val nativeAdLoader: AdFitNativeAdLoader = AdFitNativeAdLoader.create(context, serverParameter.toString())
+
+        // 네이티브 광고 요청 정보 설정
+        val request = AdFitNativeAdRequest.Builder()
+            .setAdInfoIconPosition(AdFitAdInfoIconPosition.RIGHT_TOP)
+            .setVideoAutoPlayPolicy(AdFitVideoAutoPlayPolicy.WIFI_ONLY)
+            .build()
+
+        nativeAdLoader.loadAd(request, object : AdFitNativeAdLoader.AdLoadListener {
+            override fun onAdLoaded(binder: AdFitNativeAdBinder) {
+                val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val nativeAdView = ItemNativeAdBinding.inflate(inflater)
+
+
+                val nativeAdLayout: AdFitNativeAdLayout =
+                    AdFitNativeAdLayout.Builder(nativeAdView.containerView)
+                        .setTitleView(nativeAdView.titleTextView)
+                        .setBodyView(nativeAdView.bodyTextView)
+                        .setProfileIconView(nativeAdView.profileIconView)
+                        .setProfileNameView(nativeAdView.profileNameTextView)
+                        .setMediaView(nativeAdView.mediaView)
+                        .setCallToActionButton(nativeAdView.callToActionButton)
+                        .build()
+
+                nativeAdBinder = binder
+                binder.bind(nativeAdLayout)
+
+                val unifiedNativeAdMapper = SampleUnifiedNativeAdMapper(context, nativeAdView)
+                nativeAdCallback = mediationAdLoadCallback.onSuccess(unifiedNativeAdMapper)
+                nativeAdCallback!!.reportAdImpression()
+            }
+
+            override fun onAdLoadError(errorCode: Int) {
+                mediationAdLoadCallback.onFailure(AdError(errorCode, "AdFit native ad load failed", SAMPLE_SDK_DOMAIN))
+            }
+        })
+    }
+
+    companion object {
+        val TAG = AdFitNativeLoader::class.java.simpleName
+
+        /** Error raised when the custom event adapter cannot obtain the ad unit id.  */
+        const val ERROR_NO_AD_UNIT_ID = 101
+
+        /** Error raised when the custom event adapter cannot obtain the activity context.  */
+        const val SAMPLE_SDK_DOMAIN = "kr.co.cauly.sdk.android"
+        const val CUSTOM_EVENT_ERROR_DOMAIN = "com.google.ads.mediation.sample.customevent"
+    }
+```
+- SampleNativeMappedImge
+```kotlin
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import com.google.android.gms.ads.formats.NativeAd
+
+class SampleNativeMappedImage(
+    private val drawable: Drawable,
+    private val uri: Uri,
+    private val scale: Double
+) : NativeAd.Image() {
+
+    override fun getDrawable(): Drawable {
+        return drawable
+    }
+
+    override fun getUri(): Uri {
+        return uri
+    }
+
+    override fun getScale(): Double {
+        return scale
+    }
+}
+```
+- SampleUnifiedNativeAdMapper
+```kotlin
+
 ```
