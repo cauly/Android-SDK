@@ -123,16 +123,16 @@ gradle.properties ::
       implementation 'com.fsn.cauly:cauly-sdk:3.5.24'
       
       // inmobi mediation
-      implementation 'com.google.ads.mediation:inmobi:10.1.2.1'
+      implementation 'com.google.ads.mediation:inmobi:10.5.7.0'
       
       // applovin mediation
-      implementation 'com.google.ads.mediation:applovin:11.6.1.0'
+      implementation 'com.google.ads.mediation:applovin:11.11.1.0'
       
       // vungle mediation
-      implementation 'com.google.ads.mediation:vungle:6.12.0.1'
+      implementation 'com.google.ads.mediation:vungle:6.12.1.0'
       
       // DT Exchange mediation
-      implementation 'com.google.ads.mediation:fyber:8.2.1.0'
+      implementation 'com.google.ads.mediation:fyber:8.2.3.0'
       
       // Mintegral mediation
       implementation 'com.google.ads.mediation:mintegral:16.4.81.0'
@@ -145,7 +145,7 @@ gradle.properties ::
       implementation 'com.google.ads.mediation:unity:4.8.0.0'
 
       // Meta(facebook) mediation
-      implementation 'com.google.ads.mediation:facebook:6.14.0.0'
+      implementation 'com.google.ads.mediation:facebook:6.15.0.0'
       
    }
     ```
