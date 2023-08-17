@@ -13,9 +13,7 @@ SDK 연동 방법은 [Android SDK 연동 가이드](https://github.com/cauly/And
 Release Note
 ----
 
-- API Level 31 상향
-- 안드로이드 13 대응
-- 전면 광고 사용성 개선
+- 광고 효율 개선
 
 공지사항 (필독)
 ----
