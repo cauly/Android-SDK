@@ -1,0 +1,92 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'kr.co.cauly.sdk.android.mediation.sample'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "kr.co.cauly.sdk.android.mediation.sample"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        // 뷰 바인딩 활성화
+        viewBinding = true
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    // basic dependencies
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // google admob
+    implementation 'com.google.android.gms:play-services-ads:21.4.0'
+
+    // google admob mediation test
+    implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
+
+    // cauly sdk
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.24'
+
+    // inmobi mediation
+    implementation 'com.google.ads.mediation:inmobi:10.1.2.1'
+
+    // applovin mediation
+    implementation 'com.google.ads.mediation:applovin:11.6.1.0'
+
+    // vungle mediation
+    implementation 'com.google.ads.mediation:vungle:6.12.0.1'
+
+    // DT Exchange mediation
+    implementation 'com.google.ads.mediation:fyber:8.2.1.0'
+
+    // unity ads mediation
+    implementation 'com.unity3d.ads:unity-ads:4.8.0'
+    implementation 'com.google.ads.mediation:unity:4.8.0.0'
+
+    // pangle mediation
+    implementation 'com.google.ads.mediation:pangle:5.3.0.4.0'
+
+    // mintegral mediation
+    implementation 'com.google.ads.mediation:mintegral:16.4.81.0'
+
+    // meta(facebook) mediation
+    implementation 'com.google.ads.mediation:facebook:6.14.0.0'
+
+    // adfit mediation
+    implementation "com.kakao.adfit:ads-base:3.13.6"
+
+    // jars for nhn mediation
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // dependencies for unit test
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}

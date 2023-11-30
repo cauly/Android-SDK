@@ -1,0 +1,2 @@
+rootProject.name = "CaulyAdMediationSample"
+include ':app'
