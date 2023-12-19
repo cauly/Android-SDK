@@ -363,6 +363,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         private var appOpenAd: AppOpenAd? = null
         private var isLoadingAd = false
         var isShowingAd = false
+        var isFirstAd = true
 
         /** Keep track of the time an app open ad is loaded to ensure you don't show an expired ad. */
         private var loadTime: Long = 0
@@ -390,6 +391,11 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
                         appOpenAd = ad
                         isLoadingAd = false
                         loadTime = Date().time
+
+                        if (isFirstAd) {
+                            currentActivity?.let { showAdIfAvailable(it) }
+                            isFirstAd = false
+                        }
                     }
 
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
