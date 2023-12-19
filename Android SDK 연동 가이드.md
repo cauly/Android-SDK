@@ -1,14 +1,14 @@
 # 목차
-1. [CAULY 시작하기](#1-CAULY-시작하기)
+1. [CAULY 시작하기](#1-cauly-시작하기)
     * [CAULY SDK 추가](#cauly-sdk-추가)   
     * [AndroidManifest.xml 속성 지정](#androidmanifestxml-속성-지정)
     * [proguard 설정](#proguard-설정-하는-경우-cauly-sdk-포함된-class는-난독화-시키시면-안됩니다)
     * [AndroidX 설정](#androidx-사용하는-경우)
 2. [배너 광고 추가하기](#2-배너-광고-추가하기)
-    * [JAVA 방식 base](#자세한-내용은-‘AndroidStudioExample’-참조)
-    * [Kotlin 방식 base](#자세한-내용은-‘AndroidStudioExample’-참조)
+    * [JAVA 방식 base](#java-방식-base-자세한-내용은-androidstudioexample-참조)
+    * [Kotlin 방식 base](#kotlin-방식-base-자세한-내용은-androidstudioexample-참조)
     * [XML 방식](#xml-방식--설정하지-않은-항목들은-기본값으로-설정됩니다)
-    * [CaulyAdinfo 설정방법](#CaulyAdinfo-설정방법)
+    * [CaulyAdinfo 설정방법](#caulyadinfo-설정방법)
 3. [전면 광고 추가하기](#3-전면-광고-추가하기)
     * [JAVA 방식 base 전면광고 fullScreen Type](#java-방식-base-전면광고-fullscreen-type)   
     * [JAVA 방식 base 전면광고 Close Ad Type](#java-방식-base-전면광고-close-ad-type)   
@@ -50,9 +50,9 @@
 
 	```clojure
  	dependencies {
-	implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
-	implementation 'com.google.android.gms:play-services-appset:16.0.0'
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.26' 
+        implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+        implementation 'com.google.android.gms:play-services-appset:16.0.0'
+        implementation 'com.fsn.cauly:cauly-sdk:3.5.27' 
     }
 	```
 
