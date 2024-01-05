@@ -2,6 +2,7 @@
 1. [미디에이션 시작하기](#1-미디에이션-시작하기)
     * [AndroidManifest.xml 속성 지정](#androidmanifestxml-속성-지정)
     * [SDK 추가](#sdk-추가)
+    * [UMP 설정](#ump-user-messaging-platform-설정)
 2. [Admob 광고 추가하기](#2-admob-광고-추가하기)
     * [Admob 설정](#admob-설정)
     * [Admob 앱 오프닝 광고 추가하기](#admob-앱-오프닝-광고-추가하기)
@@ -114,42 +115,41 @@ gradle.properties ::
     ```clojure
    dependencies {
       // google admob
-      implementation 'com.google.android.gms:play-services-ads:22.2.0'
+      implementation 'com.google.android.gms:play-services-ads:22.6.0'
       
       // google admob mediation test
       implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
       
       // cauly sdk
-      implementation 'com.fsn.cauly:cauly-sdk:3.5.24'
+      implementation 'com.fsn.cauly:cauly-sdk:3.5.27'
       
       // inmobi mediation
-      implementation 'com.google.ads.mediation:inmobi:10.5.7.0'
+      implementation 'com.google.ads.mediation:inmobi:10.6.2.0'
       
       // applovin mediation
-      implementation 'com.google.ads.mediation:applovin:11.11.1.0'
+      implementation 'com.google.ads.mediation:applovin:12.1.0.0'
       
       // vungle mediation
-      implementation 'com.google.ads.mediation:vungle:6.12.1.0'
+      implementation 'com.google.ads.mediation:vungle:7.1.0.0'
       
       // DT Exchange mediation
-      implementation 'com.google.ads.mediation:fyber:8.2.3.0'
+      implementation 'com.google.ads.mediation:fyber:8.2.5.0'
       
       // Mintegral mediation
-      implementation 'com.google.ads.mediation:mintegral:16.4.81.0'
+      implementation 'com.google.ads.mediation:mintegral:16.5.51.0'
       
       // Pangle mediation
-      implementation 'com.google.ads.mediation:pangle:5.3.0.4.0'
+      implementation 'com.google.ads.mediation:pangle:5.6.0.3.0'
       
       // Unity ads mediation
-      implementation 'com.unity3d.ads:unity-ads:4.8.0'
-      implementation 'com.google.ads.mediation:unity:4.8.0.0'
+      implementation 'com.unity3d.ads:unity-ads:4.9.2'
+      implementation 'com.google.ads.mediation:unity:4.9.2.0'
 
       // Meta(facebook) mediation
-      implementation 'com.google.ads.mediation:facebook:6.15.0.0'
+      implementation 'com.google.ads.mediation:facebook:6.16.0.0'
       
    }
     ```
-
 
 
 #### 최상위 level build.gradle 에  maven repository 추가
@@ -181,6 +181,239 @@ gradle.properties ::
    }
    ```
 
+
+### UMP (User Messaging Platform) 설정
+
+#### GDPR (General Data Protection Regulation)
+
+`GDPR은 유럽 연합(이하 'EU')의 개인정보 보호 법령으로, 서비스 제공자는 EU 사용자의 개인정보 수집 및 활용에 대해 사용자에게 동의 여부를 확인받아야 합니다.`
+
+##### 1. SDK 추가
+
+- app level build.gradle 에 'dependencies' 추가
+
+```clojure
+   dependencies {
+      // User Messaging Platform SDK (GDPR)
+      implementation 'com.google.android.ump:user-messaging-platform:2.1.0' 
+   }
+```
+
+##### 2. 구현
+
+> Main Activity의 onCreate 에서 광고 관련 코드를 요청하기 전에 애드몹 UMP (User Messaging Platform)를 통하여 GDPR 동의를 처리해야 합니다.
+
+Java
+``` java
+import com.google.android.ump.ConsentForm;
+import com.google.android.ump.ConsentInformation;
+import com.google.android.ump.ConsentRequestParameters;
+import com.google.android.ump.UserMessagingPlatform;
+
+public class MainActivity extends AppCompatActivity {
+    private ConsentInformation consentInformation;
+    // Use an atomic boolean to initialize the Google Mobile Ads SDK and load ads once.
+    private final AtomicBoolean isMobileInitializeCalled = new AtomicBoolean(false);
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        
+        // Create a ConsentRequestParameters object.
+        ConsentRequestParameters params = new ConsentRequestParameters
+                .Builder()
+                .build();
+
+        consentInformation = UserMessagingPlatform.getConsentInformation(this);
+        consentInformation.requestConsentInfoUpdate(
+                this,
+                params,
+                (ConsentInformation.OnConsentInfoUpdateSuccessListener) () -> {
+                    UserMessagingPlatform.loadAndShowConsentFormIfRequired(
+                            this,
+                            (ConsentForm.OnConsentFormDismissedListener) loadAndShowError -> {
+                                if (loadAndShowError != null) {
+                                    // Consent gathering failed.
+                                    Log.w(TAG, String.format("%s: %s",
+                                            loadAndShowError.getErrorCode(),
+                                            loadAndShowError.getMessage()));
+                                }
+
+                                // Consent has been gathered.
+                                if (consentInformation.canRequestAds()) {
+                                    initializeMobileAdsSdk();
+                                }
+                            }
+                    );
+                },
+                (ConsentInformation.OnConsentInfoUpdateFailureListener) requestConsentError -> {
+                    // Consent gathering failed.
+                    Log.w(TAG, String.format("%s: %s",
+                            requestConsentError.getErrorCode(),
+                            requestConsentError.getMessage()));
+                });
+
+        // Check if you can initialize the Google Mobile Ads SDK in parallel
+        // while checking for new consent information. Consent obtained in
+        // the previous session can be used to request ads.
+        if (consentInformation.canRequestAds()) {
+            initializeMobileAdsSdk();
+        }
+    }
+    
+     private void initializeMobileAdsSdk() {
+        if (isMobileInitializeCalled.getAndSet(true)) {
+            return;
+        }
+
+        // Initialize the Google Mobile Ads SDK.
+        MobileAds.initialize(this);
+        
+        // TODO: Request an ad.
+    }
+}
+```
+
+Kotlin
+``` kotlin
+import com.google.android.ump.ConsentForm
+import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
+
+public class MainActivity extends AppCompatActivity {
+    private lateinit var consentInformation: ConsentInformation
+    // Use an atomic boolean to initialize the Google Mobile Ads SDK and load ads once.
+    private var isMobileAdsInitializeCalled = AtomicBoolean(false)
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        // Create a ConsentRequestParameters object.
+        val params = ConsentRequestParameters
+            .Builder()
+            .build()
+
+        consentInformation = UserMessagingPlatform.getConsentInformation(this);
+        consentInformation.requestConsentInfoUpdate(
+            this,
+            params,
+            ConsentInformation.OnConsentInfoUpdateSuccessListener {
+                UserMessagingPlatform.loadAndShowConsentFormIfRequired(
+                    this@MainActivity,
+                    ConsentForm.OnConsentFormDismissedListener {
+                            loadAndShowError ->
+                        // Consent gathering failed.
+                        if (loadAndShowError != null) {
+                            Log.w(TAG, String.format("%s: %s",
+                                loadAndShowError.errorCode,
+                                loadAndShowError.message))
+                        }
+
+                        // Consent has been gathered.
+                        if (consentInformation.canRequestAds()) {
+                            initializeMobileAdsSdk()
+                        }
+                    }
+                )
+            },
+            ConsentInformation.OnConsentInfoUpdateFailureListener {
+                    requestConsentError ->
+                // Consent gathering failed.
+                Log.w(TAG, String.format("%s: %s",
+                    requestConsentError.errorCode,
+                    requestConsentError.message))
+            })
+
+        // Check if you can initialize the Google Mobile Ads SDK in parallel
+        // while checking for new consent information. Consent obtained in
+        // the previous session can be used to request ads.
+        if (consentInformation.canRequestAds()) {
+            initializeMobileAdsSdk()
+        }
+    }
+
+    private fun initializeMobileAdsSdk() {
+    
+        if (isMobileAdsInitializeCalled.getAndSet(true)) {
+            return
+        }
+        
+        // Initialize the Google Mobile Ads SDK.
+        MobileAds.initialize(this)
+    
+        // TODO: Request an ad.
+    }
+}
+```
+
+##### 3. 테스트
+> 해당 설정은 테스트 목적으로만 사용할 수 있습니다.  
+> 앱을 출시하기 전에 테스트 설정 코드를 반드시 삭제해야 합니다.
+
+- UMP SDK의 Debug 설정은 테스트 기기에서만 작동합니다.
+- ConsentDebugSettings.Builder의 setDebugGeography() 를 사용하여 기기가 EEA 또는 영국에 있는 것처럼 앱 동작을 테스트할 수 있습니다.
+- ConsentInformation.reset() 을 사용하여 UMP SDK의 상태를 재설정할 수 있습니다.
+
+``` clojure
+애드몹 UMP의 GDPR 동의 화면을 테스트 목적으로 확인하기 위해서는 아래 단계에 따라 테스트 기기 등록이 필요합니다.
+
+1. requestConsentInfoUpdate() 를 호출합니다.
+2. 로그 출력에서 다음과 같은 메시지를 확인합니다. 메시지에는 기기 ID와 이를 테스트 기기로 추가하는 방법이 나와있습니다.
+
+Use new ConsentDebugSettings.Builder().addTestDeviceHashedId("33BE2250B43518CCDA7DE426D04EE231") to set this as a debug device.
+
+3. ConsentDebugSettings.Builder().addTestDeviceHashedId() 를 설정하고 테스트 기기 ID 목록을 전달합니다.
+```
+
+Java
+``` java
+ConsentDebugSettings debugSettings = new ConsentDebugSettings.Builder(this)
+        .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
+        .addTestDeviceHashedId("33BE2250B43518CCDA7DE426D04EE231")
+        .build();
+
+// Create a ConsentRequestParameters object.
+ConsentRequestParameters params = new ConsentRequestParameters
+        .Builder()
+        .setConsentDebugSettings(debugSettings)
+        .build();
+
+consentInformation = UserMessagingPlatform.getConsentInformation(this);
+// 동의 상태 재설정
+consentInformation.reset();
+consentInformation.requestConsentInfoUpdate(
+        this,
+        params,
+        ...
+);
+```
+
+Kotlin
+``` kotlin
+val debugSettings = ConsentDebugSettings.Builder(this)
+    .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
+    .addTestDeviceHashedId("F66ED148DC4D9CEFB84226320F5BCBAB")
+    .build()
+
+// Create a ConsentRequestParameters object.
+val params = ConsentRequestParameters
+    .Builder()
+    .setConsentDebugSettings(debugSettings)
+    .build()
+
+consentInformation = UserMessagingPlatform.getConsentInformation(this)
+// 동의 상태 재설정
+consentInformation.reset()
+consentInformation.requestConsentInfoUpdate(
+    this,
+    params,
+    ...
+)
+```
 
 
 # 2. Admob 광고 추가하기
