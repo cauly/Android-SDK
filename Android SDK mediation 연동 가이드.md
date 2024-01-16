@@ -658,7 +658,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         if (event == Lifecycle.Event.ON_START) {
             // Show the ad (if available) when the app moves to foreground.
             currentActivity?.let {
-                appOpenAdManager.showAdIfAvailable(it)
+                appOpenAdManager.loadAd(it)
             }
         }
     }
@@ -737,11 +737,6 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
                         appOpenAd = ad
                         isLoadingAd = false
                         loadTime = Date().time
-
-                        if (isFirstAd) {
-                            currentActivity?.let { showAdIfAvailable(it) }
-                            isFirstAd = false
-                        }
                     }
 
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
