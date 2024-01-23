@@ -19,6 +19,8 @@
     * [Mintegral 설정](#mintegral-설정-옵션)
     * [Pangle 설정](#pangle-설정)
     * [Unity Ads 설정](#unity-ads-설정)
+    * [Facebook(meta) 설정](#facebookmeta-설정)
+    * [IronSource 설정](#ironsource-설정)
     * [광고 요청 연결](#광고-요청-연결)
 4. [커스텀 이벤트 네트워크 추가하기](#4-커스텀-이벤트-네트워크-추가하기)
     * [Cauly 광고 추가하기](#cauly-광고-추가하기)
@@ -148,6 +150,9 @@ gradle.properties ::
 
       // Meta(facebook) mediation
       implementation 'com.google.ads.mediation:facebook:6.16.0.0'
+
+      // IronSource mediation
+      implementation 'com.google.ads.mediation:ironsource:7.7.0.0'
       
    }
     ```
@@ -1961,13 +1966,73 @@ proguard-rules.pro ::
 -keep class com.bytedance.sdk.** { *; }
 ```
 
+
+
 ### Unity Ads 설정
 - Unity Ads SDK 설정을 위해 추가 코드가 필요하지 않습니다.
 - 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/unity#optional_steps)를 참고하여 옵션 설정이 가능합니다.
 
+
+
 ### Facebook(Meta) 설정
-- Facebook(Meta) Ads SDK 설정을 위해 추가 코드가 필요하지 않습니다.
-- 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/meta?hl=ko)를 참고하여 옵션 설정이 가능합니다.
+- Facebook(Meta) 네트워크를 사용하기 위해 Facebook 로그인 및 `read_audience_network_insights` 권한이 필요합니다.
+    - Facebook 로그인은 [Android용 Facebook 로그인](https://developers.facebook.com/docs/facebook-login/android)을 참고하여 설정이 가능합니다.
+- 필요한 경우 [여기](https://developers.google.com/admob/android/mediation/meta?hl=ko#optional_steps)를 참고하여 옵션 설정이 가능합니다.
+
+
+
+### IronSource 설정
+- `onPause()` 및 `onResume()` 메서드를 재정의하여 해당하는 ironSource 메서드를 호출합니다.
+
+Java
+``` java
+@Override
+public void onResume() {
+    super.onResume();
+    IronSource.onResume(this);
+}
+
+@Override
+public void onPause() {
+    super.onPause();
+    IronSource.onPause(this);
+}
+```
+
+Kotlin
+``` kotlin
+public override fun onResume() {
+    super.onResume()
+    IronSource.onResume(this)
+}
+
+public override fun onPause() {
+    super.onPause()
+    IronSource.onPause(this)
+}
+```
+
+
+- ProGuard를 사용하여 Android 코드를 난독화하는 경우 [IronSource Android SDK 통합 가이드](https://developers.is.com/ironsource-mobile/android/android-sdk/#step-5)에 따라 IronSource SDK 코드가 난독화되지 않도록 하십시오.
+
+
+``` clojure
+proguard-rules.pro ::
+
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+#noinspection ShrinkerUnresolvedReference
+#unity
+-keep class com.google.android.gms.ads.** {public *;}
+-keep class com.google.android.gms.appset.** { *; }
+-keep class com.google.android.gms.tasks.** { *; }
+#adapters
+-keep class com.ironsource.adapters.** { *; }
+#sdk
+-dontwarn com.ironsource.**
+-dontwarn com.ironsource.adapters.**
+```
 
 
 ### 광고 요청 연결
