@@ -1919,17 +1919,23 @@ val appLovinExtras = AppLovinExtras.Builder()
 
 ``` java
 Java :: 
-Bundle vungleExtras = new VungleExtrasBuilder(null)
-        .setStartMuted(false)
-        .build();
+Bundle vungleExtras = new Bundle();
+extras.putString(VungleConstants.KEY_USER_ID, "myUserID");
+extras.putInt(VungleConstants.KEY_ORIENTATION, 1);
 ```
 
 ``` kotlin
 Kotlin ::
-val vungleExtras = VungleExtrasBuilder(null)
-    .setStartMuted(false)
-    .build()
+val extras = Bundle()
+extras.putString(VungleConstants.KEY_USER_ID, "myUserID")
+extras.putInt(VungleConstants.KEY_ORIENTATION, 1)
 ```
+
+옵션|설명
+---|---
+KEY_USER_ID | 보상형 광고와 상호작용하는 사용자를 식별하기 위한 사용자 ID
+KEY_ORIENTATION | 전체 화면 광고의 표시 방향을 지정하는 정수<br/>광고 방향을 따르도록 되어 있는 경우: 0(Portrait) 또는 1(Landscape)<br/>광고가 자동 회전하도록 되어있는 경우: 2
+
 
 
 ### DT Exchange 설정 (옵션)
@@ -1947,7 +1953,6 @@ Kotlin ::
 val fyberExtras = Bundle()
 fyberExtras.putInt(InneractiveMediationDefs.KEY_AGE, 10)
 ```
-
 
 
 ### Mintegral 설정 (옵션)
