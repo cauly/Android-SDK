@@ -424,6 +424,34 @@ consentInformation.requestConsentInfoUpdate(
 
 # 2. Admob 광고 추가하기
 
+### 주의사항
+- 모든 광고 표시는 `UI Thread`에서 진행해야합니다.
+    - 별도로 Thread를 생성하지 않은 경우, 기본적으로 UI Thread를 사용하므로 영향이 없습니다.
+    - 이외의 Thread에서 표시하는 경우, 광고가 표시되지 않거나 앱이 강제종료될 수 있으므로 반드시 UI Thread 에서 표시하도록 코드를 반영해야합니다.
+
+#### `UI Thread 반영 예시`
+
+Java
+
+``` java
+runOnUiThread(new Runnable() {
+    @Override
+    public void run() {
+        // 광고 노출 코드
+        ....
+    }
+});
+```
+
+Kotlin
+
+``` kotlin
+runOnUiThread {
+    // 광고 노출 코드
+    ....
+}
+```
+
 ### Admob 설정
 
 #### Admob 광고 SDK 초기화
