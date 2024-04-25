@@ -52,7 +52,7 @@ dependencies {
     implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
 
     // cauly sdk
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.24'
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.29'
 
     // inmobi mediation
     implementation 'com.google.ads.mediation:inmobi:10.1.2.1'
