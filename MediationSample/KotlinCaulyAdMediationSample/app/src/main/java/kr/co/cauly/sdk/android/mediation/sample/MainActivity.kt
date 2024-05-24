@@ -16,7 +16,7 @@ import com.google.ads.mediation.inmobi.InMobiNetworkKeys
 import com.google.ads.mediation.inmobi.InMobiNetworkValues
 import com.google.ads.mediation.unity.UnityAdapter
 import com.google.ads.mediation.unity.UnityAdsAdapterUtils
-import com.google.android.ads.mediationtestsuite.MediationTestSuite
+import com.google.ads.mediation.vungle.VungleConstants
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
@@ -28,7 +28,6 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.inmobi.sdk.InMobiSdk
 import com.vungle.mediation.VungleAdapter
-import com.vungle.mediation.VungleExtrasBuilder
 import com.vungle.mediation.VungleInterstitialAdapter
 import java.util.*
 
@@ -114,8 +113,6 @@ class MainActivity : AppCompatActivity() {
         show_rewarded_btn.setOnClickListener(View.OnClickListener {
             showRewardedAd()
         })
-
-        MediationTestSuite.launch(this@MainActivity) // 앱 테스트시 필수로 상용화시 제거해야함.
     }
 
     private fun setAdmobAdRequest() {
@@ -140,9 +137,9 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         // vungle setting
-        val vungleExtras = VungleExtrasBuilder(null)
-            .setStartMuted(false)
-            .build()
+        val vungleExtras = Bundle()
+        vungleExtras.putString(VungleConstants.KEY_USER_ID, "myUserID")
+        vungleExtras.putInt(VungleConstants.KEY_ORIENTATION, 1)
 
         // DT Exchange setting
         val fyberExtras = Bundle()

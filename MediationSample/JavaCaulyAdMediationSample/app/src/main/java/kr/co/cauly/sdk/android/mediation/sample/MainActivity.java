@@ -22,7 +22,7 @@ import com.google.ads.mediation.fyber.FyberMediationAdapter;
 import com.google.ads.mediation.inmobi.InMobiAdapter;
 import com.google.ads.mediation.inmobi.InMobiNetworkKeys;
 import com.google.ads.mediation.inmobi.InMobiNetworkValues;
-import com.google.android.ads.mediationtestsuite.MediationTestSuite;
+import com.google.ads.mediation.vungle.VungleConstants;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -46,7 +46,6 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.inmobi.sdk.InMobiSdk;
 import com.vungle.mediation.VungleAdapter;
-import com.vungle.mediation.VungleExtrasBuilder;
 import com.vungle.mediation.VungleInterstitialAdapter;
 
 import java.util.Arrays;
@@ -150,8 +149,6 @@ public class MainActivity extends AppCompatActivity {
                 showRewardedAd();
             }
         });
-
-        MediationTestSuite.launch(MainActivity.this);       // 앱 테스트시 필수로 상용화시 제거해야함.
     }
 
     private void setAdmobAdRequest() {
@@ -172,9 +169,9 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         // vungle setting
-        Bundle vungleExtras = new VungleExtrasBuilder(null)
-                .setStartMuted(false)
-                .build();
+        Bundle vungleExtras = new Bundle();
+        vungleExtras.putString(VungleConstants.KEY_USER_ID, "myUserID");
+        vungleExtras.putInt(VungleConstants.KEY_ORIENTATION, 1);
 
         // DT Exchange setting
         Bundle fyberExtras = new Bundle();

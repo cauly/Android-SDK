@@ -17,11 +17,17 @@ dependencyResolutionManagement {
                 secretKey "SGOr65MOJeKBUFxeVNZ4ogITUKvcltWqEApC41JL"
             }
         }
+        // Mintegral mediation
         maven {
             url 'https://artifact.bytedance.com/repository/pangle/'
         }
+        // Pangle mediation
         maven {
             url 'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea'
+        }
+        // IronSource mediation
+        maven {
+            url 'https://android-sdk.is.com/'
         }
         maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
     }

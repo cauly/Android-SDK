@@ -33,6 +33,11 @@
 
 # 1. 미디에이션 시작하기
 
+### 최소 지원 사양
+- minSdkVersion 19 이상
+- compileSdkVersion 33 이상
+
+
 ### AndroidManifest.xml 속성 지정
 
 #### 필수 퍼미션 추가
@@ -111,51 +116,44 @@ gradle.properties ::
 
 #### app level build.gradle 에 'dependencies'  추가
 
-- inmobi 10.1.2.1 은 targetSdkVersion 32 이상에서 동작합니다.
-- Unity ads 4.8.0, Unity 4.8.0.0 은 targetSdkVersion 33 이상에서 동작합니다.
-- com.google.android.ads:mediation-test-suite:3.0.0 은 앱 테스트 시 필수 항목으로, 상용화 시 반드시 제거해야합니다. 
+``` clojure
+dependencies {
+    // google admob
+    implementation 'com.google.android.gms:play-services-ads:22.6.0'
+    
+    // cauly sdk
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.29'
+    
+    // inmobi mediation
+    implementation 'com.google.ads.mediation:inmobi:10.6.2.0'
+    
+    // applovin mediation
+    implementation 'com.google.ads.mediation:applovin:12.1.0.0'
+    
+    // vungle mediation
+    implementation 'com.google.ads.mediation:vungle:7.1.0.0'
+    
+    // DT Exchange mediation
+    implementation 'com.google.ads.mediation:fyber:8.2.5.0'
+    
+    // Mintegral mediation
+    implementation 'com.google.ads.mediation:mintegral:16.5.51.0'
+    
+    // Pangle mediation
+    implementation 'com.google.ads.mediation:pangle:5.6.0.3.0'
+    
+    // Unity ads mediation
+    implementation 'com.unity3d.ads:unity-ads:4.9.2'
+    implementation 'com.google.ads.mediation:unity:4.9.2.0'
 
-    ```clojure
-   dependencies {
-      // google admob
-      implementation 'com.google.android.gms:play-services-ads:22.6.0'
-      
-      // google admob mediation test
-      implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
-      
-      // cauly sdk
-      implementation 'com.fsn.cauly:cauly-sdk:3.5.27'
-      
-      // inmobi mediation
-      implementation 'com.google.ads.mediation:inmobi:10.6.2.0'
-      
-      // applovin mediation
-      implementation 'com.google.ads.mediation:applovin:12.1.0.0'
-      
-      // vungle mediation
-      implementation 'com.google.ads.mediation:vungle:7.1.0.0'
-      
-      // DT Exchange mediation
-      implementation 'com.google.ads.mediation:fyber:8.2.5.0'
-      
-      // Mintegral mediation
-      implementation 'com.google.ads.mediation:mintegral:16.5.51.0'
-      
-      // Pangle mediation
-      implementation 'com.google.ads.mediation:pangle:5.6.0.3.0'
-      
-      // Unity ads mediation
-      implementation 'com.unity3d.ads:unity-ads:4.9.2'
-      implementation 'com.google.ads.mediation:unity:4.9.2.0'
+    // Meta(facebook) mediation
+    implementation 'com.google.ads.mediation:facebook:6.16.0.0'
 
-      // Meta(facebook) mediation
-      implementation 'com.google.ads.mediation:facebook:6.16.0.0'
-
-      // IronSource mediation
-      implementation 'com.google.ads.mediation:ironsource:7.7.0.0'
-      
-   }
-    ```
+    // IronSource mediation
+    implementation 'com.google.ads.mediation:ironsource:7.7.0.0'
+    
+}
+```
 
 
 #### 최상위 level build.gradle 에  maven repository 추가
@@ -183,6 +181,10 @@ gradle.properties ::
          maven {
             url 'https://artifact.bytedance.com/repository/pangle/'
          }
+         // IronSource mediation
+        maven {
+            url 'https://android-sdk.is.com/'
+        }
       }
    }
    ```
@@ -504,27 +506,6 @@ val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceId
 MobileAds.setRequestConfiguration(configuration)
 ```
 
-
-
-#### 미디에이션 테스트 모음 실행
-
-- 앱 실행 시 Splash 화면 이후 최초로 표시되는 Activity 화면에 아래 코드를 추가해야합니다.
-    - 로그인 페이지가 있는 경우 로그인 Activity의 onCreate() 에 코드 추가
-    - 로그인 페이지가 없는 경우 메인 화면 Activity의 onCreate() 에 코드 추가
-- 상용화 시 해당 코드를 반드시 삭제해야 합니다.
-
-
-``` java
-Java ::
-MediationTestSuite.launch(MainActivity.this);
-```
-
-
-
-``` kotlin
-Kotlin ::
-MediationTestSuite.launch(context)
-```
 
 
 ### 타겟팅 설정
@@ -998,8 +979,6 @@ protected void onCreate(Bundle savedInstanceState) {
 
     //배너 요청
     adView.loadAd(adRequest);
-
-    MediationTestSuite.launch(MainActivity.this);       // 앱 테스트시 필수로 상용화시 삭제해야 합니다.
 }
 
 // AdListener 클래스를 통해 광고의 작동 방식을 추가로 맞춤설정할 수 있습니다.
@@ -1089,7 +1068,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
     adRequest = AdRequest.Builder().build()
 
     adView!!.loadAd(adRequest!!)
-    MediationTestSuite.launch(this@MainActivity) // 앱 테스트시 필수로 상용화시 제거해야함.
 }
 
 private fun setAdmobBannerListener() {
@@ -1192,8 +1170,6 @@ protected void onCreate(Bundle savedInstanceState) {
             showInterstitialAd();
         }
     });
-
-    MediationTestSuite.launch(MainActivity.this);       // 앱 테스트시 필수로 상용화시 삭제해야 합니다.
 }
 
 private void loadInterstitialAd() {
@@ -1325,10 +1301,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
         show_interstitial_btn = findViewById(R.id.show_interstitial_btn)
         show_interstitial_btn.setEnabled(false)
         show_interstitial_btn.setOnClickListener(View.OnClickListener { showInterstitialAd() })
-
-        MediationTestSuite.launch(this@MainActivity) // 앱 테스트시 필수로 상용화시 제거해야함.
-
-
     }
 
 private fun loadInterstitialAd() {
@@ -1443,8 +1415,6 @@ protected void onCreate(Bundle savedInstanceState) {
 
     //네이티브 요청
     loadAdmobNativeAd();
-
-    MediationTestSuite.launch(MainActivity.this);       // 앱 테스트시 필수로 상용화시 삭제해야 합니다.
 }
 
 private void loadAdmobNativeAd() {
@@ -1542,10 +1512,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
         //네이티브 요청
         native_btn = findViewById<Button>(R.id.native_btn)
         native_btn.setOnClickListener(View.OnClickListener { loadAdmobNativeAd() })
-
-        MediationTestSuite.launch(this@MainActivity) // 앱 테스트시 필수로 상용화시 제거해야함.
-
-
     }
 
 private fun loadAdmobNativeAd() {
@@ -1657,8 +1623,6 @@ protected void onCreate(Bundle savedInstanceState) {
             showRewardedAd();
         }
     });
-
-    MediationTestSuite.launch(MainActivity.this);       // 앱 테스트시 필수로 상용화시 삭제해야 합니다.
 }
 
 private void loadRewardedAd() {
@@ -1791,8 +1755,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
         show_rewarded_btn = findViewById<Button>(R.id.show_rewarded_btn)
         show_rewarded_btn.setEnabled(false)
         show_rewarded_btn.setOnClickListener(View.OnClickListener { showRewardedAd() })
-
-        MediationTestSuite.launch(this@MainActivity) // 앱 테스트시 필수로 상용화시 제거해야함.
 
     }
 
