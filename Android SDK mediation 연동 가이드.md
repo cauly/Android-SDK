@@ -122,7 +122,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
     
     // cauly sdk
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.29'
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.30'
     
     // inmobi mediation
     implementation 'com.google.ads.mediation:inmobi:10.6.2.0'
