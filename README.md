@@ -13,7 +13,8 @@ SDK 연동 방법은 [Android SDK 연동 가이드](https://github.com/cauly/And
 Release Note
 ----
 
-- Target API Level 33 상향
+- Target API Level 34 상향
+- Minimum SDK version 24 상향 
 
 공지사항 (필독)
 ----

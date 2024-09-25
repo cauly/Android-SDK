@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 34
     defaultConfig {
         applicationId "com.fsn.cauly.example"
-        minSdkVersion 14
-        targetSdkVersion 31
+        minSdkVersion 24
+        targetSdkVersion 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -26,5 +26,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 //cauly SDK
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.31'
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.32'
 }

@@ -52,7 +52,7 @@
  	dependencies {
         implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
         implementation 'com.google.android.gms:play-services-appset:16.0.0'
-        implementation 'com.fsn.cauly:cauly-sdk:3.5.31' 
+        implementation 'com.fsn.cauly:cauly-sdk:3.5.32' 
     }
 	```
 
@@ -394,6 +394,12 @@ gdprConsentAvailable(boolean)	|gdpr 동의 일 때 true
         // 전면 광고가 닫힌 경우 호출됨.
         Log.d("CaulyExample", "interstitial AD closed.");
     }
+
+    @Override
+    public void onLeaveInterstitialAd(CaulyInterstitialAd ad) {
+        // 전면 광고를 클릭하여 앱을 벗어났을 경우 호출됨.
+        Log.d("CaulyExample", "interstitial AD onLeaveInterstitialAd.");
+    }
 ```
 		
 #### `JAVA 방식` base 전면광고 Close Ad Type
@@ -559,6 +565,11 @@ public class JavaActivity extends Activity implements CaulyCloseAdListener {
     override fun onClosedInterstitialAd(ad: CaulyInterstitialAd) {
         // 전면 광고가 닫힌 경우 호출됨.
         Log.d("CaulyExample", "interstitial AD closed.")
+    }
+
+    override fun onLeaveInterstitialAd(ad: CaulyInterstitialAd) {
+        // 전면 광고를 클릭하여 앱을 벗어났을 경우 호출됨.
+        Log.d("CaulyExample", "interstitial AD onLeaveInterstitialAd.")
     }
 ```
 		
@@ -1153,6 +1164,7 @@ CaulyInterstitialAdListener||
 onReceiveInterstitialAd(CaulyInterstitialAd, boolean isChargeableAd)	|광고 노출 성공 시 호출됨. 유,무료 광고 여부가 isChargeableAd 변수에 설정됨
 onFailedToReceiveInterstitialAd(CaulyInterstitialAd, int errorCode, String errorMsg)	|광고 노출 실패 시 호출됨. 오류 코드와 내용이 errorCode, errorMsg 변수에 설정됨
 onClosedInterstitialAd(CaulyInterstitialAd)	|전면 광고 페이지가 닫힌 경우 호출됨
+onLeaveInterstitialAd(CaulyInterstitialAd ad)   |전면 광고를 클릭하여 앱을 벗어났을 경우 호출됨
 
 전면 광고_플로팅형
 --------------

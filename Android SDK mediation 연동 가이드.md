@@ -122,7 +122,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
     
     // cauly sdk
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.31'
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.32'
     
     // inmobi mediation
     implementation 'com.google.ads.mediation:inmobi:10.6.2.0'
@@ -2607,7 +2607,9 @@ public class CaulyInterstitialLoader implements CaulyInterstitialAdListener, Med
 
     @Override
     public void onLeaveInterstitialAd(CaulyInterstitialAd caulyInterstitialAd) {
-
+        // 전면 광고를 클릭하여 앱을 벗어났을 경우 호출됨.
+        Log.d("CaulyExample", "interstitial AD onLeaveInterstitialAd.");
+        interstitialAdCallback.onAdClosed();
     }
 }
 ```
@@ -2756,7 +2758,11 @@ class CaulyInterstitialLoader(
         interstitialAdCallback!!.onAdClosed()
     }
 
-    override fun onLeaveInterstitialAd(caulyInterstitialAd: CaulyInterstitialAd) {}
+    override fun onLeaveInterstitialAd(caulyInterstitialAd: CaulyInterstitialAd) {
+        // 전면 광고를 클릭하여 앱을 벗어났을 경우 호출됨.
+        Log.d("CaulyExample", "interstitial AD onLeaveInterstitialAd.")
+        interstitialAdCallback!!.onAdClosed()
+    }
 
     companion object {
         val TAG = CaulyInterstitialLoader::class.java.simpleName

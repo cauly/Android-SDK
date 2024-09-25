@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "kr.co.cauly.sdk.android.mediation.sample"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -34,7 +34,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
 
     // cauly sdk
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.31'
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.32'
 
     // inmobi mediation
     implementation 'com.google.ads.mediation:inmobi:10.6.2.0'
