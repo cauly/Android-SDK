@@ -19,7 +19,8 @@ package kr.co.cauly.sdk.android.mediation.sample.natives;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
-import com.google.android.gms.ads.formats.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAd;
+
 
 /**
  * A simple class that fits the the {@link NativeAd.Image} interface and can be filled with assets
@@ -36,16 +37,6 @@ public class SampleNativeMappedImage extends NativeAd.Image {
     this.scale = scale;
   }
 
-//    public SampleNativeMappedImage(Uri imageUri) {
-//        this.imageUri = imageUri;
-//    }
-
-
-//    @Override
-//    public Drawable getDrawable() {
-//        return null;
-//    }
-
     @Override
     public Drawable getDrawable() {
         return drawable;
@@ -59,8 +50,4 @@ public class SampleNativeMappedImage extends NativeAd.Image {
     public double getScale() {
         return scale;
     }
-
-
-
-
 }

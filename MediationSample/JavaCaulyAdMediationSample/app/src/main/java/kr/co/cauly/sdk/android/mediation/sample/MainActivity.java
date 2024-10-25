@@ -1,6 +1,7 @@
 package kr.co.cauly.sdk.android.mediation.sample;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -24,6 +25,7 @@ import com.google.ads.mediation.inmobi.InMobiNetworkKeys;
 import com.google.ads.mediation.inmobi.InMobiNetworkValues;
 import com.google.ads.mediation.vungle.VungleConstants;
 import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdInspectorError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -31,11 +33,9 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnAdInspectorClosedListener;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.initialization.AdapterStatus;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.MediaView;
@@ -44,13 +44,13 @@ import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-import com.inmobi.sdk.InMobiSdk;
+import com.google.android.ump.ConsentInformation;
 import com.vungle.mediation.VungleAdapter;
 import com.vungle.mediation.VungleInterstitialAdapter;
 
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.getSimpleName();
@@ -69,23 +69,17 @@ public class MainActivity extends AppCompatActivity {
     private Button request_rewarded_btn;
     private Button show_rewarded_btn;
 
+    private Button ad_inspector_btn;
+
+    private ConsentInformation consentInformation;
+    // Use an atomic boolean to initialize the Google Mobile Ads SDK and load ads once.
+    private final AtomicBoolean isMobileInitializeCalled = new AtomicBoolean(false);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
-                for (String adapterClass : statusMap.keySet()) {
-                    AdapterStatus status = statusMap.get(adapterClass);
-                    Log.i(TAG, String.format(
-                            "Adapter name: %s, Description: %s, Latency: %d",
-                            adapterClass, status.getDescription(), status.getLatency()));
-                }
-            }
-        });
         //admob 레이아웃에 AdView 추가
         adView = (AdView) findViewById(R.id.adView);
         //admob 배너 리스너
@@ -141,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 보상형 광고 노출
         show_rewarded_btn = findViewById(R.id.show_rewarded_btn);
         show_rewarded_btn.setEnabled(false);
         show_rewarded_btn.setOnClickListener(new View.OnClickListener() {
@@ -149,20 +144,35 @@ public class MainActivity extends AppCompatActivity {
                 showRewardedAd();
             }
         });
+
+        // ad inspector 표시
+        ad_inspector_btn = findViewById(R.id.ad_inspector_btn);
+        ad_inspector_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MobileAds.openAdInspector(MainActivity.this, new OnAdInspectorClosedListener() {
+                    @Override
+                    public void onAdInspectorClosed(@Nullable AdInspectorError adInspectorError) {
+                        if (adInspectorError != null) {
+                            Log.e(TAG, "ad inspector error: " + adInspectorError);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void setAdmobAdRequest() {
         // 테스트 시 RequestConfiguration.Builder.setTestDeviceIds()를 호출하고 테스트 기기 ID 목록을 전달하도록 수정해야 합니다.
         // 상용화 시 반드시 삭제해야합니다.
         MobileAds.setRequestConfiguration(
-                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList(Config.ADMOB_TEST_DEVICE_ID))
+                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("33BE2250B43518CCDA7DE426D04EE231"))
                         .build());
 
         Bundle inMobiextras= new Bundle();
         //inmobi size 320x50 adsize banner
         inMobiextras.putString(InMobiNetworkKeys.AGE_GROUP, InMobiNetworkValues.BETWEEN_25_AND_29);
         inMobiextras.putString(InMobiNetworkKeys.AREA_CODE, "12345");
-        InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG);
 
         Bundle appLovinExtras = new AppLovinExtras.Builder()
                 .setMuteAudio(true)

@@ -3,39 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="kr.co.cauly.sdk.android.mediation.sample">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!--inmobi-->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- inmobi -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
-    <!--Pangle-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- Pangle -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.CaulyAdMediationSample">
+        android:theme="@style/Theme.CaulyAdMediationSample"
+        android:usesCleartextTraffic="true">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".SplashActivity"
+            android:exported="true" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!--admob-->
-        <!-- APPLICATION_ID : admob test app ID 입니다.
-         배포시 애드몹에서 발급한 unit ID 로 반드시 변경해야합니다.-->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+        </activity>
+        <!-- admob -->
+        <!--
+            APPLICATION_ID : admob test app ID 입니다.
+            배포시 애드몹에서 발급한 unit ID 로 반드시 변경해야합니다.
+        -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />

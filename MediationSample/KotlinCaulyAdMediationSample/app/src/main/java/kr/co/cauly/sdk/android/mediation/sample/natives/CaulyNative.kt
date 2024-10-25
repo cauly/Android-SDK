@@ -8,18 +8,17 @@ import com.google.android.gms.ads.mediation.MediationConfiguration
 import com.google.android.gms.ads.mediation.MediationNativeAdCallback
 import com.google.android.gms.ads.mediation.MediationNativeAdConfiguration
 import com.google.android.gms.ads.mediation.NativeAdMapper
-import com.google.android.gms.ads.mediation.UnifiedNativeAdMapper
 import com.google.android.gms.ads.mediation.VersionInfo
 
+class CaulyNative: Adapter() {
 
-class AdfitNative: Adapter() {
-    private var nativeLoader: AdFitNativeLoader? = null
+    private var nativeLoader: CaulyNativeLoader? = null
 
     override fun loadNativeAdMapper(
         mediationNativeAdConfiguration: MediationNativeAdConfiguration,
         callback: MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback>
     ) {
-        nativeLoader = AdFitNativeLoader(mediationNativeAdConfiguration, callback)
+        nativeLoader = CaulyNativeLoader(mediationNativeAdConfiguration, callback)
         nativeLoader!!.loadAd()
     }
 

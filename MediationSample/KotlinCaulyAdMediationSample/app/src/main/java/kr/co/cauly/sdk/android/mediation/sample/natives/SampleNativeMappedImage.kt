@@ -2,7 +2,7 @@ package kr.co.cauly.sdk.android.mediation.sample.natives
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import com.google.android.gms.ads.formats.NativeAd
+import com.google.android.gms.ads.nativead.NativeAd
 
 class SampleNativeMappedImage(
     private val drawable: Drawable,

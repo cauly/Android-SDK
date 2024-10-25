@@ -1,6 +1,7 @@
 package kr.co.cauly.sdk.android.mediation.sample.natives;
 
 import android.content.Context;
+import android.os.RemoteException;
 
 import androidx.annotation.NonNull;
 
@@ -10,7 +11,7 @@ import com.google.android.gms.ads.mediation.MediationAdLoadCallback;
 import com.google.android.gms.ads.mediation.MediationConfiguration;
 import com.google.android.gms.ads.mediation.MediationNativeAdCallback;
 import com.google.android.gms.ads.mediation.MediationNativeAdConfiguration;
-import com.google.android.gms.ads.mediation.UnifiedNativeAdMapper;
+import com.google.android.gms.ads.mediation.NativeAdMapper;
 import com.google.android.gms.ads.mediation.VersionInfo;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class CaulyNative extends Adapter {
     private CaulyNativeLoader nativeLoader;
 
     @Override
-    public void loadNativeAd(@NonNull MediationNativeAdConfiguration mediationNativeAdConfiguration, @NonNull MediationAdLoadCallback<UnifiedNativeAdMapper, MediationNativeAdCallback> callback) {
-        nativeLoader = new CaulyNativeLoader(mediationNativeAdConfiguration, callback);
+    public void loadNativeAdMapper(@NonNull MediationNativeAdConfiguration mediationNativeAdConfiguration, @NonNull MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback) throws RemoteException {
+        nativeLoader = new CaulyNativeLoader(mediationNativeAdConfiguration, mediationAdLoadCallback);
         nativeLoader.loadAd();
     }
 

@@ -19,27 +19,24 @@ import com.google.android.gms.ads.mediation.MediationAdLoadCallback;
 import com.google.android.gms.ads.mediation.MediationConfiguration;
 import com.google.android.gms.ads.mediation.MediationNativeAdCallback;
 import com.google.android.gms.ads.mediation.MediationNativeAdConfiguration;
-import com.google.android.gms.ads.mediation.UnifiedNativeAdMapper;
+import com.google.android.gms.ads.mediation.NativeAdMapper;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
-import kr.co.cauly.sdk.android.mediation.sample.Config;
 import kr.co.cauly.sdk.android.mediation.sample.R;
 
 public class CaulyNativeLoader {
-//    private CustomEventNativeListener nativeListener;
     final static String TAG = CaulyNativeLoader.class.getSimpleName();
 
     /** Configuration for requesting the native ad from the third-party network. */
     private final MediationNativeAdConfiguration mediationNativeAdConfiguration;
 
     /** Callback that fires on loading success or failure. */
-    private final MediationAdLoadCallback<UnifiedNativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback;
+    private final MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback;
 
     /** Callback for native ad events. */
     private MediationNativeAdCallback nativeAdCallback;
@@ -55,7 +52,7 @@ public class CaulyNativeLoader {
     public static final String CUSTOM_EVENT_ERROR_DOMAIN = "com.google.ads.mediation.sample.customevent";
 
     /** Constructor */
-    public CaulyNativeLoader(MediationNativeAdConfiguration mediationNativeAdConfiguration, MediationAdLoadCallback<UnifiedNativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback) {
+    public CaulyNativeLoader(MediationNativeAdConfiguration mediationNativeAdConfiguration, MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback) {
         this.mediationNativeAdConfiguration = mediationNativeAdConfiguration;
         this.mediationAdLoadCallback = mediationAdLoadCallback;
     }
@@ -78,8 +75,11 @@ public class CaulyNativeLoader {
         mCaulyAdView = new CaulyCustomAd(context);
         mCaulyAdView.setAdInfo(adInfo);
         mCaulyAdView.setCustomAdListener(new CaulyCustomAdListener() {
+            // 광고가 표시되었을 때 호출된다.
             @Override
             public void onShowedAd() {
+                Log.d(TAG, "onShowedAd");
+                nativeAdCallback.reportAdImpression();
             }
 
             //광고 호출이 성공할 경우, 호출된다.
@@ -119,15 +119,15 @@ public class CaulyNativeLoader {
 
                 try {
                     uThread.join();
-                    final SampleUnifiedNativeAdMapper unifiedNativeAdMapper =
-                            new SampleUnifiedNativeAdMapper(
+                    final SampleNativeAdMapper nativeAdMapper =
+                            new SampleNativeAdMapper(
                                     context,
                                     map.get("icon"),
                                     map.get("image"),
                                     data,
                                     mCaulyAdView
                             );
-                    nativeAdCallback = mediationAdLoadCallback.onSuccess(unifiedNativeAdMapper);
+                    nativeAdCallback = mediationAdLoadCallback.onSuccess(nativeAdMapper);
                     nativeAdCallback.reportAdImpression();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -161,6 +161,7 @@ public class CaulyNativeLoader {
             // 광고가 클릭된 경우, 호출된다.
             @Override
             public void onClikedAd() {
+                nativeAdCallback.reportAdClicked();
                 Log.d(TAG, "onClicked");
             }
 
@@ -181,23 +182,4 @@ public class CaulyNativeLoader {
         bitmap = BitmapFactory.decodeStream(is);
         return new BitmapDrawable(Resources.getSystem(), bitmap);
     }
-
-//    @Override
-//    public void onDestroy() {
-//        if (mCaulyAdView != null) {
-//            mCaulyAdView = null;
-//
-//        }
-//
-//    }
-//
-//    @Override
-//    public void onPause() {
-//
-//    }
-//
-//    @Override
-//    public void onResume() {
-//
-//    }
 }

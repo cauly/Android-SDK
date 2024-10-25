@@ -49,24 +49,12 @@ class MainActivity : AppCompatActivity() {
     private var mRewardedAd: RewardedAd? = null
     lateinit var show_rewarded_btn: Button
 
+    lateinit var ad_inspector_btn: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        MobileAds.initialize(
-            this
-        ) { initializationStatus ->
-            val statusMap = initializationStatus.adapterStatusMap
-            for (adapterClass in statusMap.keys) {
-                val status = statusMap[adapterClass]
-                Log.i(
-                    TAG, String.format(
-                        "Adapter name: %s, Description: %s, Latency: %d",
-                        adapterClass, status!!.description, status.latency
-                    )
-                )
-            }
-        }
         //admob 레이아웃에 AdView 추가
         adView = findViewById<View>(R.id.adView) as AdView
         //admob 배너 리스너
@@ -113,6 +101,16 @@ class MainActivity : AppCompatActivity() {
         show_rewarded_btn.setOnClickListener(View.OnClickListener {
             showRewardedAd()
         })
+
+        // ad inspector 표시
+        ad_inspector_btn = findViewById<Button>(R.id.ad_inspector_btn)
+        ad_inspector_btn.setOnClickListener {
+            MobileAds.openAdInspector(this) { error ->
+                if (error != null) {
+                    Log.e(TAG, "ad inspector error: " + error)
+                }
+            }
+        }
     }
 
     private fun setAdmobAdRequest() {
@@ -120,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         // 상용화 시 반드시 삭제해야합니다.
         MobileAds.setRequestConfiguration(
             RequestConfiguration.Builder()
-                .setTestDeviceIds(Arrays.asList<String>(Config().ADMOB_TEST_DEVICE_ID))
+                .setTestDeviceIds(Arrays.asList<String>("33BE2250B43518CCDA7DE426D04EE231"))
                 .build()
         )
 
@@ -129,7 +127,6 @@ class MainActivity : AppCompatActivity() {
         //inmobi size 320x50 adsize banner
         inMobiextras.putString(InMobiNetworkKeys.AGE_GROUP, InMobiNetworkValues.BETWEEN_25_AND_29)
         inMobiextras.putString(InMobiNetworkKeys.AREA_CODE, "12345")
-        InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG)
 
         // appLovin setting
         val appLovinExtras = AppLovinExtras.Builder()

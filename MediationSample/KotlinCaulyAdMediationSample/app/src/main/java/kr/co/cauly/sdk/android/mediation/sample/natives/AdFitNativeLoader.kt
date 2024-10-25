@@ -18,7 +18,7 @@ class AdFitNativeLoader(
     /** Configuration for requesting the native ad from the third-party network. */
     private val mediationNativeAdConfiguration: MediationNativeAdConfiguration,
     /** Callback that fires on loading success or failure. */
-    private var mediationAdLoadCallback: MediationAdLoadCallback<UnifiedNativeAdMapper, MediationNativeAdCallback>
+    private var mediationAdLoadCallback: MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback>
 ) {
     /** Callback for native ad events. */
     private var nativeAdCallback: MediationNativeAdCallback? = null

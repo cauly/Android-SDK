@@ -9,13 +9,14 @@ import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import com.google.android.gms.ads.mediation.NativeAdMapper
 import com.google.android.gms.ads.mediation.UnifiedNativeAdMapper
 import com.google.android.gms.ads.nativead.NativeAd
 import com.kakao.adfit.ads.na.AdFitNativeAdLayout
 import kr.co.cauly.sdk.android.mediation.sample.databinding.ItemNativeAdBinding
 import java.io.ByteArrayOutputStream
 
-class SampleUnifiedNativeAdMapper: UnifiedNativeAdMapper {
+class SampleUnifiedNativeAdMapper: NativeAdMapper {
     var context: Context? = null
 
     constructor(context: Context, nativeAdView: ItemNativeAdBinding) {

@@ -34,8 +34,8 @@
 # 1. 미디에이션 시작하기
 
 ### 최소 지원 사양
-- minSdkVersion 19 이상
-- compileSdkVersion 33 이상
+- minSdkVersion 24 이상
+- compileSdkVersion 34 이상
 
 
 ### AndroidManifest.xml 속성 지정
@@ -119,38 +119,38 @@ gradle.properties ::
 ``` clojure
 dependencies {
     // google admob
-    implementation 'com.google.android.gms:play-services-ads:22.6.0'
+    implementation 'com.google.android.gms:play-services-ads:23.3.0'
     
     // cauly sdk
     implementation 'com.fsn.cauly:cauly-sdk:3.5.32'
     
     // inmobi mediation
-    implementation 'com.google.ads.mediation:inmobi:10.6.2.0'
+    implementation 'com.google.ads.mediation:inmobi:10.7.5.0'
     
     // applovin mediation
-    implementation 'com.google.ads.mediation:applovin:12.1.0.0'
+    implementation 'com.google.ads.mediation:applovin:12.6.0.0'
     
     // vungle mediation
-    implementation 'com.google.ads.mediation:vungle:7.1.0.0'
+    implementation 'com.google.ads.mediation:vungle:7.4.1.0'
     
     // DT Exchange mediation
-    implementation 'com.google.ads.mediation:fyber:8.2.5.0'
+    implementation 'com.google.ads.mediation:fyber:8.3.1.0'
     
     // Mintegral mediation
-    implementation 'com.google.ads.mediation:mintegral:16.5.51.0'
+    implementation 'com.google.ads.mediation:mintegral:16.8.31.0'
     
     // Pangle mediation
-    implementation 'com.google.ads.mediation:pangle:5.6.0.3.0'
+    implementation 'com.google.ads.mediation:pangle:6.2.0.4.0'
     
     // Unity ads mediation
-    implementation 'com.unity3d.ads:unity-ads:4.9.2'
-    implementation 'com.google.ads.mediation:unity:4.9.2.0'
+    implementation 'com.unity3d.ads:unity-ads:4.12.2'
+    implementation 'com.google.ads.mediation:unity:4.12.2.0'
 
     // Meta(facebook) mediation
-    implementation 'com.google.ads.mediation:facebook:6.16.0.0'
+    implementation 'com.google.ads.mediation:facebook:6.17.0.0'
 
     // IronSource mediation
-    implementation 'com.google.ads.mediation:ironsource:7.7.0.0'
+    implementation 'com.google.ads.mediation:ironsource:8.3.0.0'
     
 }
 ```
@@ -203,7 +203,7 @@ dependencies {
 ```clojure
    dependencies {
       // User Messaging Platform SDK (GDPR)
-      implementation 'com.google.android.ump:user-messaging-platform:2.1.0' 
+      implementation 'com.google.android.ump:user-messaging-platform:3.0.0' 
    }
 ```
 
@@ -461,17 +461,42 @@ runOnUiThread {
 
 ``` java
 Java ::
-MobileAds.initialize(this, new OnInitializationCompleteListener() { 
-    @Override 
-    public void onInitializationComplete(InitializationStatus initializationStatus) { 
-    } 
-}); 
+new Thread(
+        () -> {
+            // Initialize the Google Mobile Ads SDK on a background thread.
+            MobileAds.initialize(this, initializationStatus -> {
+                Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
+                for (String adapterClass : statusMap.keySet()) {
+                    AdapterStatus status = statusMap.get(adapterClass);
+                    Log.i(TAG, String.format(
+                            "Adapter name: %s, Description: %s, Latency: %d",
+                            adapterClass, status.getDescription(), status.getLatency()));
+                }
+            });
+        }).start();
 ```
 
 
 ``` kotlin
 Kotlin ::
-MobileAds.initialize(this) {}
+val backgroundScope = CoroutineScope(Dispatchers.IO)
+backgroundScope.launch {
+    // Initialize the Google Mobile Ads SDK on a background thread.
+    MobileAds.initialize(
+        this@SplashActivity
+    ) { initializationStatus ->
+        val statusMap = initializationStatus.adapterStatusMap
+        for (adapterClass in statusMap.keys) {
+            val status = statusMap[adapterClass]
+            Log.i(
+                LOG_TAG, String.format(
+                    "Adapter name: %s, Description: %s, Latency: %d",
+                    adapterClass, status!!.description, status.latency
+                )
+            )
+        }
+    }
+}
 ```
 
 
@@ -624,12 +649,13 @@ MobileAds.setRequestConfiguration(requestConfiguration)
 ### Admob 앱 오프닝 광고 추가하기
 - 앱 오프닝 광고를 구현하는 자세한 내용은 [AdMob 앱 오프닝 광고 연동 가이드](https://developers.google.com/admob/android/app-open)에서 확인해주십시오.
 - 앱 오프닝 광고를 구현하는 데 필요한 단계는 크게 다음과 같습니다.
-    1. `Application` 클래스를 확장하여 Google 모바일 광고 SDK를 초기화합니다.
+    1. `Application` 클래스를 확장하여 Google 모바일 광고 SDK를 초기화합니다. 
     2. 광고를 게재하기 전에 광고를 요청하는 유틸리티 클래스인 `AppOpenAdManager` 클래스를 생성합니다.
     3. 광고를 요청합니다.
     4. `ActivityLifecycleCallbacks` 인터페이스를 구현하고 등록합니다.
     5. 광고를 표시하고 콜백을 처리합니다.
     6. foreground 이벤트 중에 광고를 표시하도록 `LifecycleObserver` 인터페이스를 구현하고 등록합니다.
+- 다음은 앱 오프닝 광고 구현 예시입니다.
 
 - Application 클래스를 확장하는 새 클래스를 만든 후 `AndroidManifest.xml`에 다음 코드를 추가해야합니다.
 
@@ -640,12 +666,304 @@ MobileAds.setRequestConfiguration(requestConfiguration)
 </application>
 ```
 
+<details> <summary>Java</summary>
+
+- MyApplication.java
+
+``` java
+public class MyApplication extends Application implements Application.ActivityLifecycleCallbacks, LifecycleObserver {
+
+    private AppOpenAdManager appOpenAdManager;
+    private Activity currentActivity;
+    public Boolean isSplash = false;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+        appOpenAdManager = new AppOpenAdManager();
+    }
+
+    /** LifecycleObserver method that shows the app open ad when the app moves to foreground. */
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    protected void onMoveToForeground() {
+        // Show the ad (if available) when the app moves to foreground.
+        if (isSplash) {
+            appOpenAdManager.showAdIfAvailable(currentActivity);
+        }
+    }
+
+    /** ActivityLifecycleCallback methods. */
+    @Override
+    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+
+    @Override
+    public void onActivityStarted(Activity activity) {
+        // An ad activity is started when an ad is showing, which could be AdActivity class from Google
+        // SDK or another activity class implemented by a third party mediation partner. Updating the
+        // currentActivity only when an ad is not showing will ensure it is not an ad activity, but the
+        // one that shows the ad.
+        if (!appOpenAdManager.isShowingAd) {
+            currentActivity = activity;
+        }
+    }
+
+    @Override
+    public void onActivityResumed(Activity activity) {}
+
+    @Override
+    public void onActivityStopped(Activity activity) {}
+
+    @Override
+    public void onActivityPaused(Activity activity) {}
+
+    @Override
+    public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {}
+
+    @Override
+    public void onActivityDestroyed(Activity activity) {}
+
+    /**
+     * Load an app open ad.
+     *
+     * @param activity the activity that shows the app open ad
+     */
+    public void loadAd(@NonNull Activity activity, @NonNull OnLoadAdCompleteListener onLoadAdCompleteListener) {
+        // We wrap the loadAd to enforce that other classes only interact with MyApplication
+        // class.
+        appOpenAdManager.loadAd(activity, onLoadAdCompleteListener);
+    }
+
+    /**
+     * Shows an app open ad.
+     *
+     * @param activity the activity that shows the app open ad
+     * @param onShowAdCompleteListener the listener to be notified when an app open ad is complete
+     */
+    public void showAdIfAvailable(
+            @NonNull Activity activity, @NonNull OnShowAdCompleteListener onShowAdCompleteListener) {
+        // We wrap the showAdIfAvailable to enforce that other classes only interact with MyApplication
+        // class.
+        appOpenAdManager.showAdIfAvailable(activity, onShowAdCompleteListener);
+    }
+
+    /** Interface definition for a callback to be invoked when an app open ad is complete. */
+    public interface OnShowAdCompleteListener {
+        void onShowAdComplete();
+    }
+
+    public interface OnLoadAdCompleteListener {
+        void onAdLoaded();
+        void onAdFailedToLoad();
+    }
+
+    /** Inner class that loads and shows app open ads. */
+    private class AppOpenAdManager {
+        private static final String LOG_TAG = "AppOpenAdManager";
+        private static final String AD_UNIT_ID = Config.ADMOB_APP_OPEN_ID;
+
+        private AppOpenAd appOpenAd = null;
+        private boolean isLoadingAd = false;
+        private boolean isShowingAd = false;
+
+        /** Keep track of the time an app open ad is loaded to ensure you don't show an expired ad. */
+        private long loadTime = 0;
+
+        /** Constructor. */
+        public AppOpenAdManager() {}
+
+        /** Request an ad. */
+        private void loadAd(Context context, OnLoadAdCompleteListener onLoadAdCompleteListener) {
+            // Do not load ad if there is an unused ad or one is already loading.
+            if (isLoadingAd || isAdAvailable()) {
+                return;
+            }
+
+            isLoadingAd = true;
+            AdRequest request = new AdRequest.Builder().build();
+            AppOpenAd.load(
+                    context, AD_UNIT_ID, request,
+                    new AppOpenAd.AppOpenAdLoadCallback() {
+                        @Override
+                        public void onAdLoaded(AppOpenAd ad) {
+                            // Called when an app open ad has loaded.
+                            Log.d(LOG_TAG, "Ad was loaded.");
+                            appOpenAd = ad;
+                            isLoadingAd = false;
+                            loadTime = (new Date()).getTime();
+                            onLoadAdCompleteListener.onAdLoaded();
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(LoadAdError loadAdError) {
+                            // Called when an app open ad has failed to load.
+                            Log.d(LOG_TAG, loadAdError.getMessage());
+                            isLoadingAd = false;
+                            onLoadAdCompleteListener.onAdFailedToLoad();
+                        }
+                    });
+        }
+
+        /** Show the ad if one isn't already showing. */
+        public void showAdIfAvailable(Activity activity) {
+            showAdIfAvailable(activity, new OnShowAdCompleteListener() {
+                @Override
+                public void onShowAdComplete() {
+                    // Empty because the user will go back to the activity that shows the ad.
+                }
+            });
+        }
+
+        /** Shows the ad if one isn't already showing. */
+        public void showAdIfAvailable(
+                @NonNull final Activity activity,
+                @NonNull OnShowAdCompleteListener onShowAdCompleteListener){
+            // If the app open ad is already showing, do not show the ad again.
+            if (isShowingAd) {
+                Log.d(LOG_TAG, "The app open ad is already showing.");
+                return;
+            }
+
+            // If the app open ad is not available yet, invoke the callback then load the ad.
+            if (!isAdAvailable()) {
+                Log.d(LOG_TAG, "The app open ad is not ready yet.");
+                onShowAdCompleteListener.onShowAdComplete();
+                loadAd(activity, null);
+                return;
+            }
+
+            appOpenAd.setFullScreenContentCallback(
+                    new FullScreenContentCallback() {
+
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Called when fullscreen content is dismissed.
+                            // Set the reference to null so isAdAvailable() returns false.
+                            Log.d(LOG_TAG, "Ad dismissed fullscreen content.");
+                            appOpenAd = null;
+                            isShowingAd = false;
+
+                            onShowAdCompleteListener.onShowAdComplete();
+                            loadAd(activity, null);
+                        }
+
+                        @Override
+                        public void onAdFailedToShowFullScreenContent(AdError adError) {
+                            // Called when fullscreen content failed to show.
+                            // Set the reference to null so isAdAvailable() returns false.
+                            Log.d(LOG_TAG, adError.getMessage());
+                            appOpenAd = null;
+                            isShowingAd = false;
+
+                            onShowAdCompleteListener.onShowAdComplete();
+                            loadAd(activity, null);
+                        }
+
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when fullscreen content is shown.
+                            Log.d(LOG_TAG, "Ad showed fullscreen content.");
+                        }
+                    });
+            isShowingAd = true;
+            appOpenAd.show(activity);
+        }
+
+        /** Utility method to check if ad was loaded more than n hours ago. */
+        private boolean wasLoadTimeLessThanNHoursAgo(long numHours) {
+            long dateDifference = (new Date()).getTime() - this.loadTime;
+            long numMilliSecondsPerHour = 3600000;
+            return (dateDifference < (numMilliSecondsPerHour * numHours));
+        }
+
+        /** Check if ad exists and can be shown. */
+        private boolean isAdAvailable() {
+            return appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4);
+        }
+    }
+}
+```
+
+- SplashActivity.java
+
+``` java
+public class SplashActivity extends AppCompatActivity {
+    private final String TAG = SplashActivity.class.getSimpleName();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_splash);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        initializeMobileAdsSdk();
+    }
+
+    /** Start the MainActivity. */
+    public void startMainActivity() {
+        Application application = getApplication();
+        ((MyApplication) application).isSplash = true;
+
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
+        finish();
+    }
+
+    private void initializeMobileAdsSdk() {
+        new Thread(
+                () -> {
+                    // Initialize the Google Mobile Ads SDK on a background thread.
+                    MobileAds.initialize(this, initializationStatus -> {
+                        Map<String, AdapterStatus> statusMap = initializationStatus.getAdapterStatusMap();
+                        for (String adapterClass : statusMap.keySet()) {
+                            AdapterStatus status = statusMap.get(adapterClass);
+                            Log.i(TAG, String.format(
+                                    "Adapter name: %s, Description: %s, Latency: %d",
+                                    adapterClass, status.getDescription(), status.getLatency()));
+                        }
+                    });
+                }).start();
+
+        // TODO: Request an ad.
+        Application application = getApplication();
+        ((MyApplication) application).loadAd(this, new MyApplication.OnLoadAdCompleteListener() {
+            @Override
+            public void onAdLoaded() {
+                Log.d(TAG, "onAdLoaded");
+                ((MyApplication) application)
+                        .showAdIfAvailable(
+                                SplashActivity.this,
+                                new MyApplication.OnShowAdCompleteListener() {
+                                    @Override
+                                    public void onShowAdComplete() {
+                                        startMainActivity();
+                                    }
+                                });
+            }
+
+            @Override
+            public void onAdFailedToLoad() {
+                Log.d(TAG, "onAdFailedToLoad");
+                startMainActivity();
+            }
+        });
+    }
+}
+```
+
+</details>
+
 <details> <summary>Kotlin</summary>
 
 - MyApplication.kt
 
 ``` kotlin
-private const val AD_UNIT_ID = "ca-app-pub-xxxxxxxxxx"
 private const val LOG_TAG = "MyApplication"
 
 /** Application class that initializes, loads and show ads when activities change states. */
@@ -654,25 +972,22 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
     private lateinit var appOpenAdManager: AppOpenManager
 
     private var currentActivity: Activity? = null
+    var isSplash = false
 
     override fun onCreate() {
         super.onCreate()
         registerActivityLifecycleCallbacks(this)
 
-        // Log the Mobile Ads SDK version.
-        Log.d(LOG_TAG, "Google Mobile Ads SDK Version: " + MobileAds.getVersion())
-
-        MobileAds.initialize(this) {}
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenManager()
     }
 
     /** LifecycleObserver method that shows the app open ad when the app moves to foreground. */
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        if (event == Lifecycle.Event.ON_START) {
+        if (event == Lifecycle.Event.ON_START && isSplash) {
             // Show the ad (if available) when the app moves to foreground.
             currentActivity?.let {
-                appOpenAdManager.loadAd(it)
+                appOpenAdManager.showAdIfAvailable(it)
             }
         }
     }
@@ -698,6 +1013,18 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
     override fun onActivityDestroyed(activity: Activity) {}
 
     /**
+     * Load an app open ad.
+     *
+     * @param activity the activity that shows the app open ad
+     * @param onLoadAdCompleteListener the listener to be notified when an app open ad is complete
+     */
+    fun loadAd(activity: Activity, onLoadAdCompleteListener: OnLoadAdCompleteListener) {
+        // We wrap the loadAd to enforce that other classes only interact with MyApplication
+        // class.
+        appOpenAdManager.loadAd(activity, onLoadAdCompleteListener)
+    }
+
+    /**
      * Shows an app open ad.
      *
      * @param activity the activity that shows the app open ad
@@ -717,13 +1044,17 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         fun onShowAdComplete()
     }
 
+    interface OnLoadAdCompleteListener {
+        fun onAdLoaded()
+        fun onAdFailedToLoad()
+    }
+
     /** Inner class that loads and shows app open ads. */
     private inner class AppOpenManager {
 
         private var appOpenAd: AppOpenAd? = null
         private var isLoadingAd = false
         var isShowingAd = false
-        var isFirstAd = true
 
         /** Keep track of the time an app open ad is loaded to ensure you don't show an expired ad. */
         private var loadTime: Long = 0
@@ -733,7 +1064,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
          *
          * @param context the context of the activity that loads the ad
          */
-        fun loadAd(context: Context) {
+        fun loadAd(context: Context, onLoadAdCompleteListener: OnLoadAdCompleteListener?) {
             // Do not load ad if there is an unused ad or one is already loading.
             if (isLoadingAd || isAdAvailable()) {
                 return
@@ -742,7 +1073,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
             isLoadingAd = true
             val request = AdRequest.Builder().build()
             AppOpenAd.load(
-                context, AD_UNIT_ID, request,
+                context, Config().ADMOB_APP_OPEN_ID, request,
                 object : AppOpenAdLoadCallback() {
 
                     override fun onAdLoaded(ad: AppOpenAd) {
@@ -751,12 +1082,14 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
                         appOpenAd = ad
                         isLoadingAd = false
                         loadTime = Date().time
+                        onLoadAdCompleteListener?.onAdLoaded()
                     }
 
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                         // Called when an app open ad has failed to load.
                         Log.d(LOG_TAG, loadAdError.message)
                         isLoadingAd = false;
+                        onLoadAdCompleteListener?.onAdFailedToLoad()
                     }
                 }
             )
@@ -805,7 +1138,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
             if (!isAdAvailable()) {
                 Log.d(LOG_TAG, "The app open is not ready yet.")
                 onShowAdCompleteListener.onShowAdComplete()
-                loadAd(activity)
+                loadAd(activity, null)
                 return
             }
 
@@ -819,7 +1152,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
                         isShowingAd = false
 
                         onShowAdCompleteListener.onShowAdComplete()
-                        loadAd(activity)
+                        loadAd(activity, null)
                     }
 
                     override fun onAdFailedToShowFullScreenContent(adError: AdError) {
@@ -830,7 +1163,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
                         isShowingAd = false
 
                         onShowAdCompleteListener.onShowAdComplete()
-                        loadAd(activity)
+                        loadAd(activity, null)
                     }
 
                     override fun onAdShowedFullScreenContent() {
@@ -848,71 +1181,65 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
 - SplashActivity.kt
 
 ``` kotlin
-
-/**
- * Number of seconds to count down before showing the app open ad. This simulates the time needed
- * to load the app.
- */
-private const val COUNTER_TIME = 5L;
-
 private const val LOG_TAG = "SplashActivity"
 
 class SplashActivity : AppCompatActivity() {
-
-    private var secondsRemaining: Long = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Create a timer so the SplashActivity will be displayed for a fixed amount of time.
-        createTimer(COUNTER_TIME)
-    }
-
-    /**
-     * Create the countdown timer, which counts down to zero and show the app open ad.
-     *
-     * @param seconds the number of seconds that the timer counts down from
-     */
-    private fun createTimer(seconds: Long) {
-        val counterTextView: TextView = findViewById(R.id.timer)
-        val countDownTimer: CountDownTimer = object : CountDownTimer(seconds * 1000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                secondsRemaining = millisUntilFinished / 1000 + 1
-                counterTextView.text = "App is done loading in: $secondsRemaining"
-            }
-
-            override fun onFinish() {
-                secondsRemaining = 0
-                counterTextView.text = "Done."
-
-                val application = application as? MyApplication
-
-                // If the application is not an instance of MyApplication, log an error message and
-                // start the MainActivity without showing the app open ad.
-                if (application == null) {
-                    Log.e(LOG_TAG, "Failed to cast application to MyApplication.")
-                    startMainActivity()
-                    return
-                }
-
-                // Show the app open ad.
-                application.showAdIfAvailable(
-                    this@SplashActivity,
-                    object : MyApplication.OnShowAdCompleteListener {
-                        override fun onShowAdComplete() {
-                            startMainActivity()
-                        }
-                    })
-            }
-        }
-        countDownTimer.start()
+        initializeMobileAdsSdk()
     }
 
     /** Start the MainActivity. */
     fun startMainActivity() {
+        val application = application as MyApplication
+        application.isSplash = true
+
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun initializeMobileAdsSdk() {
+        val backgroundScope = CoroutineScope(Dispatchers.IO)
+        backgroundScope.launch {
+            // Initialize the Google Mobile Ads SDK on a background thread.
+            MobileAds.initialize(
+                this@SplashActivity
+            ) { initializationStatus ->
+                val statusMap = initializationStatus.adapterStatusMap
+                for (adapterClass in statusMap.keys) {
+                    val status = statusMap[adapterClass]
+                    Log.i(
+                        LOG_TAG, String.format(
+                            "Adapter name: %s, Description: %s, Latency: %d",
+                            adapterClass, status!!.description, status.latency
+                        )
+                    )
+                }
+            }
+            runOnUiThread {
+                // TODO: Request an ad.
+                val application = application as MyApplication
+                application.loadAd(this@SplashActivity, object : MyApplication.OnLoadAdCompleteListener {
+                    override fun onAdLoaded() {
+                        Log.d(LOG_TAG, "onAdLoaded")
+                        application.showAdIfAvailable(this@SplashActivity, object : MyApplication.OnShowAdCompleteListener {
+                            override fun onShowAdComplete() {
+                                startMainActivity()
+                            }
+                        })
+                    }
+
+                    override fun onAdFailedToLoad() {
+                        Log.d(LOG_TAG, "onAdFailedToLoad")
+                        startMainActivity()
+                    }
+                })
+            }
+        }
+
     }
 }
 ```
@@ -2797,7 +3124,9 @@ textID|설명 등록
 iconImageID|아이콘 등록
 adRatio|메인이미지 비율 설정 (기본값 : 720x480)
 
-- CaulyNative
+<details> <summary>Java</summary>
+
+- CaulyNative.java
 
 ``` java
 public class CaulyNative extends Adapter {
@@ -2805,8 +3134,8 @@ public class CaulyNative extends Adapter {
     private CaulyNativeLoader nativeLoader;
 
     @Override
-    public void loadNativeAd(@NonNull MediationNativeAdConfiguration mediationNativeAdConfiguration, @NonNull MediationAdLoadCallback<UnifiedNativeAdMapper, MediationNativeAdCallback> callback) {
-        nativeLoader = new CaulyNativeLoader(mediationNativeAdConfiguration, callback);
+    public void loadNativeAdMapper(@NonNull MediationNativeAdConfiguration mediationNativeAdConfiguration, @NonNull MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback) throws RemoteException {
+        nativeLoader = new CaulyNativeLoader(mediationNativeAdConfiguration, mediationAdLoadCallback);
         nativeLoader.loadAd();
     }
 
@@ -2849,7 +3178,7 @@ public class CaulyNative extends Adapter {
 }
 ```
 
-- CaulyNativeLoader
+- CaulyNativeLoader.java
 
 ``` java
 public class CaulyNativeLoader {
@@ -2860,7 +3189,7 @@ public class CaulyNativeLoader {
     private final MediationNativeAdConfiguration mediationNativeAdConfiguration;
 
     /** Callback that fires on loading success or failure. */
-    private final MediationAdLoadCallback<UnifiedNativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback;
+    private final MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback;
 
     /** Callback for native ad events. */
     private MediationNativeAdCallback nativeAdCallback;
@@ -2876,7 +3205,7 @@ public class CaulyNativeLoader {
     public static final String CUSTOM_EVENT_ERROR_DOMAIN = "com.google.ads.mediation.sample.customevent";
 
     /** Constructor */
-    public CaulyNativeLoader(MediationNativeAdConfiguration mediationNativeAdConfiguration, MediationAdLoadCallback<UnifiedNativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback) {
+    public CaulyNativeLoader(MediationNativeAdConfiguration mediationNativeAdConfiguration, MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback> mediationAdLoadCallback) {
         this.mediationNativeAdConfiguration = mediationNativeAdConfiguration;
         this.mediationAdLoadCallback = mediationAdLoadCallback;
     }
@@ -2899,8 +3228,11 @@ public class CaulyNativeLoader {
         mCaulyAdView = new CaulyCustomAd(context);
         mCaulyAdView.setAdInfo(adInfo);
         mCaulyAdView.setCustomAdListener(new CaulyCustomAdListener() {
+            // 광고가 표시되었을 때 호출된다.
             @Override
             public void onShowedAd() {
+                Log.d(TAG, "onShowedAd");
+                nativeAdCallback.reportAdImpression();
             }
 
             //광고 호출이 성공할 경우, 호출된다.
@@ -2940,15 +3272,15 @@ public class CaulyNativeLoader {
 
                 try {
                     uThread.join();
-                    final SampleUnifiedNativeAdMapper unifiedNativeAdMapper =
-                            new SampleUnifiedNativeAdMapper(
+                    final SampleNativeAdMapper nativeAdMapper =
+                            new SampleNativeAdMapper(
                                     context,
                                     map.get("icon"),
                                     map.get("image"),
                                     data,
                                     mCaulyAdView
                             );
-                    nativeAdCallback = mediationAdLoadCallback.onSuccess(unifiedNativeAdMapper);
+                    nativeAdCallback = mediationAdLoadCallback.onSuccess(nativeAdMapper);
                     nativeAdCallback.reportAdImpression();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -2982,6 +3314,7 @@ public class CaulyNativeLoader {
             // 광고가 클릭된 경우, 호출된다.
             @Override
             public void onClikedAd() {
+                nativeAdCallback.reportAdClicked();
                 Log.d(TAG, "onClicked");
             }
 
@@ -3005,6 +3338,361 @@ public class CaulyNativeLoader {
 
 }
 ```
+
+- SampleNativeAdMapper.java
+
+``` java
+public class SampleNativeAdMapper extends NativeAdMapper {
+    private final kr.co.cauly.sdk.android.mediation.sample.natives.AdItem data;
+    private final CaulyCustomAd caulyAdView;
+    private final Context context;
+
+    public SampleNativeAdMapper(final Context context, Drawable icon, Drawable image, final kr.co.cauly.sdk.android.mediation.sample.natives.AdItem data, CaulyCustomAd mCaulyAdView) {
+
+        this.data = data;
+        this.caulyAdView = mCaulyAdView;
+        this.context = context;
+
+        if (context == null) {
+            Log.e("CaulyNative", "Failed to load ad. Request must be for unified native ads.");
+            return;
+        }
+        List<NativeAd.Image> imagesList = new ArrayList<>();
+        imagesList.add(new SampleNativeMappedImage(image, Uri.parse(data.image), 1.0));
+        setImages(imagesList);
+
+        setHeadline(data.subtitle);
+
+        setIcon(new SampleNativeMappedImage(icon, Uri.parse(data.icon), 1.0));
+        setBody(data.description);
+        setOverrideImpressionRecording(false);
+        setOverrideClickHandling(false);
+    }
+
+    @Override
+    public void recordImpression() {
+        super.recordImpression();
+        caulyAdView.sendImpressInform(data.id);
+    }
+
+    @Override
+    public void handleClick(View view) {
+        super.handleClick(view);
+        CaulyBrowserUtil.openBrowser(context, data.linkUrl);
+    }
+
+}
+```
+
+- SampleNativeMappedImage.java
+
+``` java
+/**
+ * A simple class that fits the the {@link NativeAd.Image} interface and can be filled with assets
+ * returned by the Sample SDK.
+ */
+public class SampleNativeMappedImage extends NativeAd.Image {
+    private final Drawable drawable;
+    private final Uri imageUri;
+    private final double scale;
+
+  public SampleNativeMappedImage(Drawable drawable, Uri imageUri, double scale) {
+    this.drawable = drawable;
+    this.imageUri = imageUri;
+    this.scale = scale;
+  }
+
+    @Override
+    public Drawable getDrawable() {
+        return drawable;
+    }
+    @Override
+    public Uri getUri() {
+        return imageUri;
+    }
+
+    @Override
+    public double getScale() {
+        return scale;
+    }
+}
+```
+
+</details>
+
+<details> <summary>Kotlin</summary>
+
+- CaulyNative.kt
+
+``` kotlin
+class CaulyNative: Adapter() {
+
+    private var nativeLoader: CaulyNativeLoader? = null
+
+    override fun loadNativeAdMapper(
+        mediationNativeAdConfiguration: MediationNativeAdConfiguration,
+        callback: MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback>
+    ) {
+        nativeLoader = CaulyNativeLoader(mediationNativeAdConfiguration, callback)
+        nativeLoader!!.loadAd()
+    }
+
+    override fun initialize(
+        context: Context,
+        initializationCompleteCallback: InitializationCompleteCallback,
+        list: List<MediationConfiguration>
+    ) {
+        initializationCompleteCallback.onInitializationSucceeded()
+    }
+
+    override fun getVersionInfo(): VersionInfo {
+        val versionString = "1.0.0.0"
+        val splits = versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        if (splits.size >= 4) {
+            val major = splits[0].toInt()
+            val minor = splits[1].toInt()
+            val micro = splits[2].toInt() * 100 + splits[3].toInt()
+            return VersionInfo(major, minor, micro)
+        }
+        return VersionInfo(0, 0, 0)
+    }
+
+    override fun getSDKVersionInfo(): VersionInfo {
+        val versionString = "1.0.0"
+        val splits = versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        if (splits.size >= 3) {
+            val major = splits[0].toInt()
+            val minor = splits[1].toInt()
+            val micro = splits[2].toInt()
+            return VersionInfo(major, minor, micro)
+        }
+        return VersionInfo(0, 0, 0)
+    }
+}
+```
+
+- CaulyNativeLoader.kt
+
+``` kotlin
+class CaulyNativeLoader(
+    /** Configuration for requesting the native ad from the third-party network. */
+    private val mediationNativeAdConfiguration: MediationNativeAdConfiguration,
+    /** Callback that fires on loading success or failure. */
+    private var mediationAdLoadCallback: MediationAdLoadCallback<NativeAdMapper, MediationNativeAdCallback>
+) {
+    /** Callback for native ad events. */
+    private var nativeAdCallback: MediationNativeAdCallback? = null
+    private var mCaulyAdView: CaulyCustomAd? = null
+    private var data: AdItem? = null;
+
+
+    /** Loads the interstitial ad from the third-party ad network.  */
+    fun loadAd() {
+        // All custom events have a server parameter named "parameter" that returns
+        // back the parameter entered into the UI when defining the custom event.
+        Log.i(TAG, "Admob Mediation : Cauly Native loadAd")
+        val serverParameter = mediationNativeAdConfiguration.serverParameters.getString(
+            MediationConfiguration.CUSTOM_EVENT_SERVER_PARAMETER_FIELD)
+        if (TextUtils.isEmpty(serverParameter)) {
+            mediationAdLoadCallback.onFailure(
+                AdError(
+                    ERROR_NO_AD_UNIT_ID,
+                    "Ad unit id is empty",
+                    CUSTOM_EVENT_ERROR_DOMAIN
+                )
+            )
+            return
+        }
+
+        Log.d(TAG, "Received server parameter.")
+        val context = mediationNativeAdConfiguration.context
+
+        val adInfo = CaulyNativeAdInfoBuilder(serverParameter)
+            .iconImageID(R.id.ad_app_icon)  // 아이콘 이미지를 사용할 경우
+            .mainImageID(R.id.ad_media)     // 메인 이미지를 사용할 경우
+            .build()
+
+        mCaulyAdView = CaulyCustomAd(context)
+        mCaulyAdView?.setAdInfo(adInfo)
+        mCaulyAdView?.setCustomAdListener(object : CaulyCustomAdListener {
+            // 광고 호출이 성공할 경우 호출된다.
+            override fun onLoadedAd(isChargeableAd: Boolean) {
+                val adList: List<HashMap<String, Any>>? = mCaulyAdView?.adsList
+
+                if (adList != null && adList.isNotEmpty()) {
+                    for (map in adList) {
+                        data = kr.co.cauly.sdk.android.mediation.sample.natives.AdItem().apply {
+                            id = map["id"] as String
+                            image = map["image"] as String
+                            linkUrl = map["linkUrl"] as String
+                            subtitle = map["subtitle"] as String
+                            description = map["description"] as String
+                            icon = map["icon"] as String
+                            image_content_type = map["image_content_type"] as String
+                        }
+                    }
+                }
+
+                val map = HashMap<String, Drawable>()
+                val uThread = Thread {
+                    try {
+                        if (data?.icon != null) {
+                            map["icon"] = data!!.icon?.let { getImageFromURL(it) }!!
+                        }
+                        if (data?.image != null) {
+                            map["image"] = data!!.image?.let { getImageFromURL(it) }!!
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        onFailedAd(-100, "internal error");
+                    }
+                }
+                uThread.start()
+
+                try {
+                    uThread.join()
+                    val nativeAdMapper = map["icon"]?.let { icon ->
+                        map["image"]?.let { image ->
+                            data?.let { data ->
+                                SampleNativeAdMapper(
+                                    context,
+                                    icon,
+                                    image,
+                                    data,
+                                    mCaulyAdView!!
+                                )
+                            }
+                        }
+                    }
+
+                    nativeAdCallback = mediationAdLoadCallback.onSuccess(nativeAdMapper!!)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    onFailedAd(-100, "internal error")
+                }
+            }
+
+            // 광고 호출이 실패할 경우 호출된다.
+            override fun onFailedAd(errCode: Int, errMsg: String?) {
+                Log.e(TAG, "errCode: $errCode errMsg: $errMsg")
+                val errorCode = when (errCode) {
+                    200 -> AdRequest.ERROR_CODE_NO_FILL
+                    400 -> AdRequest.ERROR_CODE_INVALID_REQUEST
+                    500 -> AdRequest.ERROR_CODE_NETWORK_ERROR
+                    else -> AdRequest.ERROR_CODE_INTERNAL_ERROR
+                }
+                mediationAdLoadCallback.onFailure(AdError(errorCode, errMsg!!, SAMPLE_SDK_DOMAIN))
+            }
+
+            // 광고가 클릭된 경우 호출된다.
+            override fun onClikedAd() {
+                Log.d(TAG, "onClicked")
+                nativeAdCallback!!.reportAdClicked()
+            }
+
+            // 광고가 표시되었을 때 호출된다.
+            override fun onShowedAd() {
+                Log.d(TAG, "onShowedAd")
+                nativeAdCallback!!.reportAdImpression()
+            }
+
+        })
+
+        mCaulyAdView?.requestAdData(CaulyCustomAd.NATIVE_LANDSCAPE, 2);
+    }
+
+    companion object {
+        val TAG = CaulyNativeLoader::class.java.simpleName
+
+        /** Error raised when the custom event adapter cannot obtain the ad unit id.  */
+        const val ERROR_NO_AD_UNIT_ID = 101
+
+        /** Error raised when the custom event adapter cannot obtain the activity context.  */
+        const val SAMPLE_SDK_DOMAIN = "kr.co.cauly.sdk.android"
+        const val CUSTOM_EVENT_ERROR_DOMAIN = "com.google.ads.mediation.sample.customevent"
+    }
+
+    @Throws(Exception::class)
+    fun getImageFromURL(data: String): Drawable {
+        val url = URL(data)
+        val conn = url.openConnection() as HttpURLConnection
+        conn.doInput = true
+        conn.connect()
+
+        val inputStream: InputStream = conn.inputStream
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        return BitmapDrawable(Resources.getSystem(), bitmap)
+    }
+}
+```
+
+- SampleNativeAdMapper.kt
+
+``` kotlin
+class SampleNativeAdMapper(
+    private val context: Context?,
+    icon: Drawable,
+    image: Drawable,
+    private val data: kr.co.cauly.sdk.android.mediation.sample.natives.AdItem,
+    private val caulyAdView: CaulyCustomAd
+) : NativeAdMapper() {
+
+    init {
+        if (context != null) {
+            // 이미지 리스트 생성 및 설정
+            val imagesList: MutableList<NativeAd.Image> = ArrayList()
+            imagesList.add(SampleNativeMappedImage(image, Uri.parse(data.image), 1.0))
+            setImages(imagesList)
+
+            // 제목, 아이콘, 설명 및 클릭 처리 설정
+            data.subtitle?.let { setHeadline(it) }
+            setIcon(SampleNativeMappedImage(icon, Uri.parse(data.icon), 1.0))
+            data.description?.let { setBody(it) }
+            setOverrideImpressionRecording(false)
+            setOverrideClickHandling(false)
+        } else {
+            Log.e("CaulyNative", "Failed to load ad. Request must be for unified native ads.")
+        }
+    }
+
+    override fun recordImpression() {
+        super.recordImpression()
+        caulyAdView.sendImpressInform(data.id)
+    }
+
+    override fun handleClick(view: View) {
+        super.handleClick(view)
+        CaulyBrowserUtil.openBrowser(context, data.linkUrl)
+    }
+}
+```
+
+- SampleNativeAdMappedImage.kt
+
+``` kotlin
+class SampleNativeMappedImage(
+    private val drawable: Drawable,
+    private val uri: Uri,
+    private val scale: Double
+) : NativeAd.Image() {
+
+    override fun getDrawable(): Drawable {
+        return drawable
+    }
+
+    override fun getUri(): Uri {
+        return uri
+    }
+
+    override fun getScale(): Double {
+        return scale
+    }
+}
+```
+</details>
+
 ### Adfit 광고 추가하기
 #### Adfit 네이티브 광고 추가하기
 

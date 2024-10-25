@@ -21,9 +21,6 @@ import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
 import java.util.Date
 import kotlin.math.log
 
-// admob test unit ID 입니다.
-// 배포시 애드몹에서 발급한 unit ID 로 반드시 변경해야합니다.
-private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/9257395921"
 private const val LOG_TAG = "MyApplication"
 
 /** Application class that initializes, loads and show ads when activities change states. */
@@ -32,36 +29,19 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
     private lateinit var appOpenAdManager: AppOpenManager
 
     private var currentActivity: Activity? = null
+    var isSplash = false
 
     override fun onCreate() {
         super.onCreate()
         registerActivityLifecycleCallbacks(this)
 
-        // Log the Mobile Ads SDK version.
-        Log.d(LOG_TAG, "Google Mobile Ads SDK Version: " + MobileAds.getVersion())
-
-//        MobileAds.initialize(this) {}
-        MobileAds.initialize(
-            this
-        ) { initializationStatus ->
-            val statusMap = initializationStatus.adapterStatusMap
-            for (adapterClass in statusMap.keys) {
-                val status = statusMap[adapterClass]
-                Log.i(
-                    LOG_TAG, String.format(
-                        "Adapter name: %s, Description: %s, Latency: %d",
-                        adapterClass, status!!.description, status.latency
-                    )
-                )
-            }
-        }
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenManager()
     }
 
     /** LifecycleObserver method that shows the app open ad when the app moves to foreground. */
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        if (event == Lifecycle.Event.ON_START) {
+        if (event == Lifecycle.Event.ON_START && isSplash) {
             // Show the ad (if available) when the app moves to foreground.
             currentActivity?.let {
                 appOpenAdManager.showAdIfAvailable(it)
@@ -90,6 +70,18 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
     override fun onActivityDestroyed(activity: Activity) {}
 
     /**
+     * Load an app open ad.
+     *
+     * @param activity the activity that shows the app open ad
+     * @param onLoadAdCompleteListener the listener to be notified when an app open ad is complete
+     */
+    fun loadAd(activity: Activity, onLoadAdCompleteListener: OnLoadAdCompleteListener) {
+        // We wrap the loadAd to enforce that other classes only interact with MyApplication
+        // class.
+        appOpenAdManager.loadAd(activity, onLoadAdCompleteListener)
+    }
+
+    /**
      * Shows an app open ad.
      *
      * @param activity the activity that shows the app open ad
@@ -100,12 +92,18 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
         // class.
         appOpenAdManager.showAdIfAvailable(activity, onShowAdCompleteListener)
     }
+
     /**
      * Interface definition for a callback to be invoked when an app open ad is complete (i.e.
      * dismissed or fails to show).
      */
     interface OnShowAdCompleteListener {
         fun onShowAdComplete()
+    }
+
+    interface OnLoadAdCompleteListener {
+        fun onAdLoaded()
+        fun onAdFailedToLoad()
     }
 
     /** Inner class that loads and shows app open ads. */
@@ -123,7 +121,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
          *
          * @param context the context of the activity that loads the ad
          */
-        fun loadAd(context: Context) {
+        fun loadAd(context: Context, onLoadAdCompleteListener: OnLoadAdCompleteListener?) {
             // Do not load ad if there is an unused ad or one is already loading.
             if (isLoadingAd || isAdAvailable()) {
                 return
@@ -132,7 +130,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
             isLoadingAd = true
             val request = AdRequest.Builder().build()
             AppOpenAd.load(
-                context, AD_UNIT_ID, request,
+                context, Config().ADMOB_APP_OPEN_ID, request,
                 object : AppOpenAdLoadCallback() {
 
                     override fun onAdLoaded(ad: AppOpenAd) {
@@ -141,12 +139,14 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
                         appOpenAd = ad
                         isLoadingAd = false
                         loadTime = Date().time
+                        onLoadAdCompleteListener?.onAdLoaded()
                     }
 
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                         // Called when an app open ad has failed to load.
                         Log.d(LOG_TAG, loadAdError.message)
                         isLoadingAd = false;
+                        onLoadAdCompleteListener?.onAdFailedToLoad()
                     }
                 }
             )
@@ -195,7 +195,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
             if (!isAdAvailable()) {
                 Log.d(LOG_TAG, "The app open is not ready yet.")
                 onShowAdCompleteListener.onShowAdComplete()
-                loadAd(activity)
+                loadAd(activity, null)
                 return
             }
 
@@ -209,7 +209,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
                         isShowingAd = false
 
                         onShowAdCompleteListener.onShowAdComplete()
-                        loadAd(activity)
+                        loadAd(activity, null)
                     }
 
                     override fun onAdFailedToShowFullScreenContent(adError: AdError) {
@@ -220,7 +220,7 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
                         isShowingAd = false
 
                         onShowAdCompleteListener.onShowAdComplete()
-                        loadAd(activity)
+                        loadAd(activity, null)
                     }
 
                     override fun onAdShowedFullScreenContent() {
@@ -228,10 +228,8 @@ class MyApplication : Application(), Application.ActivityLifecycleCallbacks, Lif
                         Log.d(LOG_TAG, "Ad showed fullscreen content.")
                     }
                 })
-            Log.d("테스트", "라인 230")
             isShowingAd = true
             appOpenAd?.show(activity)
-            Log.d("테스트", "라인 233")
         }
     }
 }
