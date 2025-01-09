@@ -13,11 +13,18 @@ SDK 연동 방법은 [Android SDK 연동 가이드](https://github.com/cauly/And
 Release Note
 ----
 
-- Target API Level 34 상향
-- Minimum SDK version 24 상향 
+- Minimum SDK version 21 하향
+- SDK Maven Repository 변경: S3 → GitHub Packages
 
 공지사항 (필독)
 ----
+
+**`2025/01/09`**  
+1. Github Packages 변경사항 안내
+   - Cauly SDK의 저장소 경로가 S3 저장소에서 Github Packages로 변경되었습니다.
+   - 자세한 내용은 [Android SDK 연동 가이드](https://github.com/cauly/Android-SDK/blob/master/Android%20SDK%20%EC%97%B0%EB%8F%99%20%EA%B0%80%EC%9D%B4%EB%93%9C.md#1-cauly-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0)  에서 확인 부탁드립니다.  
+
+**`2022/01/03`**  
 Google Play 정책사항 준수를 위해 아래 업데이트 사항 필독 부탁드립니다.
 
 신규 업데이트된 안드로이드 13의 경우에도, GAID 수집을 위한 퍼미션 추가가 필요합니다. 관련 내용은 하기 안드로이드 12에 기재된 내용을 참고부탁드립니다.

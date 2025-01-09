@@ -15,10 +15,11 @@ allprojects {
         google()
         // Cauly SDK Repository
         maven {
-            url "s3://repo.cauly.net/releases"
-            credentials(AwsCredentials) {
-                accessKey "AKIAWRZUK5MFKYVSUOLB"
-                secretKey "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"
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/cauly/Android-SDK/SDK")
+            credentials {
+                username = 'Cauly SDK 가이드 내 키값 참조'
+                password = 'Cauly SDK 가이드 내 키값 참조'
             }
         }
     }
