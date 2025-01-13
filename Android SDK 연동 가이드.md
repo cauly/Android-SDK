@@ -25,6 +25,10 @@
 - - - 
 # 1. CAULY 시작하기
 
+### CAULY SDK 최신 버전 안내
+
+> 해당 연동 가이드는 3.5.34 이전 버전에 대한 연동가이드로,  
+> 3.5.34 이상의 버전에 대해서는 [GitBook 페이지](https://cauly.gitbook.io/cauly)를 참조바랍니다.
 
 ### CAULY SDK 추가
 	
@@ -73,7 +77,7 @@
 
 ```xml
 <application android:usesCleartextTraffic="true" />
-```	
+```
 
 #### 더 안전한 구성요소 내보내기 설정 (targetSdkVersion 31 이상)
 `intent-filter를 사용하는 활동을 포함하는 경우 android:exported 속성 설정 필요 (MAIN/LAUNCHER activity는 ture 설정 필수)`
