@@ -34,7 +34,7 @@
 # 1. 미디에이션 시작하기
 
 ### 최소 지원 사양
-- minSdkVersion 24 이상
+- minSdkVersion 21 이상
 - compileSdkVersion 34 이상
 
 
@@ -122,7 +122,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:23.3.0'
     
     // cauly sdk
-    implementation 'com.fsn.cauly:cauly-sdk:3.5.32'
+    implementation 'com.fsn.cauly:cauly-sdk:3.5.34'
     
     // inmobi mediation
     implementation 'com.google.ads.mediation:inmobi:10.7.5.0'
@@ -158,21 +158,24 @@ dependencies {
 
 #### 최상위 level build.gradle 에  maven repository 추가
 
-- Cauly SDK 사용을 위해 필수
+- Cauly SDK, Mintegral SDK, Pangle SDK, IronSource SDK 사용을 위해 필수
+> 기존에 **`Cauly SDK 3.5.34 미만 버전을 사용`** 했다면, 기존에 설정한 **`Cauly SDK Repository 정보를 제거 후, 아래 정보로 적용`** 해주셔야 합니다.  
+> Cauly SDK Repository에 대한 정보는 [Cauly SDK 가이드](https://cauly.gitbook.io/cauly/android/sdk/project-build-setting#cauly-sdk)에서 확인할 수 있습니다.
 
    ```clojure
    allprojects {
       repositories {
          google()
          jcenter()
-         // Cauly SDK Repository
-         maven {
-            url "s3://repo.cauly.net/releases"
-            credentials(AwsCredentials) {
-               accessKey "AKIAWRZUK5MFKYVSUOLB"
-               secretKey "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"
+         // Cauly SDK Repository Public Access Info
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/cauly/Android-SDK/SDK")
+            credentials {
+                username = 'Cauly SDK 가이드 내 키값 참조'
+                password = 'Cauly SDK 가이드 내 키값 참조'
             }
-         }
+        }
          // Mintegral mediation
          maven {
             url 'https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea'
