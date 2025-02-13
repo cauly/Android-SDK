@@ -118,6 +118,11 @@ class KotlinActivity : AppCompatActivity(), CaulyAdViewListener, CaulyInterstiti
         Log.d("CaulyExample", "banner AD landing screen closed.")
     }
 
+    override fun onClickAd(adView: CaulyAdView) {
+        // 광고 배너를 클릭할 경우 호출됨.
+		Log.d("CaulyExample", "banner AD clicked.")
+    }
+
     // Activity 버튼 처리
     // - Java 배너 광고 갱신 버튼
     fun onReloadJavaAdView(button: View?) {
@@ -162,6 +167,11 @@ class KotlinActivity : AppCompatActivity(), CaulyAdViewListener, CaulyInterstiti
     override fun onLeaveInterstitialAd(arg0: CaulyInterstitialAd) {
         // TODO Auto-generated method stub
         interstitialAd!!.cancel()
+    }
+
+    override fun onClickInterstitialAd(ad: CaulyInterstitialAd) {
+        // 전면 광고를 클릭할 경우 호출됨.
+        Log.d("CaulyExample", "interstitial AD onClickInterstitialAd.");
     }
 
     companion object {

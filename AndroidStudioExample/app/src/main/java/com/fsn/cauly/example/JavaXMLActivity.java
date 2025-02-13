@@ -77,5 +77,10 @@ public class JavaXMLActivity extends Activity implements CaulyAdViewListener {
 		Log.d("CaulyExample", "banner AD landing screen closed.");
 	}
 
+	@Override
+	public void onClickAd(CaulyAdView adView) {
+		// 광고 배너를 클릭할 경우 호출됨.
+		Log.d("CaulyExample", "banner AD clicked.");
+	}
 	
 }

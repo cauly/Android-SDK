@@ -115,5 +115,10 @@ public class JavaCloseActivity extends Activity implements CaulyCloseAdListener 
 	public void onShowedCloseAd(CaulyCloseAd ad, boolean isChargable) {
 
 	}
+    
+    // CloseAd의 광고를 클릭할 경우 호출되는 함수이다.
+    @Override
+    public void onClickCloseAd(CaulyCloseAd ad) {
+    }
 
 }

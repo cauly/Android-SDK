@@ -48,4 +48,9 @@ class KotlinNativeViewActivity : AppCompatActivity(), CaulyNativeAdViewListener 
     override fun onReceiveNativeAd(adView: CaulyNativeAdView, isChargeableAd: Boolean) {
         adView.attachToView(native_container) //지정된 위치에 adView를 붙인다.
     }
+
+    // 네이티브 애드가 클릭되었을 때, 호출된다.
+    override fun onClickNativeAd(adView: CaulyNativeAdView) {
+        Log.d("CaulyExample", "naive AD clicked.")
+    }
 }

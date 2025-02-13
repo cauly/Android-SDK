@@ -137,6 +137,12 @@ public class JavaActivity extends Activity implements CaulyAdViewListener, Cauly
 		// 광고 배너를 클릭하여 열린 랜딩 페이지가 닫힌 경우 호출됨.
 		Log.d("CaulyExample", "banner AD landing screen closed.");
 	}
+
+	@Override
+	public void onClickAd(CaulyAdView adView) {
+		// 광고 배너를 클릭할 경우 호출됨.
+		Log.d("CaulyExample", "banner AD clicked.");
+	}
 	
 	// Activity 버튼 처리
 	// - Java 배너 광고 갱신 버튼
@@ -188,5 +194,10 @@ public class JavaActivity extends Activity implements CaulyAdViewListener, Cauly
 		interstitialAd.cancel();
 	}
 
-	
+	@Override
+	public void onClickInterstitialAd(CaulyInterstitialAd ad) {
+		// 전면 광고를 클릭할 경우 호출됨.
+		Log.d("CaulyExample", "interstitial AD onClickInterstitialAd.");
+	}
+
 }

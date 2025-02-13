@@ -169,4 +169,10 @@ public class NativeListActivity extends Activity implements CaulyNativeAdViewLis
 		r = r+4;
 		mAdapter.notifyDataSetChanged();
 	}
+	
+	// 네이티브 애드가 클릭되었을 때, 호출된다.
+	@Override
+	public void onClickNativeAd(CaulyNativeAdView adView) {
+		Log.d("CaulyExample", "naive AD clicked.");
+	}
 }

@@ -65,4 +65,9 @@ class KotlinXMLActivity : AppCompatActivity(), CaulyAdViewListener {
         // 광고 배너를 클릭하여 열린 랜딩 페이지가 닫힌 경우 호출됨.
         Log.d("CaulyExample", "banner AD landing screen closed.")
     }
+
+    override fun onClickAd(adView: CaulyAdView) {
+        // 광고 배너를 클릭할 경우 호출됨.
+		Log.d("CaulyExample", "banner AD clicked.")
+    }
 }

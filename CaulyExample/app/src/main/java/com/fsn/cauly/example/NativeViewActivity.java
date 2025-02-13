@@ -51,4 +51,10 @@ public class NativeViewActivity extends Activity implements CaulyNativeAdViewLis
 	public void onReceiveNativeAd(CaulyNativeAdView adView, boolean isChargeableAd) {
 		adView.attachToView(native_container);  //지정된 위치에 adView를 붙인다.
 	}
+	
+	// 네이티브 애드가 클릭되었을 때, 호출된다.
+	@Override
+	public void onClickNativeAd(CaulyNativeAdView adView) {
+		Log.d("CaulyExample", "naive AD clicked.");
+	}
 }
