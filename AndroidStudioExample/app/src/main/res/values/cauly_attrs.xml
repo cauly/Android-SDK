@@ -12,6 +12,9 @@
         <attr name="threadPriority" format="integer" />
         <attr name="bannerHeight" format="string" />
         <attr name="enableDefaultBannerAd" format="boolean" />
+        <attr name="region" format="string"/>
+        <attr name="gcoder_lt" format="integer" />
+        <attr name="gcoder_lng" format="integer" />        
     </declare-styleable>
 
 </resources>
