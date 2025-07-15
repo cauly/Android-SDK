@@ -20,14 +20,7 @@ allprojects {
         google()
         jcenter()
         // Cauly SDK Repository
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/cauly/Android-SDK/SDK")
-            credentials {
-                username = 'Cauly SDK 가이드 내 키값 참조'
-                password = 'Cauly SDK 가이드 내 키값 참조'
-            }
-        }
+        maven { url 'https://cauly.github.io/cauly-sdk-android-maven/maven-repo' }
     }
 }
 

@@ -85,7 +85,7 @@ class KotlinCloseAdActivity : AppCompatActivity(), CaulyCloseAdListener {
     override fun onShowedCloseAd(ad: CaulyCloseAd, isChargable: Boolean) {}
 
     // CloseAd의 광고를 클릭할 경우 호출되는 함수이다.
-    override fun onClickCloseAd(ad: caulyCloseAd) {}
+    override fun onClickCloseAd(ad: CaulyCloseAd) {}
 
     companion object {
         private const val APP_CODE = "CAULY"

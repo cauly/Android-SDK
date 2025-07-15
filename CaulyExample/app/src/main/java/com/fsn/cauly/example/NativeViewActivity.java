@@ -2,6 +2,7 @@ package com.fsn.cauly.example;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.fsn.cauly.CaulyAdInfo;
