@@ -142,6 +142,8 @@ public class JavaActivity extends Activity implements CaulyAdViewListener, Cauly
 		// 광고 배너를 클릭할 경우 호출됨.
 		Log.d("CaulyExample", "banner AD clicked.");
 	}
+
+
 	
 	// Activity 버튼 처리
 	// - Java 배너 광고 갱신 버튼
@@ -198,5 +200,10 @@ public class JavaActivity extends Activity implements CaulyAdViewListener, Cauly
 		// 전면 광고를 클릭할 경우 호출됨.
 		Log.d("CaulyExample", "interstitial AD onClickInterstitialAd.");
 	}
-	
+
+	@Override
+	public void onTimeout(CaulyInterstitialAd ad, String errorMsg) {
+		// 전면 광고가 만료된 경우 호출됨.
+		Log.d("CaulyExample", "interstitial AD onTimeout.");
+	}
 }

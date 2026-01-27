@@ -25,14 +25,19 @@ class KotlinEntryActivity : AppCompatActivity() {
             ) else if (position == 1) startActivity(
                 Intent(
                     this@KotlinEntryActivity,
-                    KotlinXMLActivity::class.java
+                    KotlinPreloadBannerActivity::class.java
                 )
             ) else if (position == 2) startActivity(
                 Intent(
                     this@KotlinEntryActivity,
-                    KotlinNativeViewActivity::class.java
+                    KotlinXMLActivity::class.java
                 )
             ) else if (position == 3) startActivity(
+                Intent(
+                    this@KotlinEntryActivity,
+                    KotlinNativeViewActivity::class.java
+                )
+            ) else if (position == 4) startActivity(
                 Intent(
                     this@KotlinEntryActivity,
                     KotlinNativeDataActivity::class.java
@@ -44,6 +49,7 @@ class KotlinEntryActivity : AppCompatActivity() {
     companion object {
         val type = arrayOf(
             "동적 배너및 전면",
+            "preload배너",
             "XML배너 및 전면",
             "네이티브 뷰타입",
             "네이티브 데이터 타입",

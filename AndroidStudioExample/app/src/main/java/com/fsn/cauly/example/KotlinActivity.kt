@@ -174,6 +174,11 @@ class KotlinActivity : AppCompatActivity(), CaulyAdViewListener, CaulyInterstiti
         Log.d("CaulyExample", "interstitial AD onClickInterstitialAd.");
     }
 
+    override fun onTimeout(ad: CaulyInterstitialAd, errorMsg: String) {
+        // 전면 광고가 만료된 경우 호출됨.
+        Log.d("CaulyExample", "interstitial AD onTimeout.")
+    }
+
     companion object {
         // 광고 요청을 위한 App Code
         private const val APP_CODE = "CAULY"

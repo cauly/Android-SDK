@@ -30,6 +30,11 @@
         </activity>
 
         <activity
+            android:name=".JavaPreloadBannerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="preload배너" />
+
+        <activity
             android:name=".JavaXMLActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_xml">    <!-- orientation 변경 시 Activity 재시작 방지 -->
@@ -54,6 +59,10 @@
             android:name=".KotlinXMLActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_xml" /> <!-- orientation 변경 시 Activity 재시작 방지 -->
+        <activity
+            android:name=".KotlinPreloadBannerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="preload배너" />
         <activity
             android:name=".KotlinNativeViewActivity"
             android:configChanges="keyboard|keyboardHidden|orientation" />
