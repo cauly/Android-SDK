@@ -131,6 +131,11 @@ class KotlinPreloadBannerActivity : AppCompatActivity(), CaulyAdBannerViewListen
         Log.d(TAG, "banner AD clicked.")
     }
 
+    override fun onAdImpression() {
+        // 광고 노출이 집계되었을 때 호출됨 (광고당 1회, 선택 구현).
+        Log.d(TAG, "banner AD impression.")
+    }
+
     override fun onTimeout(adView: CaulyAdBannerView, msg: String) {
         Log.d(TAG, "banner AD timeout. msg=$msg")
         isAdLoaded = false

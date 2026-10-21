@@ -82,5 +82,11 @@ public class XMLActivity extends Activity implements CaulyAdViewListener {
 		// 광고 배너를 클릭할 경우 호출됨.
 		Log.d("CaulyExample", "banner AD clicked.");
 	}
+
+	@Override
+	public void onAdImpression() {
+		// 광고 노출이 집계되었을 때 호출됨 (광고당 1회, 선택 구현).
+		Log.d("CaulyExample", "banner AD impression.");
+	}
 	
 }
