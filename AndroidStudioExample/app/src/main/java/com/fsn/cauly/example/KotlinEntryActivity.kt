@@ -35,12 +35,7 @@ class KotlinEntryActivity : AppCompatActivity() {
             ) else if (position == 3) startActivity(
                 Intent(
                     this@KotlinEntryActivity,
-                    KotlinNativeViewActivity::class.java
-                )
-            ) else if (position == 4) startActivity(
-                Intent(
-                    this@KotlinEntryActivity,
-                    KotlinNativeDataActivity::class.java
+                    KotlinNativeActivity::class.java
                 )
             ) else startActivity(Intent(this@KotlinEntryActivity, KotlinCloseAdActivity::class.java))
         }
@@ -51,8 +46,7 @@ class KotlinEntryActivity : AppCompatActivity() {
             "동적 배너및 전면",
             "preload배너",
             "XML배너 및 전면",
-            "네이티브 뷰타입",
-            "네이티브 데이터 타입",
+            "네이티브 V2 테스트",
             "종료팝업"
         )
     }

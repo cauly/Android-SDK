@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.fsn.cauly.example">
 
     <!-- Cauly : 광고 노출을 위한 필수 권한 -->
@@ -39,18 +40,11 @@
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_xml">    <!-- orientation 변경 시 Activity 재시작 방지 -->
         </activity>
+        <!-- 네이티브 V2 테스트 -->
         <activity
-            android:name=".JavaNativeListActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"></activity>
-        <activity
-            android:name=".JavaNativeViewActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"></activity>
-        <activity
-            android:name=".JavaNativeCardActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"></activity>
-        <activity
-            android:name=".JavaNativeDataActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"></activity>
+            android:name=".JavaNativeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="네이티브 V2 테스트" />
         <activity
             android:name=".JavaCloseActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"></activity>
@@ -63,12 +57,11 @@
             android:name=".KotlinPreloadBannerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="preload배너" />
+        <!-- 네이티브 V2 테스트 -->
         <activity
-            android:name=".KotlinNativeViewActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation" />
-        <activity
-            android:name=".KotlinNativeDataActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation" />
+            android:name=".KotlinNativeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="네이티브 V2 테스트" />
         <activity
             android:name=".KotlinCloseAdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation" />
@@ -80,9 +73,6 @@
         <activity
             android:name=".KotlinActivity"
             android:configChanges="keyboard|keyboardHidden|orientation" />
-        <activity
-            android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
-            android:configChanges="keyboardHidden|orientation|keyboard"></activity>
 
     </application>
 

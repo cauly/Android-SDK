@@ -25,26 +25,11 @@
             android:label="@string/title_activity_xml"
             android:configChanges="keyboard|keyboardHidden|orientation" >	<!-- orientation 변경 시 Activity 재시작 방지 -->
         </activity>
-          <activity
-            android:name=".NativeListActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            >
-        </activity>
+        <!-- 네이티브 V2 테스트 -->
         <activity
-            android:name=".NativeViewActivity"
+            android:name=".NativeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
-           >
-        </activity>
-        <activity
-            android:name=".NativeCardActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            >
-        </activity>
-         <activity
-            android:name=".NativeDataActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            >
-        </activity>
+            android:label="네이티브 V2 테스트" />
           <activity
             android:name=".CloseActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
@@ -60,12 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity
-    android:name="com.fsn.cauly.blackdragoncore.LandingActivity"
-        android:configChanges="keyboardHidden|orientation|keyboard"> 
-    </activity>
-        
+
     </application>
 
 </manifest>

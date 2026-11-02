@@ -12,7 +12,7 @@ import android.widget.ListView;
 public class JavaEntryActivity extends Activity   {
 
 	ListView listview; 
-	static final String[] type = {"동적 배너및 전면","preload배너","XML배너 및 전면", "네이티브 리스트뷰 타입", "네이티브 뷰타입","네이티브 카드뷰 타입","네이티브 데이터 타입","종료팝업"};
+	static final String[] type = {"동적 배너및 전면","preload배너","XML배너 및 전면", "네이티브 V2 테스트","종료팝업"};
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,13 +30,7 @@ public class JavaEntryActivity extends Activity   {
 				else if(position==2)
 					startActivity(new Intent(JavaEntryActivity.this, JavaXMLActivity.class));
 				else if(position==3)
-					startActivity(new Intent(JavaEntryActivity.this, JavaNativeListActivity.class));
-				else if(position==4)
-					startActivity(new Intent(JavaEntryActivity.this, JavaNativeViewActivity.class));
-				else if(position==5)
-					startActivity(new Intent(JavaEntryActivity.this, JavaNativeCardActivity.class));
-				else if(position==6)
-					startActivity(new Intent(JavaEntryActivity.this, JavaNativeDataActivity.class));
+					startActivity(new Intent(JavaEntryActivity.this, JavaNativeActivity.class));
 				else 
 					startActivity(new Intent(JavaEntryActivity.this, JavaCloseActivity.class));
 			}
